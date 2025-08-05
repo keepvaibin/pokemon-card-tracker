@@ -1,0 +1,25 @@
+@import "tailwindcss";
+
+/* Default (light) theme variables */
+:root {
+  --color-background: #ffffff;           /* White background */
+  --color-foreground: #171717;           /* Dark text */
+  --color-border-gradient-start: #521380; /* Your preferred purple */
+  --color-border-gradient-end: #290643;   /* Darker purple */
+  --font-sans: 'Arial', 'Helvetica', sans-serif;
+}
+
+/* Dark theme variables */
+[data-theme='dark'] {
+  --color-background: #000000;           /* Black background */
+  --color-foreground: #ededed;           /* Light text */
+  --color-border-gradient-start: #521380;
+  --color-border-gradient-end: #290643;
+}
+
+body {
+  background-color: var(--color-background);
+  color: var(--color-foreground);
+  font-family: var(--font-sans);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
