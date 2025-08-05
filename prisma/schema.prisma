@@ -14,32 +14,52 @@ datasource db {
 }
 
 model User {
-  id        String   @id @default(uuid())
-  email     String   @unique
-  name      String?  // optional user display name
-  cards     Card[]
-  createdAt DateTime @default(now())
-  themePreference   String   @default("system")
+  id              String    @id @default(uuid())
+  email           String    @unique
+  name            String?
+  cards           Card[]
+  tags            Tag[]
+  createdAt       DateTime  @default(now())
+  themePreference String    @default("system")
 }
 
 model Card {
-  id          String      @id @default(uuid())
-  user        User        @relation(fields: [userId], references: [id])
-  userId      String
-  tcgId       String      // Pokémon TCG API card id
-  name        String
-  imageUrl    String
-  marketPrice Float?
-  lastChecked DateTime?
-  quantity    Int         @default(1)
-  createdAt   DateTime    @default(now())
-  priceHistory PriceHistory[]  // for charting price changes
+  id           String         @id @default(uuid())
+  user         User           @relation(fields: [userId], references: [id])
+  userId       String
+  tcgId        String         // Pokémon TCG API card id
+  name         String
+  imageUrl     String
+  marketPrice  Float?
+  lastChecked  DateTime?
+  quantity     Int            @default(1)
+  createdAt    DateTime       @default(now())
+  priceHistory PriceHistory[]
+  tags         CardTag[]      // many-to-many via CardTag
 }
 
 model PriceHistory {
-  id        String   @id @default(uuid())
-  card      Card     @relation(fields: [cardId], references: [id])
-  cardId    String
-  price     Float
+  id         String   @id @default(uuid())
+  card       Card     @relation(fields: [cardId], references: [id])
+  cardId     String
+  price      Float
   recordedAt DateTime @default(now())
+}
+
+model Tag {
+  id      String     @id @default(uuid())
+  name    String
+  user    User       @relation(fields: [userId], references: [id])
+  userId  String
+  cards   CardTag[]  // many-to-many via CardTag
+
+  @@unique([name, userId]) // ensures no duplicate tags per user
+}
+
+model CardTag {
+  id     String @id @default(uuid())
+  card   Card   @relation(fields: [cardId], references: [id])
+  cardId String
+  tag    Tag    @relation(fields: [tagId], references: [id])
+  tagId  String
 }
