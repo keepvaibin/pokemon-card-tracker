@@ -63,3 +63,26 @@ model CardTag {
   tag    Tag    @relation(fields: [tagId], references: [id])
   tagId  String
 }
+
+model TcgCard {
+  id                 String   @id             // e.g., "g1-1"
+  name               String
+  supertype          String?
+  subtypes           String[] // stored as Postgres array
+  hp                 String?
+  types              String[]
+  evolvesTo          String[]
+  rules              String[]
+  artist             String?
+  rarity             String?
+  nationalPokedexNumbers Int[] 
+  convertedRetreatCost Int?
+
+  imageSmall         String?
+  imageLarge         String?
+  tcgplayerUrl       String?
+  marketPrice        Float?
+
+  updatedAt          DateTime @updatedAt
+  createdAt          DateTime @default(now())
+}

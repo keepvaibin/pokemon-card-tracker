@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import { useRouter } from 'next/navigation'
 import { useSession } from 'next-auth/react'
 import { Navbar } from '@/components/Navbar'
@@ -17,7 +17,41 @@ interface DashboardClientProps {
   tags: (Tag & { cards: Card[] })[]
 }
 
-function CardList({ cards, tags }: { cards: Card[]; tags: (Tag & { cards: Card[] })[] }) {
+function AnimatedSection({ isOpen, children }: { isOpen: boolean; children: React.ReactNode }) {
+  const contentRef = useRef<HTMLDivElement>(null)
+  const [maxHeight, setMaxHeight] = useState('0px')
+  const [opacity, setOpacity] = useState(0)
+
+  useEffect(() => {
+    if (contentRef.current) {
+      if (isOpen) {
+        setMaxHeight(`${contentRef.current.scrollHeight}px`)
+        setOpacity(1)
+      } else {
+        setMaxHeight('0px')
+        setOpacity(0)
+      }
+    }
+  }, [isOpen, children])
+
+  return (
+    <div
+      style={{
+        overflow: 'hidden',
+        transition: 'max-height 0.3s ease, opacity 0.3s ease',
+        maxHeight,
+        opacity,
+      }}
+    >
+      <div ref={contentRef}>{children}</div>
+    </div>
+  )
+}
+
+export function CardList({ cards, tags }: { cards: Card[]; tags: (Tag & { cards: Card[] })[] }) {
+  const [cardsOpen, setCardsOpen] = useState(true)
+  const [listsOpen, setListsOpen] = useState(true)
+
   const ownedTagName = 'Cards'
   const ownedCards = (cards ?? []).filter(card => card.tags?.some(tag => tag.name === ownedTagName))
   const otherTags = (tags ?? []).filter(tag => tag.name !== ownedTagName)
@@ -25,47 +59,75 @@ function CardList({ cards, tags }: { cards: Card[]; tags: (Tag & { cards: Card[]
   const sectionStyle = {
     border: '1px solid var(--border-color)',
     borderRadius: '0.5rem',
-    marginBottom: '1.5rem',
-    backgroundColor: 'var(--bg-secondary)', // optional for subtle background
+    marginBottom: '0.25rem',
+    backgroundColor: 'var(--bg-secondary)',
   }
 
-  const titleStyle = {
+  const titleContainerStyle = {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
     fontSize: '1.2rem',
     fontWeight: 700,
-    padding: '0',
-    borderBottom: '1px solid var(--border-color)',
-    
+    border: '2px solid #9b9b9b75',
+    borderRadius: '0.5rem',
+    padding: '0.5rem 0.75rem',
+    backgroundColor: 'var(--bg-color)',
+    cursor: 'pointer' as const,
   }
 
-  // Content container style - dynamic based on if content exists
-  const contentStyle = (hasContent: boolean) => ({
-    padding: hasContent ? '1rem' : '0',
-    height: hasContent ? 'auto' : 0,
-    overflow: 'hidden',
+  const arrowStyle = (open: boolean) => ({
+    transition: 'transform 0.2s ease',
+    transform: open ? 'rotate(90deg)' : 'rotate(0deg)',
+    fontSize: '1rem',
+    color: 'var(--text-muted)',
   })
 
   return (
-    <div style={{ height: '100%', display: 'flex', flexDirection: 'column', padding: '1rem' }}>
+    <div style={{ height: '100%', display: 'flex', flexDirection: 'column', padding: '0.25rem' }}>
       {/* Cards Section */}
       <section style={sectionStyle}>
-        <div style={titleStyle}>Cards</div>
-        <div style={contentStyle(ownedCards.length > 0)}>
-          {ownedCards.length > 0 &&
-            ownedCards.map(card => (
-              <div key={card.id} style={{ marginBottom: '0.75rem', display: 'flex', alignItems: 'center' }}>
-                <img src={card.imageUrl} alt={card.name} width={50} height={70} />
-                <span style={{ marginLeft: '0.75rem' }}>{card.name}</span>
-              </div>
-            ))}
+        <div style={titleContainerStyle} onClick={() => setCardsOpen(!cardsOpen)}>
+          <span>Cards</span>
+          <span style={arrowStyle(cardsOpen)}>&#9654;</span>
         </div>
+        <AnimatedSection isOpen={cardsOpen}>
+          <div style={{ padding: '0.25rem' }}>
+            {ownedCards.length > 0 ? (
+              ownedCards.map(card => (
+                <div key={card.id} style={{ marginBottom: '0.75rem', display: 'flex', alignItems: 'center' }}>
+                  <img src={card.imageUrl} alt={card.name} width={50} height={70} />
+                  <span style={{ marginLeft: '0.75rem' }}>{card.name}</span>
+                </div>
+              ))
+            ) : (
+              <div
+                style={{
+                  border: '1px dashed var(--border-color)',
+                  borderRadius: '0.5rem',
+                  padding: '1rem',
+                  textAlign: 'center',
+                  color: 'var(--text-muted)',
+                  fontStyle: 'italic',
+                  backgroundColor: 'var(--bg-color)',
+                }}
+              >
+                You have no cards right now.
+              </div>
+            )}
+          </div>
+        </AnimatedSection>
       </section>
 
       {/* Lists Section */}
       <section style={sectionStyle}>
-        <div style={titleStyle}>Lists</div>
-        <div style={contentStyle(otherTags.length > 0)}>
-          {otherTags.length > 0 &&
-            otherTags.map(tag => (
+        <div style={titleContainerStyle} onClick={() => setListsOpen(!listsOpen)}>
+          <span>Lists</span>
+          <span style={arrowStyle(listsOpen)}>&#9654;</span>
+        </div>
+        <AnimatedSection isOpen={listsOpen}>
+          <div style={{ padding: '0.25rem' }}>
+            {otherTags.map(tag => (
               <div key={tag.id} style={{ marginBottom: '1rem' }}>
                 <div style={{ fontWeight: 600, marginBottom: '0.5rem' }}>{tag.name}</div>
                 {tag.cards.map(card => (
@@ -76,7 +138,8 @@ function CardList({ cards, tags }: { cards: Card[]; tags: (Tag & { cards: Card[]
                 ))}
               </div>
             ))}
-        </div>
+          </div>
+        </AnimatedSection>
       </section>
     </div>
   )
@@ -141,7 +204,7 @@ export default function DashboardClient({
           top: navbarHeight,
           right: sidebarPadding,
           width: sidebarWidth,
-          height: `calc(99vh - ${navbarHeight} - ${buttonHeight} - 1.7rem)`, // subtract button + padding
+          height: `calc(99vh - ${navbarHeight} - ${buttonHeight} - 1.7rem)`,
           backgroundColor: 'var(--bg-color)',
           borderRadius: '0.75rem',
           boxShadow: '0 10px 20px rgba(100, 70, 250, 0.3)',
