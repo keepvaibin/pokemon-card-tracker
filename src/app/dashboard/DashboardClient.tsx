@@ -1,11 +1,10 @@
 'use client'
 
-import { useEffect, useState, useRef } from 'react'
+import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { useSession } from 'next-auth/react'
 import { Navbar } from '@/components/Navbar'
 import { useSyncedTheme } from './useSyncedTheme'
-import type { Card, Tag } from '@prisma/client'
 import { GraphCard } from '@/components/GraphCard'
 import AddCreateButton from '@/components/AddCreateButton'
 
@@ -13,26 +12,12 @@ interface DashboardClientProps {
   total: number
   dailyChange: number
   sparkData: number[]
-  cards: Card[]
-  tags: (Tag & { cards: Card[] })[]
+  cards: string[] // now just strings from User.cards
 }
 
 function AnimatedSection({ isOpen, children }: { isOpen: boolean; children: React.ReactNode }) {
-  const contentRef = useRef<HTMLDivElement>(null)
-  const [maxHeight, setMaxHeight] = useState('0px')
-  const [opacity, setOpacity] = useState(0)
-
-  useEffect(() => {
-    if (contentRef.current) {
-      if (isOpen) {
-        setMaxHeight(`${contentRef.current.scrollHeight}px`)
-        setOpacity(1)
-      } else {
-        setMaxHeight('0px')
-        setOpacity(0)
-      }
-    }
-  }, [isOpen, children])
+  const maxHeight = isOpen ? '1000px' : '0px' // fixed height for smooth animation
+  const opacity = isOpen ? 1 : 0
 
   return (
     <div
@@ -43,18 +28,13 @@ function AnimatedSection({ isOpen, children }: { isOpen: boolean; children: Reac
         opacity,
       }}
     >
-      <div ref={contentRef}>{children}</div>
+      <div>{children}</div>
     </div>
   )
 }
 
-export function CardList({ cards, tags }: { cards: Card[]; tags: (Tag & { cards: Card[] })[] }) {
+export function CardList({ cards }: { cards: string[] }) {
   const [cardsOpen, setCardsOpen] = useState(true)
-  const [listsOpen, setListsOpen] = useState(true)
-
-  const ownedTagName = 'Cards'
-  const ownedCards = (cards ?? []).filter(card => card.tags?.some(tag => tag.name === ownedTagName))
-  const otherTags = (tags ?? []).filter(tag => tag.name !== ownedTagName)
 
   const sectionStyle = {
     border: '1px solid var(--border-color)',
@@ -85,7 +65,6 @@ export function CardList({ cards, tags }: { cards: Card[]; tags: (Tag & { cards:
 
   return (
     <div style={{ height: '100%', display: 'flex', flexDirection: 'column', padding: '0.25rem' }}>
-      {/* Cards Section */}
       <section style={sectionStyle}>
         <div style={titleContainerStyle} onClick={() => setCardsOpen(!cardsOpen)}>
           <span>Cards</span>
@@ -93,11 +72,20 @@ export function CardList({ cards, tags }: { cards: Card[]; tags: (Tag & { cards:
         </div>
         <AnimatedSection isOpen={cardsOpen}>
           <div style={{ padding: '0.25rem' }}>
-            {ownedCards.length > 0 ? (
-              ownedCards.map(card => (
-                <div key={card.id} style={{ marginBottom: '0.75rem', display: 'flex', alignItems: 'center' }}>
-                  <img src={card.imageUrl} alt={card.name} width={50} height={70} />
-                  <span style={{ marginLeft: '0.75rem' }}>{card.name}</span>
+            {cards.length > 0 ? (
+              cards.map((card, index) => (
+                <div
+                  key={index}
+                  style={{
+                    marginBottom: '0.75rem',
+                    display: 'flex',
+                    alignItems: 'center',
+                    padding: '0.5rem',
+                    backgroundColor: 'var(--bg-color)',
+                    borderRadius: '0.5rem',
+                  }}
+                >
+                  <span>{card}</span>
                 </div>
               ))
             ) : (
@@ -118,29 +106,6 @@ export function CardList({ cards, tags }: { cards: Card[]; tags: (Tag & { cards:
           </div>
         </AnimatedSection>
       </section>
-
-      {/* Lists Section */}
-      <section style={sectionStyle}>
-        <div style={titleContainerStyle} onClick={() => setListsOpen(!listsOpen)}>
-          <span>Lists</span>
-          <span style={arrowStyle(listsOpen)}>&#9654;</span>
-        </div>
-        <AnimatedSection isOpen={listsOpen}>
-          <div style={{ padding: '0.25rem' }}>
-            {otherTags.map(tag => (
-              <div key={tag.id} style={{ marginBottom: '1rem' }}>
-                <div style={{ fontWeight: 600, marginBottom: '0.5rem' }}>{tag.name}</div>
-                {tag.cards.map(card => (
-                  <div key={card.id} style={{ marginBottom: '0.5rem', display: 'flex', alignItems: 'center' }}>
-                    <img src={card.imageUrl} alt={card.name} width={40} height={55} />
-                    <span style={{ marginLeft: '0.75rem' }}>{card.name}</span>
-                  </div>
-                ))}
-              </div>
-            ))}
-          </div>
-        </AnimatedSection>
-      </section>
     </div>
   )
 }
@@ -150,7 +115,6 @@ export default function DashboardClient({
   dailyChange,
   sparkData,
   cards,
-  tags,
 }: DashboardClientProps) {
   const { wrapperStyle, mounted } = useSyncedTheme()
   const { data: session, status } = useSession()
@@ -217,7 +181,7 @@ export default function DashboardClient({
         }}
       >
         <div style={{ flex: 1, overflowY: 'auto' }}>
-          <CardList cards={cards} tags={tags} />
+          <CardList cards={cards} />
         </div>
       </aside>
 

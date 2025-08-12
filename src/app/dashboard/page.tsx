@@ -5,11 +5,13 @@ import { redirect } from "next/navigation"
 import { prisma } from "@/lib/prisma"
 import DashboardClient from "./DashboardClient"
 
-function calculatePortfolio(cards: { marketPrice: number | null }[]) {
-  const total = cards.reduce((sum, c) => sum + (c.marketPrice ?? 0), 0)
-  const dailyChange = ((Math.random() * 6) - 3).toFixed(2)
-  const sparkData = Array(30).fill(0).map(() => total * (0.9 + Math.random() * 0.2))
-  return { total, dailyChange: parseFloat(dailyChange), sparkData }
+function calculatePortfolio(cards: string[]) {
+  const total = cards.length // no marketPrice, so total is just count
+  const dailyChange = parseFloat(((Math.random() * 6) - 3).toFixed(2))
+  const sparkData = Array(30)
+    .fill(0)
+    .map(() => total * (0.9 + Math.random() * 0.2))
+  return { total, dailyChange, sparkData }
 }
 
 export default async function DashboardPage() {
@@ -18,12 +20,13 @@ export default async function DashboardPage() {
 
   let user = await prisma.user.findUnique({
     where: { email: session.user!.email! },
-    include: { cards: true },
+    select: { cards: true }, // ✅ fetch scalar array directly
   })
+
   if (!user) {
     user = await prisma.user.create({
       data: { email: session.user!.email! },
-      include: { cards: true },
+      select: { cards: true },
     })
   }
 

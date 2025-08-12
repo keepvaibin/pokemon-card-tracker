@@ -3,6 +3,7 @@
 import { Switch } from '@headlessui/react'
 import { useTheme } from 'next-themes'
 import { useState, useEffect } from 'react'
+import { useSession } from "next-auth/react";
 
 // Extend CSSProperties type to allow CSS variables
 type CSSVariables = React.CSSProperties & {
@@ -14,6 +15,19 @@ export default function Settings() {
   const [enabled, setEnabled] = useState(false)
   const [mounted, setMounted] = useState(false)
   const [fading, setFading] = useState(false)
+
+  const { data: session } = useSession();
+
+  // State for showing/hiding token
+  const [showToken, setShowToken] = useState(false)
+
+  // Extract token from session or fallback
+  const token = session?.idToken ?? ''
+
+  // State for copy feedback modal
+  const [showCopiedModal, setShowCopiedModal] = useState(false)
+  // State for pop animation on copy button
+  const [pop, setPop] = useState(false)
 
   useEffect(() => {
     // On mount, check localStorage and apply theme immediately for smoothness
@@ -54,6 +68,19 @@ export default function Settings() {
     }, 150)
   }
 
+  // Copy token to clipboard with pop and modal
+  const copyToClipboard = () => {
+    navigator.clipboard.writeText(token)
+
+    // Trigger pop animation
+    setPop(true)
+    setTimeout(() => setPop(false), 300)
+
+    // Show modal
+    setShowCopiedModal(true)
+    setTimeout(() => setShowCopiedModal(false), 1000)
+  }
+
   const isDark = resolvedTheme === 'dark'
   const wrapperStyle: CSSVariables = {
     '--bg-color': isDark ? '#1f2937' : '#ffffff',
@@ -77,6 +104,16 @@ export default function Settings() {
 
   return (
     <div style={wrapperStyle}>
+      {/* Copied modal */}
+      {showCopiedModal && (
+        <div
+          className="fixed top-4 left-1/2 -translate-x-1/2 rounded bg-purple-600 px-4 py-2 text-white font-semibold shadow-lg select-none z-50"
+          style={{ animation: 'fadeInOut 1s forwards' }}
+        >
+          Copied to Clipboard!
+        </div>
+      )}
+
       <nav className="w-48 pr-6">
         <h2 className="text-lg font-semibold mb-4">Settings</h2>
         <button
@@ -94,8 +131,9 @@ export default function Settings() {
         >
           General
         </h2>
+        {/* Theme card */}
         <div
-          className="rounded-xl shadow-lg p-8 flex items-center justify-between max-w-full"
+          className="rounded-xl shadow-lg p-8 flex items-center justify-between max-w-full mb-6"
           style={{
             backgroundColor: 'var(--bg-color)',
             color: 'var(--text-color-primary)',
@@ -131,7 +169,80 @@ export default function Settings() {
             />
           </Switch>
         </div>
+
+        {/* API Token card */}
+        <div
+          className="rounded-xl shadow-lg p-6 flex flex-col max-w-full"
+          style={{
+            backgroundColor: 'var(--bg-color)',
+            color: 'var(--text-color-primary)',
+            transition: 'background-color 0.2s linear, color 0.2s linear',
+          }}
+        >
+          <h3
+            className="text-xl font-semibold mb-2"
+            style={{ color: 'var(--text-color-primary)', transition: 'color 0.2s linear' }}
+          >
+            API token
+          </h3>
+
+          <div className="flex items-center space-x-3">
+            <input
+              type={showToken ? "text" : "password"}
+              readOnly
+              value={token}
+              className="flex-grow rounded border border-gray-300 dark:border-gray-600 px-4 py-2 text-sm font-mono bg-transparent text-gray-900 dark:text-gray-100 focus:outline-none"
+              style={{
+                userSelect: 'all',
+              }}
+            />
+            <button
+              onClick={() => setShowToken(!showToken)}
+              className="rounded bg-purple-600 hover:bg-purple-700 px-3 py-2 text-white text-sm font-semibold"
+            >
+              {showToken ? "Hide" : "Show"}
+            </button>
+            <button
+              onClick={copyToClipboard}
+              className={`rounded bg-gray-400 hover:bg-gray-500 px-3 py-2 text-gray-900 text-sm font-semibold ${pop ? 'pop-animation' : ''}`}
+            >
+              Copy
+            </button>
+          </div>
+        </div>
       </section>
+
+      {/* Add keyframes for fadeInOut and pop animations */}
+      <style jsx>{`
+        @keyframes fadeInOut {
+          0% {
+            opacity: 0;
+            transform: translateY(-10px);
+          }
+          10%, 90% {
+            opacity: 1;
+            transform: translateY(0);
+          }
+          100% {
+            opacity: 0;
+            transform: translateY(-10px);
+          }
+        }
+        @keyframes pop {
+          0% {
+            transform: scale(1);
+          }
+          50% {
+            transform: scale(1.3);
+          }
+          100% {
+            transform: scale(1);
+          }
+        }
+        .pop-animation {
+          animation: pop 0.3s ease forwards;
+        }
+      `}</style>
     </div>
   )
 }
