@@ -1,4 +1,3 @@
-// prisma/cards.prisma
 generator client {
   provider = "prisma-client-js"
   output   = "../generated/cards"
@@ -9,9 +8,8 @@ datasource db {
   url      = env("CARDS_DATABASE_URL")
 }
 
-// ---- Models ported from SQLAlchemy ----
 model Card {
-  id                     String    @id
+  id                     String          @id
   name                   String
   supertype              String?
   subtypes               String[]
@@ -26,33 +24,31 @@ model Card {
   rarity                 String?
   number                 String
   nationalPokedexNumbers Int[]
-  setId                  String?   @db.VarChar
+  setId                  String?
   retreatCost            String[]
   convertedRetreatCost   Int?
-  createdAt              DateTime?
-  updatedAt              DateTime?
-
-  abilities   Ability[]
-  attacks     Attack[]
-  weaknesses  Weakness[]
-  resistances Resistance[]
-  legalities  CardLegalities?
-  images      CardImages?
-  cardmarket  CardMarket?
-  tcgplayer   TcgPlayer?
-  set         CardSet?        @relation(fields: [setId], references: [id])
+  createdAt              DateTime        @default(now())
+  updatedAt              DateTime
+  abilities              Ability[]
+  attacks                Attack[]
+  set                    CardSet?        @relation(fields: [setId], references: [id])
+  images                 CardImages?
+  legalities             CardLegalities?
+  cardmarket             CardMarket?
+  resistances            Resistance[]
+  tcgplayer              TcgPlayer?
+  weaknesses             Weakness[]
 
   @@map("Card")
 }
 
 model Ability {
-  id     String  @id
+  id     String @id
   cardId String
-  name   String?
-  text   String?
-  type   String?
-
-  card Card @relation(fields: [cardId], references: [id])
+  name   String
+  text   String
+  type   String
+  card   Card   @relation(fields: [cardId], references: [id])
 
   @@map("Ability")
 }
@@ -60,35 +56,32 @@ model Ability {
 model Attack {
   id                  String   @id
   cardId              String
-  name                String?
+  name                String
   cost                String[]
-  convertedEnergyCost Int?
+  convertedEnergyCost Int
   damage              String?
   text                String?
-
-  card Card @relation(fields: [cardId], references: [id])
+  card                Card     @relation(fields: [cardId], references: [id])
 
   @@map("Attack")
 }
 
 model Weakness {
-  id     String  @id
+  id     String @id
   cardId String
-  type   String?
-  value  String?
-
-  card Card @relation(fields: [cardId], references: [id])
+  type   String
+  value  String
+  card   Card   @relation(fields: [cardId], references: [id])
 
   @@map("Weakness")
 }
 
 model Resistance {
-  id     String  @id
+  id     String @id
   cardId String
-  type   String?
-  value  String?
-
-  card Card @relation(fields: [cardId], references: [id])
+  type   String
+  value  String
+  card   Card   @relation(fields: [cardId], references: [id])
 
   @@map("Resistance")
 }
@@ -99,8 +92,7 @@ model CardLegalities {
   unlimited String?
   standard  String?
   expanded  String?
-
-  card Card @relation(fields: [cardId], references: [id])
+  card      Card    @relation(fields: [cardId], references: [id])
 
   @@map("CardLegalities")
 }
@@ -110,8 +102,7 @@ model CardImages {
   cardId String  @unique
   small  String?
   large  String?
-
-  card Card @relation(fields: [cardId], references: [id])
+  card   Card    @relation(fields: [cardId], references: [id])
 
   @@map("CardImages")
 }
@@ -136,14 +127,13 @@ model CardMarket {
   reverseHoloAvg1  Float?
   reverseHoloAvg7  Float?
   reverseHoloAvg30 Float?
-
-  card Card @relation(fields: [cardId], references: [id])
+  card             Card      @relation(fields: [cardId], references: [id])
 
   @@map("CardMarket")
 }
 
 model TcgPlayerPrices {
-  id                       String @id
+  id                       String     @id
   normalLow                Float?
   normalMid                Float?
   normalHigh               Float?
@@ -159,29 +149,27 @@ model TcgPlayerPrices {
   reverseHolofoilHigh      Float?
   reverseHolofoilMarket    Float?
   reverseHolofoilDirectLow Float?
-
-  tcgplayer TcgPlayer?
+  tcgplayer                TcgPlayer?
 
   @@map("TcgPlayerPrices")
 }
 
 model TcgPlayer {
-  id        String    @id
-  cardId    String    @unique
+  id        String           @id
+  cardId    String           @unique
   url       String?
   updatedAt DateTime?
-  pricesId  String    @unique
-
-  card   Card            @relation(fields: [cardId], references: [id])
-  prices TcgPlayerPrices @relation(fields: [pricesId], references: [id])
+  pricesId  String?          @unique
+  card      Card             @relation(fields: [cardId], references: [id])
+  prices    TcgPlayerPrices? @relation(fields: [pricesId], references: [id])
 
   @@map("TcgPlayer")
 }
 
 model CardSet {
-  id           String    @id
-  name         String?
-  series       String?
+  id           String         @id
+  name         String
+  series       String
   printedTotal Int?
   total        Int?
   ptcgoCode    String?
@@ -189,9 +177,8 @@ model CardSet {
   updatedAt    DateTime?
   symbol       String?
   logo         String?
-
-  cards      Card[]
-  legalities SetLegalities?
+  cards        Card[]
+  legalities   SetLegalities?
 
   @@map("CardSet")
 }
@@ -202,17 +189,16 @@ model SetLegalities {
   unlimited String?
   standard  String?
   expanded  String?
-
-  set CardSet @relation(fields: [setId], references: [id])
+  set       CardSet @relation(fields: [setId], references: [id])
 
   @@map("SetLegalities")
 }
 
 model ImportMetadata {
-  id           String    @id
-  totalCount   Int?
-  importedAt   DateTime?
-  isFullImport Int?
+  id           String   @id
+  totalCount   Int
+  importedAt   DateTime @default(now())
+  isFullImport Boolean  @default(false)
 
   @@map("ImportMetadata")
 }

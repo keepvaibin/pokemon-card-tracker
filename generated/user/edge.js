@@ -131,7 +131,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "C:\\Users\\vaibh\\Documents\\pokemon-card-tracker\\generated\\user",
+      "value": "C:\\Users\\vaibshuk\\Documents\\pokemon-card-tracker\\generated\\user",
       "fromEnvVar": null
     },
     "config": {
@@ -145,7 +145,7 @@ const config = {
       }
     ],
     "previewFeatures": [],
-    "sourceFilePath": "C:\\Users\\vaibh\\Documents\\pokemon-card-tracker\\prisma\\schema.prisma",
+    "sourceFilePath": "C:\\Users\\vaibshuk\\Documents\\pokemon-card-tracker\\prisma\\schema.prisma",
     "isCustomOutput": true
   },
   "relativeEnvPaths": {

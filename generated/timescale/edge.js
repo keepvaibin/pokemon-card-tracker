@@ -129,7 +129,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "C:\\Users\\vaibh\\Documents\\pokemon-card-tracker\\generated\\timescale",
+      "value": "C:\\Users\\vaibshuk\\Documents\\pokemon-card-tracker\\generated\\timescale",
       "fromEnvVar": null
     },
     "config": {
@@ -143,11 +143,11 @@ const config = {
       }
     ],
     "previewFeatures": [],
-    "sourceFilePath": "C:\\Users\\vaibh\\Documents\\pokemon-card-tracker\\prisma\\schema.timescale.prisma",
+    "sourceFilePath": "C:\\Users\\vaibshuk\\Documents\\pokemon-card-tracker\\prisma\\schema.timescale.prisma",
     "isCustomOutput": true
   },
   "relativeEnvPaths": {
-    "rootEnvPath": "../../.env",
+    "rootEnvPath": null,
     "schemaEnvPath": "../../.env"
   },
   "relativePath": "../../prisma",
@@ -166,13 +166,13 @@ const config = {
       }
     }
   },
-  "inlineSchema": "// prisma/timescale.prisma\ngenerator client {\n  provider = \"prisma-client-js\"\n  output   = \"../generated/timescale\"\n}\n\ndatasource db {\n  provider = \"postgresql\"\n  url      = env(\"TIMESCALE_URL\")\n}\n\n// Timeseries table (TimescaleDB enabled Postgres)\nmodel PriceHistory {\n  cardId           String\n  time             DateTime\n  averageSellPrice Float?\n  source           String?\n\n  @@id([cardId, time])\n  @@map(\"PriceHistory\")\n}\n",
-  "inlineSchemaHash": "51bb4ce9817b020d08bca0ddffaaed48437e610af1199c56b7f773248002ea44",
+  "inlineSchema": "generator client {\n  provider = \"prisma-client-js\"\n  output   = \"../generated/timescale\"\n}\n\ndatasource db {\n  provider = \"postgresql\"\n  url      = env(\"TIMESCALE_URL\")\n}\n\nmodel PriceHistory {\n  cardId           String\n  time             DateTime @default(now()) @db.Timestamptz(6)\n  averageSellPrice Float?\n  source           String?\n\n  @@id([cardId, time])\n  @@index([time(sort: Desc)])\n  @@index([cardId, time(sort: Desc)], map: \"price_history_card_time_desc_idx\")\n  @@index([time(sort: Desc)], map: \"price_history_time_desc_idx\")\n  @@map(\"PriceHistory\")\n}\n\nmodel price_history_3d {\n  cardId     String\n  bucket     DateTime @db.Timestamptz(6)\n  last_price Float?\n\n  @@id([cardId, bucket])\n  @@index([bucket], map: \"ph3d_bucket_idx\")\n  @@ignore\n}\n\nmodel price_history_6m {\n  cardId     String\n  bucket     DateTime @db.Timestamptz(6)\n  last_price Float?\n\n  @@id([cardId, bucket])\n  @@index([bucket], map: \"ph6m_bucket_idx\")\n  @@ignore\n}\n\nmodel price_history_daily {\n  cardId     String\n  bucket     DateTime @db.Timestamptz(6)\n  last_price Float?\n\n  @@id([cardId, bucket])\n  @@index([bucket], map: \"phd_bucket_idx\")\n  @@ignore\n}\n\nmodel price_history_monthly {\n  cardId     String\n  bucket     DateTime @db.Timestamptz(6)\n  last_price Float?\n\n  @@id([cardId, bucket])\n  @@index([bucket], map: \"phm_bucket_idx\")\n  @@ignore\n}\n",
+  "inlineSchemaHash": "fe748fd61b08d6496fa4675a33135bfcd8e271fe02987b214b96e1f64dbf0349",
   "copyEngine": true
 }
 config.dirname = '/'
 
-config.runtimeDataModel = JSON.parse("{\"models\":{\"PriceHistory\":{\"dbName\":\"PriceHistory\",\"schema\":null,\"fields\":[{\"name\":\"cardId\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"String\",\"nativeType\":null,\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"time\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"DateTime\",\"nativeType\":null,\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"averageSellPrice\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":false,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"Float\",\"nativeType\":null,\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"source\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":false,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"String\",\"nativeType\":null,\"isGenerated\":false,\"isUpdatedAt\":false}],\"primaryKey\":{\"name\":null,\"fields\":[\"cardId\",\"time\"]},\"uniqueFields\":[],\"uniqueIndexes\":[],\"isGenerated\":false}},\"enums\":{},\"types\":{}}")
+config.runtimeDataModel = JSON.parse("{\"models\":{\"PriceHistory\":{\"dbName\":\"PriceHistory\",\"schema\":null,\"fields\":[{\"name\":\"cardId\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"String\",\"nativeType\":null,\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"time\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":true,\"type\":\"DateTime\",\"nativeType\":[\"Timestamptz\",[\"6\"]],\"default\":{\"name\":\"now\",\"args\":[]},\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"averageSellPrice\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":false,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"Float\",\"nativeType\":null,\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"source\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":false,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"String\",\"nativeType\":null,\"isGenerated\":false,\"isUpdatedAt\":false}],\"primaryKey\":{\"name\":null,\"fields\":[\"cardId\",\"time\"]},\"uniqueFields\":[],\"uniqueIndexes\":[],\"isGenerated\":false}},\"enums\":{},\"types\":{}}")
 defineDmmfProperty(exports.Prisma, config.runtimeDataModel)
 config.engineWasm = undefined
 config.compilerWasm = undefined

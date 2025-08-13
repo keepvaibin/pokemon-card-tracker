@@ -7,10 +7,11 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "prisma:generate:user": "prisma generate --schema=prisma/schema.prisma",
-    "prisma:generate:cards": "prisma generate --schema=prisma/schema.cards.prisma",
-    "prisma:generate:timescale": "prisma generate --schema=prisma/schema.timescale.prisma",
-    "prisma:generate": "npm run prisma:generate:user && npm run prisma:generate:cards && npm run prisma:generate:timescale",
+    "prisma:generate:user": "prisma generate --schema=prisma/users/schema.prisma",
+    "prisma:generate:cards": "prisma generate --schema=prisma/cards/schema.prisma",
+    "prisma:generate:timescale": "prisma generate --schema=prisma/timescale/schema.prisma",
+    "prisma:generate": "prisma generate --schema=prisma/timescale/schema.prisma && prisma generate --schema=prisma/cards/schema.prisma && prisma generate --schema=prisma/users/schema.prisma",
+    "prisma:deploy": "prisma migrate deploy --schema=prisma/timescale/schema.prisma && prisma migrate deploy --schema=prisma/cards/schema.prisma && prisma migrate deploy --schema=prisma/users/schema.prisma",
     "postinstall": "npm run prisma:generate"
   },
   "dependencies": {

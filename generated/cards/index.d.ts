@@ -1976,15 +1976,15 @@ export namespace Prisma {
   export type CardCountOutputType = {
     abilities: number
     attacks: number
-    weaknesses: number
     resistances: number
+    weaknesses: number
   }
 
   export type CardCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     abilities?: boolean | CardCountOutputTypeCountAbilitiesArgs
     attacks?: boolean | CardCountOutputTypeCountAttacksArgs
-    weaknesses?: boolean | CardCountOutputTypeCountWeaknessesArgs
     resistances?: boolean | CardCountOutputTypeCountResistancesArgs
+    weaknesses?: boolean | CardCountOutputTypeCountWeaknessesArgs
   }
 
   // Custom InputTypes
@@ -2015,15 +2015,15 @@ export namespace Prisma {
   /**
    * CardCountOutputType without action
    */
-  export type CardCountOutputTypeCountWeaknessesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: WeaknessWhereInput
+  export type CardCountOutputTypeCountResistancesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ResistanceWhereInput
   }
 
   /**
    * CardCountOutputType without action
    */
-  export type CardCountOutputTypeCountResistancesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: ResistanceWhereInput
+  export type CardCountOutputTypeCountWeaknessesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: WeaknessWhereInput
   }
 
 
@@ -2316,8 +2316,8 @@ export namespace Prisma {
     setId: string | null
     retreatCost: string[]
     convertedRetreatCost: number | null
-    createdAt: Date | null
-    updatedAt: Date | null
+    createdAt: Date
+    updatedAt: Date
     _count: CardCountAggregateOutputType | null
     _avg: CardAvgAggregateOutputType | null
     _sum: CardSumAggregateOutputType | null
@@ -2362,13 +2362,13 @@ export namespace Prisma {
     updatedAt?: boolean
     abilities?: boolean | Card$abilitiesArgs<ExtArgs>
     attacks?: boolean | Card$attacksArgs<ExtArgs>
-    weaknesses?: boolean | Card$weaknessesArgs<ExtArgs>
-    resistances?: boolean | Card$resistancesArgs<ExtArgs>
-    legalities?: boolean | Card$legalitiesArgs<ExtArgs>
-    images?: boolean | Card$imagesArgs<ExtArgs>
-    cardmarket?: boolean | Card$cardmarketArgs<ExtArgs>
-    tcgplayer?: boolean | Card$tcgplayerArgs<ExtArgs>
     set?: boolean | Card$setArgs<ExtArgs>
+    images?: boolean | Card$imagesArgs<ExtArgs>
+    legalities?: boolean | Card$legalitiesArgs<ExtArgs>
+    cardmarket?: boolean | Card$cardmarketArgs<ExtArgs>
+    resistances?: boolean | Card$resistancesArgs<ExtArgs>
+    tcgplayer?: boolean | Card$tcgplayerArgs<ExtArgs>
+    weaknesses?: boolean | Card$weaknessesArgs<ExtArgs>
     _count?: boolean | CardCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["card"]>
 
@@ -2447,13 +2447,13 @@ export namespace Prisma {
   export type CardInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     abilities?: boolean | Card$abilitiesArgs<ExtArgs>
     attacks?: boolean | Card$attacksArgs<ExtArgs>
-    weaknesses?: boolean | Card$weaknessesArgs<ExtArgs>
-    resistances?: boolean | Card$resistancesArgs<ExtArgs>
-    legalities?: boolean | Card$legalitiesArgs<ExtArgs>
-    images?: boolean | Card$imagesArgs<ExtArgs>
-    cardmarket?: boolean | Card$cardmarketArgs<ExtArgs>
-    tcgplayer?: boolean | Card$tcgplayerArgs<ExtArgs>
     set?: boolean | Card$setArgs<ExtArgs>
+    images?: boolean | Card$imagesArgs<ExtArgs>
+    legalities?: boolean | Card$legalitiesArgs<ExtArgs>
+    cardmarket?: boolean | Card$cardmarketArgs<ExtArgs>
+    resistances?: boolean | Card$resistancesArgs<ExtArgs>
+    tcgplayer?: boolean | Card$tcgplayerArgs<ExtArgs>
+    weaknesses?: boolean | Card$weaknessesArgs<ExtArgs>
     _count?: boolean | CardCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type CardIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -2468,13 +2468,13 @@ export namespace Prisma {
     objects: {
       abilities: Prisma.$AbilityPayload<ExtArgs>[]
       attacks: Prisma.$AttackPayload<ExtArgs>[]
-      weaknesses: Prisma.$WeaknessPayload<ExtArgs>[]
-      resistances: Prisma.$ResistancePayload<ExtArgs>[]
-      legalities: Prisma.$CardLegalitiesPayload<ExtArgs> | null
-      images: Prisma.$CardImagesPayload<ExtArgs> | null
-      cardmarket: Prisma.$CardMarketPayload<ExtArgs> | null
-      tcgplayer: Prisma.$TcgPlayerPayload<ExtArgs> | null
       set: Prisma.$CardSetPayload<ExtArgs> | null
+      images: Prisma.$CardImagesPayload<ExtArgs> | null
+      legalities: Prisma.$CardLegalitiesPayload<ExtArgs> | null
+      cardmarket: Prisma.$CardMarketPayload<ExtArgs> | null
+      resistances: Prisma.$ResistancePayload<ExtArgs>[]
+      tcgplayer: Prisma.$TcgPlayerPayload<ExtArgs> | null
+      weaknesses: Prisma.$WeaknessPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -2495,8 +2495,8 @@ export namespace Prisma {
       setId: string | null
       retreatCost: string[]
       convertedRetreatCost: number | null
-      createdAt: Date | null
-      updatedAt: Date | null
+      createdAt: Date
+      updatedAt: Date
     }, ExtArgs["result"]["card"]>
     composites: {}
   }
@@ -2893,13 +2893,13 @@ export namespace Prisma {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     abilities<T extends Card$abilitiesArgs<ExtArgs> = {}>(args?: Subset<T, Card$abilitiesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AbilityPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     attacks<T extends Card$attacksArgs<ExtArgs> = {}>(args?: Subset<T, Card$attacksArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AttackPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    weaknesses<T extends Card$weaknessesArgs<ExtArgs> = {}>(args?: Subset<T, Card$weaknessesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$WeaknessPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    resistances<T extends Card$resistancesArgs<ExtArgs> = {}>(args?: Subset<T, Card$resistancesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ResistancePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    legalities<T extends Card$legalitiesArgs<ExtArgs> = {}>(args?: Subset<T, Card$legalitiesArgs<ExtArgs>>): Prisma__CardLegalitiesClient<$Result.GetResult<Prisma.$CardLegalitiesPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-    images<T extends Card$imagesArgs<ExtArgs> = {}>(args?: Subset<T, Card$imagesArgs<ExtArgs>>): Prisma__CardImagesClient<$Result.GetResult<Prisma.$CardImagesPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-    cardmarket<T extends Card$cardmarketArgs<ExtArgs> = {}>(args?: Subset<T, Card$cardmarketArgs<ExtArgs>>): Prisma__CardMarketClient<$Result.GetResult<Prisma.$CardMarketPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-    tcgplayer<T extends Card$tcgplayerArgs<ExtArgs> = {}>(args?: Subset<T, Card$tcgplayerArgs<ExtArgs>>): Prisma__TcgPlayerClient<$Result.GetResult<Prisma.$TcgPlayerPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     set<T extends Card$setArgs<ExtArgs> = {}>(args?: Subset<T, Card$setArgs<ExtArgs>>): Prisma__CardSetClient<$Result.GetResult<Prisma.$CardSetPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    images<T extends Card$imagesArgs<ExtArgs> = {}>(args?: Subset<T, Card$imagesArgs<ExtArgs>>): Prisma__CardImagesClient<$Result.GetResult<Prisma.$CardImagesPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    legalities<T extends Card$legalitiesArgs<ExtArgs> = {}>(args?: Subset<T, Card$legalitiesArgs<ExtArgs>>): Prisma__CardLegalitiesClient<$Result.GetResult<Prisma.$CardLegalitiesPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    cardmarket<T extends Card$cardmarketArgs<ExtArgs> = {}>(args?: Subset<T, Card$cardmarketArgs<ExtArgs>>): Prisma__CardMarketClient<$Result.GetResult<Prisma.$CardMarketPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    resistances<T extends Card$resistancesArgs<ExtArgs> = {}>(args?: Subset<T, Card$resistancesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ResistancePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    tcgplayer<T extends Card$tcgplayerArgs<ExtArgs> = {}>(args?: Subset<T, Card$tcgplayerArgs<ExtArgs>>): Prisma__TcgPlayerClient<$Result.GetResult<Prisma.$TcgPlayerPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    weaknesses<T extends Card$weaknessesArgs<ExtArgs> = {}>(args?: Subset<T, Card$weaknessesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$WeaknessPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -3393,27 +3393,79 @@ export namespace Prisma {
   }
 
   /**
-   * Card.weaknesses
+   * Card.set
    */
-  export type Card$weaknessesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type Card$setArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Weakness
+     * Select specific fields to fetch from the CardSet
      */
-    select?: WeaknessSelect<ExtArgs> | null
+    select?: CardSetSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Weakness
+     * Omit specific fields from the CardSet
      */
-    omit?: WeaknessOmit<ExtArgs> | null
+    omit?: CardSetOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: WeaknessInclude<ExtArgs> | null
-    where?: WeaknessWhereInput
-    orderBy?: WeaknessOrderByWithRelationInput | WeaknessOrderByWithRelationInput[]
-    cursor?: WeaknessWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: WeaknessScalarFieldEnum | WeaknessScalarFieldEnum[]
+    include?: CardSetInclude<ExtArgs> | null
+    where?: CardSetWhereInput
+  }
+
+  /**
+   * Card.images
+   */
+  export type Card$imagesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CardImages
+     */
+    select?: CardImagesSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CardImages
+     */
+    omit?: CardImagesOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CardImagesInclude<ExtArgs> | null
+    where?: CardImagesWhereInput
+  }
+
+  /**
+   * Card.legalities
+   */
+  export type Card$legalitiesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CardLegalities
+     */
+    select?: CardLegalitiesSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CardLegalities
+     */
+    omit?: CardLegalitiesOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CardLegalitiesInclude<ExtArgs> | null
+    where?: CardLegalitiesWhereInput
+  }
+
+  /**
+   * Card.cardmarket
+   */
+  export type Card$cardmarketArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CardMarket
+     */
+    select?: CardMarketSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CardMarket
+     */
+    omit?: CardMarketOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CardMarketInclude<ExtArgs> | null
+    where?: CardMarketWhereInput
   }
 
   /**
@@ -3441,63 +3493,6 @@ export namespace Prisma {
   }
 
   /**
-   * Card.legalities
-   */
-  export type Card$legalitiesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the CardLegalities
-     */
-    select?: CardLegalitiesSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the CardLegalities
-     */
-    omit?: CardLegalitiesOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: CardLegalitiesInclude<ExtArgs> | null
-    where?: CardLegalitiesWhereInput
-  }
-
-  /**
-   * Card.images
-   */
-  export type Card$imagesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the CardImages
-     */
-    select?: CardImagesSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the CardImages
-     */
-    omit?: CardImagesOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: CardImagesInclude<ExtArgs> | null
-    where?: CardImagesWhereInput
-  }
-
-  /**
-   * Card.cardmarket
-   */
-  export type Card$cardmarketArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the CardMarket
-     */
-    select?: CardMarketSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the CardMarket
-     */
-    omit?: CardMarketOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: CardMarketInclude<ExtArgs> | null
-    where?: CardMarketWhereInput
-  }
-
-  /**
    * Card.tcgplayer
    */
   export type Card$tcgplayerArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -3517,22 +3512,27 @@ export namespace Prisma {
   }
 
   /**
-   * Card.set
+   * Card.weaknesses
    */
-  export type Card$setArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type Card$weaknessesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the CardSet
+     * Select specific fields to fetch from the Weakness
      */
-    select?: CardSetSelect<ExtArgs> | null
+    select?: WeaknessSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the CardSet
+     * Omit specific fields from the Weakness
      */
-    omit?: CardSetOmit<ExtArgs> | null
+    omit?: WeaknessOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: CardSetInclude<ExtArgs> | null
-    where?: CardSetWhereInput
+    include?: WeaknessInclude<ExtArgs> | null
+    where?: WeaknessWhereInput
+    orderBy?: WeaknessOrderByWithRelationInput | WeaknessOrderByWithRelationInput[]
+    cursor?: WeaknessWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: WeaknessScalarFieldEnum | WeaknessScalarFieldEnum[]
   }
 
   /**
@@ -3690,9 +3690,9 @@ export namespace Prisma {
   export type AbilityGroupByOutputType = {
     id: string
     cardId: string
-    name: string | null
-    text: string | null
-    type: string | null
+    name: string
+    text: string
+    type: string
     _count: AbilityCountAggregateOutputType | null
     _min: AbilityMinAggregateOutputType | null
     _max: AbilityMaxAggregateOutputType | null
@@ -3766,9 +3766,9 @@ export namespace Prisma {
     scalars: $Extensions.GetPayloadResult<{
       id: string
       cardId: string
-      name: string | null
-      text: string | null
-      type: string | null
+      name: string
+      text: string
+      type: string
     }, ExtArgs["result"]["ability"]>
     composites: {}
   }
@@ -4788,9 +4788,9 @@ export namespace Prisma {
   export type AttackGroupByOutputType = {
     id: string
     cardId: string
-    name: string | null
+    name: string
     cost: string[]
-    convertedEnergyCost: number | null
+    convertedEnergyCost: number
     damage: string | null
     text: string | null
     _count: AttackCountAggregateOutputType | null
@@ -4876,9 +4876,9 @@ export namespace Prisma {
     scalars: $Extensions.GetPayloadResult<{
       id: string
       cardId: string
-      name: string | null
+      name: string
       cost: string[]
-      convertedEnergyCost: number | null
+      convertedEnergyCost: number
       damage: string | null
       text: string | null
     }, ExtArgs["result"]["attack"]>
@@ -5856,8 +5856,8 @@ export namespace Prisma {
   export type WeaknessGroupByOutputType = {
     id: string
     cardId: string
-    type: string | null
-    value: string | null
+    type: string
+    value: string
     _count: WeaknessCountAggregateOutputType | null
     _min: WeaknessMinAggregateOutputType | null
     _max: WeaknessMaxAggregateOutputType | null
@@ -5927,8 +5927,8 @@ export namespace Prisma {
     scalars: $Extensions.GetPayloadResult<{
       id: string
       cardId: string
-      type: string | null
-      value: string | null
+      type: string
+      value: string
     }, ExtArgs["result"]["weakness"]>
     composites: {}
   }
@@ -6901,8 +6901,8 @@ export namespace Prisma {
   export type ResistanceGroupByOutputType = {
     id: string
     cardId: string
-    type: string | null
-    value: string | null
+    type: string
+    value: string
     _count: ResistanceCountAggregateOutputType | null
     _min: ResistanceMinAggregateOutputType | null
     _max: ResistanceMaxAggregateOutputType | null
@@ -6972,8 +6972,8 @@ export namespace Prisma {
     scalars: $Extensions.GetPayloadResult<{
       id: string
       cardId: string
-      type: string | null
-      value: string | null
+      type: string
+      value: string
     }, ExtArgs["result"]["resistance"]>
     composites: {}
   }
@@ -12683,7 +12683,7 @@ export namespace Prisma {
     cardId: string
     url: string | null
     updatedAt: Date | null
-    pricesId: string
+    pricesId: string | null
     _count: TcgPlayerCountAggregateOutputType | null
     _min: TcgPlayerMinAggregateOutputType | null
     _max: TcgPlayerMaxAggregateOutputType | null
@@ -12710,7 +12710,7 @@ export namespace Prisma {
     updatedAt?: boolean
     pricesId?: boolean
     card?: boolean | CardDefaultArgs<ExtArgs>
-    prices?: boolean | TcgPlayerPricesDefaultArgs<ExtArgs>
+    prices?: boolean | TcgPlayer$pricesArgs<ExtArgs>
   }, ExtArgs["result"]["tcgPlayer"]>
 
   export type TcgPlayerSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -12720,7 +12720,7 @@ export namespace Prisma {
     updatedAt?: boolean
     pricesId?: boolean
     card?: boolean | CardDefaultArgs<ExtArgs>
-    prices?: boolean | TcgPlayerPricesDefaultArgs<ExtArgs>
+    prices?: boolean | TcgPlayer$pricesArgs<ExtArgs>
   }, ExtArgs["result"]["tcgPlayer"]>
 
   export type TcgPlayerSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -12730,7 +12730,7 @@ export namespace Prisma {
     updatedAt?: boolean
     pricesId?: boolean
     card?: boolean | CardDefaultArgs<ExtArgs>
-    prices?: boolean | TcgPlayerPricesDefaultArgs<ExtArgs>
+    prices?: boolean | TcgPlayer$pricesArgs<ExtArgs>
   }, ExtArgs["result"]["tcgPlayer"]>
 
   export type TcgPlayerSelectScalar = {
@@ -12744,29 +12744,29 @@ export namespace Prisma {
   export type TcgPlayerOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "cardId" | "url" | "updatedAt" | "pricesId", ExtArgs["result"]["tcgPlayer"]>
   export type TcgPlayerInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     card?: boolean | CardDefaultArgs<ExtArgs>
-    prices?: boolean | TcgPlayerPricesDefaultArgs<ExtArgs>
+    prices?: boolean | TcgPlayer$pricesArgs<ExtArgs>
   }
   export type TcgPlayerIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     card?: boolean | CardDefaultArgs<ExtArgs>
-    prices?: boolean | TcgPlayerPricesDefaultArgs<ExtArgs>
+    prices?: boolean | TcgPlayer$pricesArgs<ExtArgs>
   }
   export type TcgPlayerIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     card?: boolean | CardDefaultArgs<ExtArgs>
-    prices?: boolean | TcgPlayerPricesDefaultArgs<ExtArgs>
+    prices?: boolean | TcgPlayer$pricesArgs<ExtArgs>
   }
 
   export type $TcgPlayerPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "TcgPlayer"
     objects: {
       card: Prisma.$CardPayload<ExtArgs>
-      prices: Prisma.$TcgPlayerPricesPayload<ExtArgs>
+      prices: Prisma.$TcgPlayerPricesPayload<ExtArgs> | null
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
       cardId: string
       url: string | null
       updatedAt: Date | null
-      pricesId: string
+      pricesId: string | null
     }, ExtArgs["result"]["tcgPlayer"]>
     composites: {}
   }
@@ -13162,7 +13162,7 @@ export namespace Prisma {
   export interface Prisma__TcgPlayerClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     card<T extends CardDefaultArgs<ExtArgs> = {}>(args?: Subset<T, CardDefaultArgs<ExtArgs>>): Prisma__CardClient<$Result.GetResult<Prisma.$CardPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    prices<T extends TcgPlayerPricesDefaultArgs<ExtArgs> = {}>(args?: Subset<T, TcgPlayerPricesDefaultArgs<ExtArgs>>): Prisma__TcgPlayerPricesClient<$Result.GetResult<Prisma.$TcgPlayerPricesPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    prices<T extends TcgPlayer$pricesArgs<ExtArgs> = {}>(args?: Subset<T, TcgPlayer$pricesArgs<ExtArgs>>): Prisma__TcgPlayerPricesClient<$Result.GetResult<Prisma.$TcgPlayerPricesPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -13593,6 +13593,25 @@ export namespace Prisma {
   }
 
   /**
+   * TcgPlayer.prices
+   */
+  export type TcgPlayer$pricesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TcgPlayerPrices
+     */
+    select?: TcgPlayerPricesSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TcgPlayerPrices
+     */
+    omit?: TcgPlayerPricesOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TcgPlayerPricesInclude<ExtArgs> | null
+    where?: TcgPlayerPricesWhereInput
+  }
+
+  /**
    * TcgPlayer without action
    */
   export type TcgPlayerDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -13812,8 +13831,8 @@ export namespace Prisma {
 
   export type CardSetGroupByOutputType = {
     id: string
-    name: string | null
-    series: string | null
+    name: string
+    series: string
     printedTotal: number | null
     total: number | null
     ptcgoCode: string | null
@@ -13914,8 +13933,8 @@ export namespace Prisma {
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
-      name: string | null
-      series: string | null
+      name: string
+      series: string
       printedTotal: number | null
       total: number | null
       ptcgoCode: string | null
@@ -15879,26 +15898,24 @@ export namespace Prisma {
 
   export type ImportMetadataAvgAggregateOutputType = {
     totalCount: number | null
-    isFullImport: number | null
   }
 
   export type ImportMetadataSumAggregateOutputType = {
     totalCount: number | null
-    isFullImport: number | null
   }
 
   export type ImportMetadataMinAggregateOutputType = {
     id: string | null
     totalCount: number | null
     importedAt: Date | null
-    isFullImport: number | null
+    isFullImport: boolean | null
   }
 
   export type ImportMetadataMaxAggregateOutputType = {
     id: string | null
     totalCount: number | null
     importedAt: Date | null
-    isFullImport: number | null
+    isFullImport: boolean | null
   }
 
   export type ImportMetadataCountAggregateOutputType = {
@@ -15912,12 +15929,10 @@ export namespace Prisma {
 
   export type ImportMetadataAvgAggregateInputType = {
     totalCount?: true
-    isFullImport?: true
   }
 
   export type ImportMetadataSumAggregateInputType = {
     totalCount?: true
-    isFullImport?: true
   }
 
   export type ImportMetadataMinAggregateInputType = {
@@ -16030,9 +16045,9 @@ export namespace Prisma {
 
   export type ImportMetadataGroupByOutputType = {
     id: string
-    totalCount: number | null
-    importedAt: Date | null
-    isFullImport: number | null
+    totalCount: number
+    importedAt: Date
+    isFullImport: boolean
     _count: ImportMetadataCountAggregateOutputType | null
     _avg: ImportMetadataAvgAggregateOutputType | null
     _sum: ImportMetadataSumAggregateOutputType | null
@@ -16089,9 +16104,9 @@ export namespace Prisma {
     objects: {}
     scalars: $Extensions.GetPayloadResult<{
       id: string
-      totalCount: number | null
-      importedAt: Date | null
-      isFullImport: number | null
+      totalCount: number
+      importedAt: Date
+      isFullImport: boolean
     }, ExtArgs["result"]["importMetadata"]>
     composites: {}
   }
@@ -16518,7 +16533,7 @@ export namespace Prisma {
     readonly id: FieldRef<"ImportMetadata", 'String'>
     readonly totalCount: FieldRef<"ImportMetadata", 'Int'>
     readonly importedAt: FieldRef<"ImportMetadata", 'DateTime'>
-    readonly isFullImport: FieldRef<"ImportMetadata", 'Int'>
+    readonly isFullImport: FieldRef<"ImportMetadata", 'Boolean'>
   }
     
 
@@ -17168,6 +17183,13 @@ export namespace Prisma {
    */
   export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float[]'>
     
+
+
+  /**
+   * Reference to a field of type 'Boolean'
+   */
+  export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
+    
   /**
    * Deep Input Types
    */
@@ -17195,17 +17217,17 @@ export namespace Prisma {
     setId?: StringNullableFilter<"Card"> | string | null
     retreatCost?: StringNullableListFilter<"Card">
     convertedRetreatCost?: IntNullableFilter<"Card"> | number | null
-    createdAt?: DateTimeNullableFilter<"Card"> | Date | string | null
-    updatedAt?: DateTimeNullableFilter<"Card"> | Date | string | null
+    createdAt?: DateTimeFilter<"Card"> | Date | string
+    updatedAt?: DateTimeFilter<"Card"> | Date | string
     abilities?: AbilityListRelationFilter
     attacks?: AttackListRelationFilter
-    weaknesses?: WeaknessListRelationFilter
-    resistances?: ResistanceListRelationFilter
-    legalities?: XOR<CardLegalitiesNullableScalarRelationFilter, CardLegalitiesWhereInput> | null
-    images?: XOR<CardImagesNullableScalarRelationFilter, CardImagesWhereInput> | null
-    cardmarket?: XOR<CardMarketNullableScalarRelationFilter, CardMarketWhereInput> | null
-    tcgplayer?: XOR<TcgPlayerNullableScalarRelationFilter, TcgPlayerWhereInput> | null
     set?: XOR<CardSetNullableScalarRelationFilter, CardSetWhereInput> | null
+    images?: XOR<CardImagesNullableScalarRelationFilter, CardImagesWhereInput> | null
+    legalities?: XOR<CardLegalitiesNullableScalarRelationFilter, CardLegalitiesWhereInput> | null
+    cardmarket?: XOR<CardMarketNullableScalarRelationFilter, CardMarketWhereInput> | null
+    resistances?: ResistanceListRelationFilter
+    tcgplayer?: XOR<TcgPlayerNullableScalarRelationFilter, TcgPlayerWhereInput> | null
+    weaknesses?: WeaknessListRelationFilter
   }
 
   export type CardOrderByWithRelationInput = {
@@ -17227,17 +17249,17 @@ export namespace Prisma {
     setId?: SortOrderInput | SortOrder
     retreatCost?: SortOrder
     convertedRetreatCost?: SortOrderInput | SortOrder
-    createdAt?: SortOrderInput | SortOrder
-    updatedAt?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
     abilities?: AbilityOrderByRelationAggregateInput
     attacks?: AttackOrderByRelationAggregateInput
-    weaknesses?: WeaknessOrderByRelationAggregateInput
-    resistances?: ResistanceOrderByRelationAggregateInput
-    legalities?: CardLegalitiesOrderByWithRelationInput
-    images?: CardImagesOrderByWithRelationInput
-    cardmarket?: CardMarketOrderByWithRelationInput
-    tcgplayer?: TcgPlayerOrderByWithRelationInput
     set?: CardSetOrderByWithRelationInput
+    images?: CardImagesOrderByWithRelationInput
+    legalities?: CardLegalitiesOrderByWithRelationInput
+    cardmarket?: CardMarketOrderByWithRelationInput
+    resistances?: ResistanceOrderByRelationAggregateInput
+    tcgplayer?: TcgPlayerOrderByWithRelationInput
+    weaknesses?: WeaknessOrderByRelationAggregateInput
   }
 
   export type CardWhereUniqueInput = Prisma.AtLeast<{
@@ -17262,17 +17284,17 @@ export namespace Prisma {
     setId?: StringNullableFilter<"Card"> | string | null
     retreatCost?: StringNullableListFilter<"Card">
     convertedRetreatCost?: IntNullableFilter<"Card"> | number | null
-    createdAt?: DateTimeNullableFilter<"Card"> | Date | string | null
-    updatedAt?: DateTimeNullableFilter<"Card"> | Date | string | null
+    createdAt?: DateTimeFilter<"Card"> | Date | string
+    updatedAt?: DateTimeFilter<"Card"> | Date | string
     abilities?: AbilityListRelationFilter
     attacks?: AttackListRelationFilter
-    weaknesses?: WeaknessListRelationFilter
-    resistances?: ResistanceListRelationFilter
-    legalities?: XOR<CardLegalitiesNullableScalarRelationFilter, CardLegalitiesWhereInput> | null
-    images?: XOR<CardImagesNullableScalarRelationFilter, CardImagesWhereInput> | null
-    cardmarket?: XOR<CardMarketNullableScalarRelationFilter, CardMarketWhereInput> | null
-    tcgplayer?: XOR<TcgPlayerNullableScalarRelationFilter, TcgPlayerWhereInput> | null
     set?: XOR<CardSetNullableScalarRelationFilter, CardSetWhereInput> | null
+    images?: XOR<CardImagesNullableScalarRelationFilter, CardImagesWhereInput> | null
+    legalities?: XOR<CardLegalitiesNullableScalarRelationFilter, CardLegalitiesWhereInput> | null
+    cardmarket?: XOR<CardMarketNullableScalarRelationFilter, CardMarketWhereInput> | null
+    resistances?: ResistanceListRelationFilter
+    tcgplayer?: XOR<TcgPlayerNullableScalarRelationFilter, TcgPlayerWhereInput> | null
+    weaknesses?: WeaknessListRelationFilter
   }, "id">
 
   export type CardOrderByWithAggregationInput = {
@@ -17294,8 +17316,8 @@ export namespace Prisma {
     setId?: SortOrderInput | SortOrder
     retreatCost?: SortOrder
     convertedRetreatCost?: SortOrderInput | SortOrder
-    createdAt?: SortOrderInput | SortOrder
-    updatedAt?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
     _count?: CardCountOrderByAggregateInput
     _avg?: CardAvgOrderByAggregateInput
     _max?: CardMaxOrderByAggregateInput
@@ -17325,8 +17347,8 @@ export namespace Prisma {
     setId?: StringNullableWithAggregatesFilter<"Card"> | string | null
     retreatCost?: StringNullableListFilter<"Card">
     convertedRetreatCost?: IntNullableWithAggregatesFilter<"Card"> | number | null
-    createdAt?: DateTimeNullableWithAggregatesFilter<"Card"> | Date | string | null
-    updatedAt?: DateTimeNullableWithAggregatesFilter<"Card"> | Date | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"Card"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"Card"> | Date | string
   }
 
   export type AbilityWhereInput = {
@@ -17335,18 +17357,18 @@ export namespace Prisma {
     NOT?: AbilityWhereInput | AbilityWhereInput[]
     id?: StringFilter<"Ability"> | string
     cardId?: StringFilter<"Ability"> | string
-    name?: StringNullableFilter<"Ability"> | string | null
-    text?: StringNullableFilter<"Ability"> | string | null
-    type?: StringNullableFilter<"Ability"> | string | null
+    name?: StringFilter<"Ability"> | string
+    text?: StringFilter<"Ability"> | string
+    type?: StringFilter<"Ability"> | string
     card?: XOR<CardScalarRelationFilter, CardWhereInput>
   }
 
   export type AbilityOrderByWithRelationInput = {
     id?: SortOrder
     cardId?: SortOrder
-    name?: SortOrderInput | SortOrder
-    text?: SortOrderInput | SortOrder
-    type?: SortOrderInput | SortOrder
+    name?: SortOrder
+    text?: SortOrder
+    type?: SortOrder
     card?: CardOrderByWithRelationInput
   }
 
@@ -17356,18 +17378,18 @@ export namespace Prisma {
     OR?: AbilityWhereInput[]
     NOT?: AbilityWhereInput | AbilityWhereInput[]
     cardId?: StringFilter<"Ability"> | string
-    name?: StringNullableFilter<"Ability"> | string | null
-    text?: StringNullableFilter<"Ability"> | string | null
-    type?: StringNullableFilter<"Ability"> | string | null
+    name?: StringFilter<"Ability"> | string
+    text?: StringFilter<"Ability"> | string
+    type?: StringFilter<"Ability"> | string
     card?: XOR<CardScalarRelationFilter, CardWhereInput>
   }, "id">
 
   export type AbilityOrderByWithAggregationInput = {
     id?: SortOrder
     cardId?: SortOrder
-    name?: SortOrderInput | SortOrder
-    text?: SortOrderInput | SortOrder
-    type?: SortOrderInput | SortOrder
+    name?: SortOrder
+    text?: SortOrder
+    type?: SortOrder
     _count?: AbilityCountOrderByAggregateInput
     _max?: AbilityMaxOrderByAggregateInput
     _min?: AbilityMinOrderByAggregateInput
@@ -17379,9 +17401,9 @@ export namespace Prisma {
     NOT?: AbilityScalarWhereWithAggregatesInput | AbilityScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"Ability"> | string
     cardId?: StringWithAggregatesFilter<"Ability"> | string
-    name?: StringNullableWithAggregatesFilter<"Ability"> | string | null
-    text?: StringNullableWithAggregatesFilter<"Ability"> | string | null
-    type?: StringNullableWithAggregatesFilter<"Ability"> | string | null
+    name?: StringWithAggregatesFilter<"Ability"> | string
+    text?: StringWithAggregatesFilter<"Ability"> | string
+    type?: StringWithAggregatesFilter<"Ability"> | string
   }
 
   export type AttackWhereInput = {
@@ -17390,9 +17412,9 @@ export namespace Prisma {
     NOT?: AttackWhereInput | AttackWhereInput[]
     id?: StringFilter<"Attack"> | string
     cardId?: StringFilter<"Attack"> | string
-    name?: StringNullableFilter<"Attack"> | string | null
+    name?: StringFilter<"Attack"> | string
     cost?: StringNullableListFilter<"Attack">
-    convertedEnergyCost?: IntNullableFilter<"Attack"> | number | null
+    convertedEnergyCost?: IntFilter<"Attack"> | number
     damage?: StringNullableFilter<"Attack"> | string | null
     text?: StringNullableFilter<"Attack"> | string | null
     card?: XOR<CardScalarRelationFilter, CardWhereInput>
@@ -17401,9 +17423,9 @@ export namespace Prisma {
   export type AttackOrderByWithRelationInput = {
     id?: SortOrder
     cardId?: SortOrder
-    name?: SortOrderInput | SortOrder
+    name?: SortOrder
     cost?: SortOrder
-    convertedEnergyCost?: SortOrderInput | SortOrder
+    convertedEnergyCost?: SortOrder
     damage?: SortOrderInput | SortOrder
     text?: SortOrderInput | SortOrder
     card?: CardOrderByWithRelationInput
@@ -17415,9 +17437,9 @@ export namespace Prisma {
     OR?: AttackWhereInput[]
     NOT?: AttackWhereInput | AttackWhereInput[]
     cardId?: StringFilter<"Attack"> | string
-    name?: StringNullableFilter<"Attack"> | string | null
+    name?: StringFilter<"Attack"> | string
     cost?: StringNullableListFilter<"Attack">
-    convertedEnergyCost?: IntNullableFilter<"Attack"> | number | null
+    convertedEnergyCost?: IntFilter<"Attack"> | number
     damage?: StringNullableFilter<"Attack"> | string | null
     text?: StringNullableFilter<"Attack"> | string | null
     card?: XOR<CardScalarRelationFilter, CardWhereInput>
@@ -17426,9 +17448,9 @@ export namespace Prisma {
   export type AttackOrderByWithAggregationInput = {
     id?: SortOrder
     cardId?: SortOrder
-    name?: SortOrderInput | SortOrder
+    name?: SortOrder
     cost?: SortOrder
-    convertedEnergyCost?: SortOrderInput | SortOrder
+    convertedEnergyCost?: SortOrder
     damage?: SortOrderInput | SortOrder
     text?: SortOrderInput | SortOrder
     _count?: AttackCountOrderByAggregateInput
@@ -17444,9 +17466,9 @@ export namespace Prisma {
     NOT?: AttackScalarWhereWithAggregatesInput | AttackScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"Attack"> | string
     cardId?: StringWithAggregatesFilter<"Attack"> | string
-    name?: StringNullableWithAggregatesFilter<"Attack"> | string | null
+    name?: StringWithAggregatesFilter<"Attack"> | string
     cost?: StringNullableListFilter<"Attack">
-    convertedEnergyCost?: IntNullableWithAggregatesFilter<"Attack"> | number | null
+    convertedEnergyCost?: IntWithAggregatesFilter<"Attack"> | number
     damage?: StringNullableWithAggregatesFilter<"Attack"> | string | null
     text?: StringNullableWithAggregatesFilter<"Attack"> | string | null
   }
@@ -17457,16 +17479,16 @@ export namespace Prisma {
     NOT?: WeaknessWhereInput | WeaknessWhereInput[]
     id?: StringFilter<"Weakness"> | string
     cardId?: StringFilter<"Weakness"> | string
-    type?: StringNullableFilter<"Weakness"> | string | null
-    value?: StringNullableFilter<"Weakness"> | string | null
+    type?: StringFilter<"Weakness"> | string
+    value?: StringFilter<"Weakness"> | string
     card?: XOR<CardScalarRelationFilter, CardWhereInput>
   }
 
   export type WeaknessOrderByWithRelationInput = {
     id?: SortOrder
     cardId?: SortOrder
-    type?: SortOrderInput | SortOrder
-    value?: SortOrderInput | SortOrder
+    type?: SortOrder
+    value?: SortOrder
     card?: CardOrderByWithRelationInput
   }
 
@@ -17476,16 +17498,16 @@ export namespace Prisma {
     OR?: WeaknessWhereInput[]
     NOT?: WeaknessWhereInput | WeaknessWhereInput[]
     cardId?: StringFilter<"Weakness"> | string
-    type?: StringNullableFilter<"Weakness"> | string | null
-    value?: StringNullableFilter<"Weakness"> | string | null
+    type?: StringFilter<"Weakness"> | string
+    value?: StringFilter<"Weakness"> | string
     card?: XOR<CardScalarRelationFilter, CardWhereInput>
   }, "id">
 
   export type WeaknessOrderByWithAggregationInput = {
     id?: SortOrder
     cardId?: SortOrder
-    type?: SortOrderInput | SortOrder
-    value?: SortOrderInput | SortOrder
+    type?: SortOrder
+    value?: SortOrder
     _count?: WeaknessCountOrderByAggregateInput
     _max?: WeaknessMaxOrderByAggregateInput
     _min?: WeaknessMinOrderByAggregateInput
@@ -17497,8 +17519,8 @@ export namespace Prisma {
     NOT?: WeaknessScalarWhereWithAggregatesInput | WeaknessScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"Weakness"> | string
     cardId?: StringWithAggregatesFilter<"Weakness"> | string
-    type?: StringNullableWithAggregatesFilter<"Weakness"> | string | null
-    value?: StringNullableWithAggregatesFilter<"Weakness"> | string | null
+    type?: StringWithAggregatesFilter<"Weakness"> | string
+    value?: StringWithAggregatesFilter<"Weakness"> | string
   }
 
   export type ResistanceWhereInput = {
@@ -17507,16 +17529,16 @@ export namespace Prisma {
     NOT?: ResistanceWhereInput | ResistanceWhereInput[]
     id?: StringFilter<"Resistance"> | string
     cardId?: StringFilter<"Resistance"> | string
-    type?: StringNullableFilter<"Resistance"> | string | null
-    value?: StringNullableFilter<"Resistance"> | string | null
+    type?: StringFilter<"Resistance"> | string
+    value?: StringFilter<"Resistance"> | string
     card?: XOR<CardScalarRelationFilter, CardWhereInput>
   }
 
   export type ResistanceOrderByWithRelationInput = {
     id?: SortOrder
     cardId?: SortOrder
-    type?: SortOrderInput | SortOrder
-    value?: SortOrderInput | SortOrder
+    type?: SortOrder
+    value?: SortOrder
     card?: CardOrderByWithRelationInput
   }
 
@@ -17526,16 +17548,16 @@ export namespace Prisma {
     OR?: ResistanceWhereInput[]
     NOT?: ResistanceWhereInput | ResistanceWhereInput[]
     cardId?: StringFilter<"Resistance"> | string
-    type?: StringNullableFilter<"Resistance"> | string | null
-    value?: StringNullableFilter<"Resistance"> | string | null
+    type?: StringFilter<"Resistance"> | string
+    value?: StringFilter<"Resistance"> | string
     card?: XOR<CardScalarRelationFilter, CardWhereInput>
   }, "id">
 
   export type ResistanceOrderByWithAggregationInput = {
     id?: SortOrder
     cardId?: SortOrder
-    type?: SortOrderInput | SortOrder
-    value?: SortOrderInput | SortOrder
+    type?: SortOrder
+    value?: SortOrder
     _count?: ResistanceCountOrderByAggregateInput
     _max?: ResistanceMaxOrderByAggregateInput
     _min?: ResistanceMinOrderByAggregateInput
@@ -17547,8 +17569,8 @@ export namespace Prisma {
     NOT?: ResistanceScalarWhereWithAggregatesInput | ResistanceScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"Resistance"> | string
     cardId?: StringWithAggregatesFilter<"Resistance"> | string
-    type?: StringNullableWithAggregatesFilter<"Resistance"> | string | null
-    value?: StringNullableWithAggregatesFilter<"Resistance"> | string | null
+    type?: StringWithAggregatesFilter<"Resistance"> | string
+    value?: StringWithAggregatesFilter<"Resistance"> | string
   }
 
   export type CardLegalitiesWhereInput = {
@@ -17903,9 +17925,9 @@ export namespace Prisma {
     cardId?: StringFilter<"TcgPlayer"> | string
     url?: StringNullableFilter<"TcgPlayer"> | string | null
     updatedAt?: DateTimeNullableFilter<"TcgPlayer"> | Date | string | null
-    pricesId?: StringFilter<"TcgPlayer"> | string
+    pricesId?: StringNullableFilter<"TcgPlayer"> | string | null
     card?: XOR<CardScalarRelationFilter, CardWhereInput>
-    prices?: XOR<TcgPlayerPricesScalarRelationFilter, TcgPlayerPricesWhereInput>
+    prices?: XOR<TcgPlayerPricesNullableScalarRelationFilter, TcgPlayerPricesWhereInput> | null
   }
 
   export type TcgPlayerOrderByWithRelationInput = {
@@ -17913,7 +17935,7 @@ export namespace Prisma {
     cardId?: SortOrder
     url?: SortOrderInput | SortOrder
     updatedAt?: SortOrderInput | SortOrder
-    pricesId?: SortOrder
+    pricesId?: SortOrderInput | SortOrder
     card?: CardOrderByWithRelationInput
     prices?: TcgPlayerPricesOrderByWithRelationInput
   }
@@ -17928,7 +17950,7 @@ export namespace Prisma {
     url?: StringNullableFilter<"TcgPlayer"> | string | null
     updatedAt?: DateTimeNullableFilter<"TcgPlayer"> | Date | string | null
     card?: XOR<CardScalarRelationFilter, CardWhereInput>
-    prices?: XOR<TcgPlayerPricesScalarRelationFilter, TcgPlayerPricesWhereInput>
+    prices?: XOR<TcgPlayerPricesNullableScalarRelationFilter, TcgPlayerPricesWhereInput> | null
   }, "id" | "cardId" | "pricesId">
 
   export type TcgPlayerOrderByWithAggregationInput = {
@@ -17936,7 +17958,7 @@ export namespace Prisma {
     cardId?: SortOrder
     url?: SortOrderInput | SortOrder
     updatedAt?: SortOrderInput | SortOrder
-    pricesId?: SortOrder
+    pricesId?: SortOrderInput | SortOrder
     _count?: TcgPlayerCountOrderByAggregateInput
     _max?: TcgPlayerMaxOrderByAggregateInput
     _min?: TcgPlayerMinOrderByAggregateInput
@@ -17950,7 +17972,7 @@ export namespace Prisma {
     cardId?: StringWithAggregatesFilter<"TcgPlayer"> | string
     url?: StringNullableWithAggregatesFilter<"TcgPlayer"> | string | null
     updatedAt?: DateTimeNullableWithAggregatesFilter<"TcgPlayer"> | Date | string | null
-    pricesId?: StringWithAggregatesFilter<"TcgPlayer"> | string
+    pricesId?: StringNullableWithAggregatesFilter<"TcgPlayer"> | string | null
   }
 
   export type CardSetWhereInput = {
@@ -17958,8 +17980,8 @@ export namespace Prisma {
     OR?: CardSetWhereInput[]
     NOT?: CardSetWhereInput | CardSetWhereInput[]
     id?: StringFilter<"CardSet"> | string
-    name?: StringNullableFilter<"CardSet"> | string | null
-    series?: StringNullableFilter<"CardSet"> | string | null
+    name?: StringFilter<"CardSet"> | string
+    series?: StringFilter<"CardSet"> | string
     printedTotal?: IntNullableFilter<"CardSet"> | number | null
     total?: IntNullableFilter<"CardSet"> | number | null
     ptcgoCode?: StringNullableFilter<"CardSet"> | string | null
@@ -17973,8 +17995,8 @@ export namespace Prisma {
 
   export type CardSetOrderByWithRelationInput = {
     id?: SortOrder
-    name?: SortOrderInput | SortOrder
-    series?: SortOrderInput | SortOrder
+    name?: SortOrder
+    series?: SortOrder
     printedTotal?: SortOrderInput | SortOrder
     total?: SortOrderInput | SortOrder
     ptcgoCode?: SortOrderInput | SortOrder
@@ -17991,8 +18013,8 @@ export namespace Prisma {
     AND?: CardSetWhereInput | CardSetWhereInput[]
     OR?: CardSetWhereInput[]
     NOT?: CardSetWhereInput | CardSetWhereInput[]
-    name?: StringNullableFilter<"CardSet"> | string | null
-    series?: StringNullableFilter<"CardSet"> | string | null
+    name?: StringFilter<"CardSet"> | string
+    series?: StringFilter<"CardSet"> | string
     printedTotal?: IntNullableFilter<"CardSet"> | number | null
     total?: IntNullableFilter<"CardSet"> | number | null
     ptcgoCode?: StringNullableFilter<"CardSet"> | string | null
@@ -18006,8 +18028,8 @@ export namespace Prisma {
 
   export type CardSetOrderByWithAggregationInput = {
     id?: SortOrder
-    name?: SortOrderInput | SortOrder
-    series?: SortOrderInput | SortOrder
+    name?: SortOrder
+    series?: SortOrder
     printedTotal?: SortOrderInput | SortOrder
     total?: SortOrderInput | SortOrder
     ptcgoCode?: SortOrderInput | SortOrder
@@ -18027,8 +18049,8 @@ export namespace Prisma {
     OR?: CardSetScalarWhereWithAggregatesInput[]
     NOT?: CardSetScalarWhereWithAggregatesInput | CardSetScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"CardSet"> | string
-    name?: StringNullableWithAggregatesFilter<"CardSet"> | string | null
-    series?: StringNullableWithAggregatesFilter<"CardSet"> | string | null
+    name?: StringWithAggregatesFilter<"CardSet"> | string
+    series?: StringWithAggregatesFilter<"CardSet"> | string
     printedTotal?: IntNullableWithAggregatesFilter<"CardSet"> | number | null
     total?: IntNullableWithAggregatesFilter<"CardSet"> | number | null
     ptcgoCode?: StringNullableWithAggregatesFilter<"CardSet"> | string | null
@@ -18098,16 +18120,16 @@ export namespace Prisma {
     OR?: ImportMetadataWhereInput[]
     NOT?: ImportMetadataWhereInput | ImportMetadataWhereInput[]
     id?: StringFilter<"ImportMetadata"> | string
-    totalCount?: IntNullableFilter<"ImportMetadata"> | number | null
-    importedAt?: DateTimeNullableFilter<"ImportMetadata"> | Date | string | null
-    isFullImport?: IntNullableFilter<"ImportMetadata"> | number | null
+    totalCount?: IntFilter<"ImportMetadata"> | number
+    importedAt?: DateTimeFilter<"ImportMetadata"> | Date | string
+    isFullImport?: BoolFilter<"ImportMetadata"> | boolean
   }
 
   export type ImportMetadataOrderByWithRelationInput = {
     id?: SortOrder
-    totalCount?: SortOrderInput | SortOrder
-    importedAt?: SortOrderInput | SortOrder
-    isFullImport?: SortOrderInput | SortOrder
+    totalCount?: SortOrder
+    importedAt?: SortOrder
+    isFullImport?: SortOrder
   }
 
   export type ImportMetadataWhereUniqueInput = Prisma.AtLeast<{
@@ -18115,16 +18137,16 @@ export namespace Prisma {
     AND?: ImportMetadataWhereInput | ImportMetadataWhereInput[]
     OR?: ImportMetadataWhereInput[]
     NOT?: ImportMetadataWhereInput | ImportMetadataWhereInput[]
-    totalCount?: IntNullableFilter<"ImportMetadata"> | number | null
-    importedAt?: DateTimeNullableFilter<"ImportMetadata"> | Date | string | null
-    isFullImport?: IntNullableFilter<"ImportMetadata"> | number | null
+    totalCount?: IntFilter<"ImportMetadata"> | number
+    importedAt?: DateTimeFilter<"ImportMetadata"> | Date | string
+    isFullImport?: BoolFilter<"ImportMetadata"> | boolean
   }, "id">
 
   export type ImportMetadataOrderByWithAggregationInput = {
     id?: SortOrder
-    totalCount?: SortOrderInput | SortOrder
-    importedAt?: SortOrderInput | SortOrder
-    isFullImport?: SortOrderInput | SortOrder
+    totalCount?: SortOrder
+    importedAt?: SortOrder
+    isFullImport?: SortOrder
     _count?: ImportMetadataCountOrderByAggregateInput
     _avg?: ImportMetadataAvgOrderByAggregateInput
     _max?: ImportMetadataMaxOrderByAggregateInput
@@ -18137,9 +18159,9 @@ export namespace Prisma {
     OR?: ImportMetadataScalarWhereWithAggregatesInput[]
     NOT?: ImportMetadataScalarWhereWithAggregatesInput | ImportMetadataScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"ImportMetadata"> | string
-    totalCount?: IntNullableWithAggregatesFilter<"ImportMetadata"> | number | null
-    importedAt?: DateTimeNullableWithAggregatesFilter<"ImportMetadata"> | Date | string | null
-    isFullImport?: IntNullableWithAggregatesFilter<"ImportMetadata"> | number | null
+    totalCount?: IntWithAggregatesFilter<"ImportMetadata"> | number
+    importedAt?: DateTimeWithAggregatesFilter<"ImportMetadata"> | Date | string
+    isFullImport?: BoolWithAggregatesFilter<"ImportMetadata"> | boolean
   }
 
   export type CardCreateInput = {
@@ -18160,17 +18182,17 @@ export namespace Prisma {
     nationalPokedexNumbers?: CardCreatenationalPokedexNumbersInput | number[]
     retreatCost?: CardCreateretreatCostInput | string[]
     convertedRetreatCost?: number | null
-    createdAt?: Date | string | null
-    updatedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt: Date | string
     abilities?: AbilityCreateNestedManyWithoutCardInput
     attacks?: AttackCreateNestedManyWithoutCardInput
-    weaknesses?: WeaknessCreateNestedManyWithoutCardInput
-    resistances?: ResistanceCreateNestedManyWithoutCardInput
-    legalities?: CardLegalitiesCreateNestedOneWithoutCardInput
-    images?: CardImagesCreateNestedOneWithoutCardInput
-    cardmarket?: CardMarketCreateNestedOneWithoutCardInput
-    tcgplayer?: TcgPlayerCreateNestedOneWithoutCardInput
     set?: CardSetCreateNestedOneWithoutCardsInput
+    images?: CardImagesCreateNestedOneWithoutCardInput
+    legalities?: CardLegalitiesCreateNestedOneWithoutCardInput
+    cardmarket?: CardMarketCreateNestedOneWithoutCardInput
+    resistances?: ResistanceCreateNestedManyWithoutCardInput
+    tcgplayer?: TcgPlayerCreateNestedOneWithoutCardInput
+    weaknesses?: WeaknessCreateNestedManyWithoutCardInput
   }
 
   export type CardUncheckedCreateInput = {
@@ -18192,16 +18214,16 @@ export namespace Prisma {
     setId?: string | null
     retreatCost?: CardCreateretreatCostInput | string[]
     convertedRetreatCost?: number | null
-    createdAt?: Date | string | null
-    updatedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt: Date | string
     abilities?: AbilityUncheckedCreateNestedManyWithoutCardInput
     attacks?: AttackUncheckedCreateNestedManyWithoutCardInput
-    weaknesses?: WeaknessUncheckedCreateNestedManyWithoutCardInput
-    resistances?: ResistanceUncheckedCreateNestedManyWithoutCardInput
-    legalities?: CardLegalitiesUncheckedCreateNestedOneWithoutCardInput
     images?: CardImagesUncheckedCreateNestedOneWithoutCardInput
+    legalities?: CardLegalitiesUncheckedCreateNestedOneWithoutCardInput
     cardmarket?: CardMarketUncheckedCreateNestedOneWithoutCardInput
+    resistances?: ResistanceUncheckedCreateNestedManyWithoutCardInput
     tcgplayer?: TcgPlayerUncheckedCreateNestedOneWithoutCardInput
+    weaknesses?: WeaknessUncheckedCreateNestedManyWithoutCardInput
   }
 
   export type CardUpdateInput = {
@@ -18222,17 +18244,17 @@ export namespace Prisma {
     nationalPokedexNumbers?: CardUpdatenationalPokedexNumbersInput | number[]
     retreatCost?: CardUpdateretreatCostInput | string[]
     convertedRetreatCost?: NullableIntFieldUpdateOperationsInput | number | null
-    createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     abilities?: AbilityUpdateManyWithoutCardNestedInput
     attacks?: AttackUpdateManyWithoutCardNestedInput
-    weaknesses?: WeaknessUpdateManyWithoutCardNestedInput
-    resistances?: ResistanceUpdateManyWithoutCardNestedInput
-    legalities?: CardLegalitiesUpdateOneWithoutCardNestedInput
-    images?: CardImagesUpdateOneWithoutCardNestedInput
-    cardmarket?: CardMarketUpdateOneWithoutCardNestedInput
-    tcgplayer?: TcgPlayerUpdateOneWithoutCardNestedInput
     set?: CardSetUpdateOneWithoutCardsNestedInput
+    images?: CardImagesUpdateOneWithoutCardNestedInput
+    legalities?: CardLegalitiesUpdateOneWithoutCardNestedInput
+    cardmarket?: CardMarketUpdateOneWithoutCardNestedInput
+    resistances?: ResistanceUpdateManyWithoutCardNestedInput
+    tcgplayer?: TcgPlayerUpdateOneWithoutCardNestedInput
+    weaknesses?: WeaknessUpdateManyWithoutCardNestedInput
   }
 
   export type CardUncheckedUpdateInput = {
@@ -18254,16 +18276,16 @@ export namespace Prisma {
     setId?: NullableStringFieldUpdateOperationsInput | string | null
     retreatCost?: CardUpdateretreatCostInput | string[]
     convertedRetreatCost?: NullableIntFieldUpdateOperationsInput | number | null
-    createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     abilities?: AbilityUncheckedUpdateManyWithoutCardNestedInput
     attacks?: AttackUncheckedUpdateManyWithoutCardNestedInput
-    weaknesses?: WeaknessUncheckedUpdateManyWithoutCardNestedInput
-    resistances?: ResistanceUncheckedUpdateManyWithoutCardNestedInput
-    legalities?: CardLegalitiesUncheckedUpdateOneWithoutCardNestedInput
     images?: CardImagesUncheckedUpdateOneWithoutCardNestedInput
+    legalities?: CardLegalitiesUncheckedUpdateOneWithoutCardNestedInput
     cardmarket?: CardMarketUncheckedUpdateOneWithoutCardNestedInput
+    resistances?: ResistanceUncheckedUpdateManyWithoutCardNestedInput
     tcgplayer?: TcgPlayerUncheckedUpdateOneWithoutCardNestedInput
+    weaknesses?: WeaknessUncheckedUpdateManyWithoutCardNestedInput
   }
 
   export type CardCreateManyInput = {
@@ -18285,8 +18307,8 @@ export namespace Prisma {
     setId?: string | null
     retreatCost?: CardCreateretreatCostInput | string[]
     convertedRetreatCost?: number | null
-    createdAt?: Date | string | null
-    updatedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt: Date | string
   }
 
   export type CardUpdateManyMutationInput = {
@@ -18307,8 +18329,8 @@ export namespace Prisma {
     nationalPokedexNumbers?: CardUpdatenationalPokedexNumbersInput | number[]
     retreatCost?: CardUpdateretreatCostInput | string[]
     convertedRetreatCost?: NullableIntFieldUpdateOperationsInput | number | null
-    createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type CardUncheckedUpdateManyInput = {
@@ -18330,70 +18352,70 @@ export namespace Prisma {
     setId?: NullableStringFieldUpdateOperationsInput | string | null
     retreatCost?: CardUpdateretreatCostInput | string[]
     convertedRetreatCost?: NullableIntFieldUpdateOperationsInput | number | null
-    createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type AbilityCreateInput = {
     id: string
-    name?: string | null
-    text?: string | null
-    type?: string | null
+    name: string
+    text: string
+    type: string
     card: CardCreateNestedOneWithoutAbilitiesInput
   }
 
   export type AbilityUncheckedCreateInput = {
     id: string
     cardId: string
-    name?: string | null
-    text?: string | null
-    type?: string | null
+    name: string
+    text: string
+    type: string
   }
 
   export type AbilityUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
-    name?: NullableStringFieldUpdateOperationsInput | string | null
-    text?: NullableStringFieldUpdateOperationsInput | string | null
-    type?: NullableStringFieldUpdateOperationsInput | string | null
+    name?: StringFieldUpdateOperationsInput | string
+    text?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
     card?: CardUpdateOneRequiredWithoutAbilitiesNestedInput
   }
 
   export type AbilityUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     cardId?: StringFieldUpdateOperationsInput | string
-    name?: NullableStringFieldUpdateOperationsInput | string | null
-    text?: NullableStringFieldUpdateOperationsInput | string | null
-    type?: NullableStringFieldUpdateOperationsInput | string | null
+    name?: StringFieldUpdateOperationsInput | string
+    text?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
   }
 
   export type AbilityCreateManyInput = {
     id: string
     cardId: string
-    name?: string | null
-    text?: string | null
-    type?: string | null
+    name: string
+    text: string
+    type: string
   }
 
   export type AbilityUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
-    name?: NullableStringFieldUpdateOperationsInput | string | null
-    text?: NullableStringFieldUpdateOperationsInput | string | null
-    type?: NullableStringFieldUpdateOperationsInput | string | null
+    name?: StringFieldUpdateOperationsInput | string
+    text?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
   }
 
   export type AbilityUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
     cardId?: StringFieldUpdateOperationsInput | string
-    name?: NullableStringFieldUpdateOperationsInput | string | null
-    text?: NullableStringFieldUpdateOperationsInput | string | null
-    type?: NullableStringFieldUpdateOperationsInput | string | null
+    name?: StringFieldUpdateOperationsInput | string
+    text?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
   }
 
   export type AttackCreateInput = {
     id: string
-    name?: string | null
+    name: string
     cost?: AttackCreatecostInput | string[]
-    convertedEnergyCost?: number | null
+    convertedEnergyCost: number
     damage?: string | null
     text?: string | null
     card: CardCreateNestedOneWithoutAttacksInput
@@ -18402,18 +18424,18 @@ export namespace Prisma {
   export type AttackUncheckedCreateInput = {
     id: string
     cardId: string
-    name?: string | null
+    name: string
     cost?: AttackCreatecostInput | string[]
-    convertedEnergyCost?: number | null
+    convertedEnergyCost: number
     damage?: string | null
     text?: string | null
   }
 
   export type AttackUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
-    name?: NullableStringFieldUpdateOperationsInput | string | null
+    name?: StringFieldUpdateOperationsInput | string
     cost?: AttackUpdatecostInput | string[]
-    convertedEnergyCost?: NullableIntFieldUpdateOperationsInput | number | null
+    convertedEnergyCost?: IntFieldUpdateOperationsInput | number
     damage?: NullableStringFieldUpdateOperationsInput | string | null
     text?: NullableStringFieldUpdateOperationsInput | string | null
     card?: CardUpdateOneRequiredWithoutAttacksNestedInput
@@ -18422,9 +18444,9 @@ export namespace Prisma {
   export type AttackUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     cardId?: StringFieldUpdateOperationsInput | string
-    name?: NullableStringFieldUpdateOperationsInput | string | null
+    name?: StringFieldUpdateOperationsInput | string
     cost?: AttackUpdatecostInput | string[]
-    convertedEnergyCost?: NullableIntFieldUpdateOperationsInput | number | null
+    convertedEnergyCost?: IntFieldUpdateOperationsInput | number
     damage?: NullableStringFieldUpdateOperationsInput | string | null
     text?: NullableStringFieldUpdateOperationsInput | string | null
   }
@@ -18432,18 +18454,18 @@ export namespace Prisma {
   export type AttackCreateManyInput = {
     id: string
     cardId: string
-    name?: string | null
+    name: string
     cost?: AttackCreatecostInput | string[]
-    convertedEnergyCost?: number | null
+    convertedEnergyCost: number
     damage?: string | null
     text?: string | null
   }
 
   export type AttackUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
-    name?: NullableStringFieldUpdateOperationsInput | string | null
+    name?: StringFieldUpdateOperationsInput | string
     cost?: AttackUpdatecostInput | string[]
-    convertedEnergyCost?: NullableIntFieldUpdateOperationsInput | number | null
+    convertedEnergyCost?: IntFieldUpdateOperationsInput | number
     damage?: NullableStringFieldUpdateOperationsInput | string | null
     text?: NullableStringFieldUpdateOperationsInput | string | null
   }
@@ -18451,107 +18473,107 @@ export namespace Prisma {
   export type AttackUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
     cardId?: StringFieldUpdateOperationsInput | string
-    name?: NullableStringFieldUpdateOperationsInput | string | null
+    name?: StringFieldUpdateOperationsInput | string
     cost?: AttackUpdatecostInput | string[]
-    convertedEnergyCost?: NullableIntFieldUpdateOperationsInput | number | null
+    convertedEnergyCost?: IntFieldUpdateOperationsInput | number
     damage?: NullableStringFieldUpdateOperationsInput | string | null
     text?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type WeaknessCreateInput = {
     id: string
-    type?: string | null
-    value?: string | null
+    type: string
+    value: string
     card: CardCreateNestedOneWithoutWeaknessesInput
   }
 
   export type WeaknessUncheckedCreateInput = {
     id: string
     cardId: string
-    type?: string | null
-    value?: string | null
+    type: string
+    value: string
   }
 
   export type WeaknessUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
-    type?: NullableStringFieldUpdateOperationsInput | string | null
-    value?: NullableStringFieldUpdateOperationsInput | string | null
+    type?: StringFieldUpdateOperationsInput | string
+    value?: StringFieldUpdateOperationsInput | string
     card?: CardUpdateOneRequiredWithoutWeaknessesNestedInput
   }
 
   export type WeaknessUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     cardId?: StringFieldUpdateOperationsInput | string
-    type?: NullableStringFieldUpdateOperationsInput | string | null
-    value?: NullableStringFieldUpdateOperationsInput | string | null
+    type?: StringFieldUpdateOperationsInput | string
+    value?: StringFieldUpdateOperationsInput | string
   }
 
   export type WeaknessCreateManyInput = {
     id: string
     cardId: string
-    type?: string | null
-    value?: string | null
+    type: string
+    value: string
   }
 
   export type WeaknessUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
-    type?: NullableStringFieldUpdateOperationsInput | string | null
-    value?: NullableStringFieldUpdateOperationsInput | string | null
+    type?: StringFieldUpdateOperationsInput | string
+    value?: StringFieldUpdateOperationsInput | string
   }
 
   export type WeaknessUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
     cardId?: StringFieldUpdateOperationsInput | string
-    type?: NullableStringFieldUpdateOperationsInput | string | null
-    value?: NullableStringFieldUpdateOperationsInput | string | null
+    type?: StringFieldUpdateOperationsInput | string
+    value?: StringFieldUpdateOperationsInput | string
   }
 
   export type ResistanceCreateInput = {
     id: string
-    type?: string | null
-    value?: string | null
+    type: string
+    value: string
     card: CardCreateNestedOneWithoutResistancesInput
   }
 
   export type ResistanceUncheckedCreateInput = {
     id: string
     cardId: string
-    type?: string | null
-    value?: string | null
+    type: string
+    value: string
   }
 
   export type ResistanceUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
-    type?: NullableStringFieldUpdateOperationsInput | string | null
-    value?: NullableStringFieldUpdateOperationsInput | string | null
+    type?: StringFieldUpdateOperationsInput | string
+    value?: StringFieldUpdateOperationsInput | string
     card?: CardUpdateOneRequiredWithoutResistancesNestedInput
   }
 
   export type ResistanceUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     cardId?: StringFieldUpdateOperationsInput | string
-    type?: NullableStringFieldUpdateOperationsInput | string | null
-    value?: NullableStringFieldUpdateOperationsInput | string | null
+    type?: StringFieldUpdateOperationsInput | string
+    value?: StringFieldUpdateOperationsInput | string
   }
 
   export type ResistanceCreateManyInput = {
     id: string
     cardId: string
-    type?: string | null
-    value?: string | null
+    type: string
+    value: string
   }
 
   export type ResistanceUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
-    type?: NullableStringFieldUpdateOperationsInput | string | null
-    value?: NullableStringFieldUpdateOperationsInput | string | null
+    type?: StringFieldUpdateOperationsInput | string
+    value?: StringFieldUpdateOperationsInput | string
   }
 
   export type ResistanceUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
     cardId?: StringFieldUpdateOperationsInput | string
-    type?: NullableStringFieldUpdateOperationsInput | string | null
-    value?: NullableStringFieldUpdateOperationsInput | string | null
+    type?: StringFieldUpdateOperationsInput | string
+    value?: StringFieldUpdateOperationsInput | string
   }
 
   export type CardLegalitiesCreateInput = {
@@ -18952,7 +18974,7 @@ export namespace Prisma {
     url?: string | null
     updatedAt?: Date | string | null
     card: CardCreateNestedOneWithoutTcgplayerInput
-    prices: TcgPlayerPricesCreateNestedOneWithoutTcgplayerInput
+    prices?: TcgPlayerPricesCreateNestedOneWithoutTcgplayerInput
   }
 
   export type TcgPlayerUncheckedCreateInput = {
@@ -18960,7 +18982,7 @@ export namespace Prisma {
     cardId: string
     url?: string | null
     updatedAt?: Date | string | null
-    pricesId: string
+    pricesId?: string | null
   }
 
   export type TcgPlayerUpdateInput = {
@@ -18968,7 +18990,7 @@ export namespace Prisma {
     url?: NullableStringFieldUpdateOperationsInput | string | null
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     card?: CardUpdateOneRequiredWithoutTcgplayerNestedInput
-    prices?: TcgPlayerPricesUpdateOneRequiredWithoutTcgplayerNestedInput
+    prices?: TcgPlayerPricesUpdateOneWithoutTcgplayerNestedInput
   }
 
   export type TcgPlayerUncheckedUpdateInput = {
@@ -18976,7 +18998,7 @@ export namespace Prisma {
     cardId?: StringFieldUpdateOperationsInput | string
     url?: NullableStringFieldUpdateOperationsInput | string | null
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    pricesId?: StringFieldUpdateOperationsInput | string
+    pricesId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type TcgPlayerCreateManyInput = {
@@ -18984,7 +19006,7 @@ export namespace Prisma {
     cardId: string
     url?: string | null
     updatedAt?: Date | string | null
-    pricesId: string
+    pricesId?: string | null
   }
 
   export type TcgPlayerUpdateManyMutationInput = {
@@ -18998,13 +19020,13 @@ export namespace Prisma {
     cardId?: StringFieldUpdateOperationsInput | string
     url?: NullableStringFieldUpdateOperationsInput | string | null
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    pricesId?: StringFieldUpdateOperationsInput | string
+    pricesId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type CardSetCreateInput = {
     id: string
-    name?: string | null
-    series?: string | null
+    name: string
+    series: string
     printedTotal?: number | null
     total?: number | null
     ptcgoCode?: string | null
@@ -19018,8 +19040,8 @@ export namespace Prisma {
 
   export type CardSetUncheckedCreateInput = {
     id: string
-    name?: string | null
-    series?: string | null
+    name: string
+    series: string
     printedTotal?: number | null
     total?: number | null
     ptcgoCode?: string | null
@@ -19033,8 +19055,8 @@ export namespace Prisma {
 
   export type CardSetUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
-    name?: NullableStringFieldUpdateOperationsInput | string | null
-    series?: NullableStringFieldUpdateOperationsInput | string | null
+    name?: StringFieldUpdateOperationsInput | string
+    series?: StringFieldUpdateOperationsInput | string
     printedTotal?: NullableIntFieldUpdateOperationsInput | number | null
     total?: NullableIntFieldUpdateOperationsInput | number | null
     ptcgoCode?: NullableStringFieldUpdateOperationsInput | string | null
@@ -19048,8 +19070,8 @@ export namespace Prisma {
 
   export type CardSetUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
-    name?: NullableStringFieldUpdateOperationsInput | string | null
-    series?: NullableStringFieldUpdateOperationsInput | string | null
+    name?: StringFieldUpdateOperationsInput | string
+    series?: StringFieldUpdateOperationsInput | string
     printedTotal?: NullableIntFieldUpdateOperationsInput | number | null
     total?: NullableIntFieldUpdateOperationsInput | number | null
     ptcgoCode?: NullableStringFieldUpdateOperationsInput | string | null
@@ -19063,8 +19085,8 @@ export namespace Prisma {
 
   export type CardSetCreateManyInput = {
     id: string
-    name?: string | null
-    series?: string | null
+    name: string
+    series: string
     printedTotal?: number | null
     total?: number | null
     ptcgoCode?: string | null
@@ -19076,8 +19098,8 @@ export namespace Prisma {
 
   export type CardSetUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
-    name?: NullableStringFieldUpdateOperationsInput | string | null
-    series?: NullableStringFieldUpdateOperationsInput | string | null
+    name?: StringFieldUpdateOperationsInput | string
+    series?: StringFieldUpdateOperationsInput | string
     printedTotal?: NullableIntFieldUpdateOperationsInput | number | null
     total?: NullableIntFieldUpdateOperationsInput | number | null
     ptcgoCode?: NullableStringFieldUpdateOperationsInput | string | null
@@ -19089,8 +19111,8 @@ export namespace Prisma {
 
   export type CardSetUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
-    name?: NullableStringFieldUpdateOperationsInput | string | null
-    series?: NullableStringFieldUpdateOperationsInput | string | null
+    name?: StringFieldUpdateOperationsInput | string
+    series?: StringFieldUpdateOperationsInput | string
     printedTotal?: NullableIntFieldUpdateOperationsInput | number | null
     total?: NullableIntFieldUpdateOperationsInput | number | null
     ptcgoCode?: NullableStringFieldUpdateOperationsInput | string | null
@@ -19157,51 +19179,51 @@ export namespace Prisma {
 
   export type ImportMetadataCreateInput = {
     id: string
-    totalCount?: number | null
-    importedAt?: Date | string | null
-    isFullImport?: number | null
+    totalCount: number
+    importedAt?: Date | string
+    isFullImport?: boolean
   }
 
   export type ImportMetadataUncheckedCreateInput = {
     id: string
-    totalCount?: number | null
-    importedAt?: Date | string | null
-    isFullImport?: number | null
+    totalCount: number
+    importedAt?: Date | string
+    isFullImport?: boolean
   }
 
   export type ImportMetadataUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
-    totalCount?: NullableIntFieldUpdateOperationsInput | number | null
-    importedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    isFullImport?: NullableIntFieldUpdateOperationsInput | number | null
+    totalCount?: IntFieldUpdateOperationsInput | number
+    importedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    isFullImport?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type ImportMetadataUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
-    totalCount?: NullableIntFieldUpdateOperationsInput | number | null
-    importedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    isFullImport?: NullableIntFieldUpdateOperationsInput | number | null
+    totalCount?: IntFieldUpdateOperationsInput | number
+    importedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    isFullImport?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type ImportMetadataCreateManyInput = {
     id: string
-    totalCount?: number | null
-    importedAt?: Date | string | null
-    isFullImport?: number | null
+    totalCount: number
+    importedAt?: Date | string
+    isFullImport?: boolean
   }
 
   export type ImportMetadataUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
-    totalCount?: NullableIntFieldUpdateOperationsInput | number | null
-    importedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    isFullImport?: NullableIntFieldUpdateOperationsInput | number | null
+    totalCount?: IntFieldUpdateOperationsInput | number
+    importedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    isFullImport?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type ImportMetadataUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
-    totalCount?: NullableIntFieldUpdateOperationsInput | number | null
-    importedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    isFullImport?: NullableIntFieldUpdateOperationsInput | number | null
+    totalCount?: IntFieldUpdateOperationsInput | number
+    importedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    isFullImport?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type StringFilter<$PrismaModel = never> = {
@@ -19261,15 +19283,15 @@ export namespace Prisma {
     not?: NestedIntNullableFilter<$PrismaModel> | number | null
   }
 
-  export type DateTimeNullableFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
-    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+  export type DateTimeFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
     lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
+    not?: NestedDateTimeFilter<$PrismaModel> | Date | string
   }
 
   export type AbilityListRelationFilter = {
@@ -19284,10 +19306,24 @@ export namespace Prisma {
     none?: AttackWhereInput
   }
 
-  export type WeaknessListRelationFilter = {
-    every?: WeaknessWhereInput
-    some?: WeaknessWhereInput
-    none?: WeaknessWhereInput
+  export type CardSetNullableScalarRelationFilter = {
+    is?: CardSetWhereInput | null
+    isNot?: CardSetWhereInput | null
+  }
+
+  export type CardImagesNullableScalarRelationFilter = {
+    is?: CardImagesWhereInput | null
+    isNot?: CardImagesWhereInput | null
+  }
+
+  export type CardLegalitiesNullableScalarRelationFilter = {
+    is?: CardLegalitiesWhereInput | null
+    isNot?: CardLegalitiesWhereInput | null
+  }
+
+  export type CardMarketNullableScalarRelationFilter = {
+    is?: CardMarketWhereInput | null
+    isNot?: CardMarketWhereInput | null
   }
 
   export type ResistanceListRelationFilter = {
@@ -19296,29 +19332,15 @@ export namespace Prisma {
     none?: ResistanceWhereInput
   }
 
-  export type CardLegalitiesNullableScalarRelationFilter = {
-    is?: CardLegalitiesWhereInput | null
-    isNot?: CardLegalitiesWhereInput | null
-  }
-
-  export type CardImagesNullableScalarRelationFilter = {
-    is?: CardImagesWhereInput | null
-    isNot?: CardImagesWhereInput | null
-  }
-
-  export type CardMarketNullableScalarRelationFilter = {
-    is?: CardMarketWhereInput | null
-    isNot?: CardMarketWhereInput | null
-  }
-
   export type TcgPlayerNullableScalarRelationFilter = {
     is?: TcgPlayerWhereInput | null
     isNot?: TcgPlayerWhereInput | null
   }
 
-  export type CardSetNullableScalarRelationFilter = {
-    is?: CardSetWhereInput | null
-    isNot?: CardSetWhereInput | null
+  export type WeaknessListRelationFilter = {
+    every?: WeaknessWhereInput
+    some?: WeaknessWhereInput
+    none?: WeaknessWhereInput
   }
 
   export type SortOrderInput = {
@@ -19334,11 +19356,11 @@ export namespace Prisma {
     _count?: SortOrder
   }
 
-  export type WeaknessOrderByRelationAggregateInput = {
+  export type ResistanceOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
-  export type ResistanceOrderByRelationAggregateInput = {
+  export type WeaknessOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -19461,18 +19483,18 @@ export namespace Prisma {
     _max?: NestedIntNullableFilter<$PrismaModel>
   }
 
-  export type DateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
-    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+  export type DateTimeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
     lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeNullableWithAggregatesFilter<$PrismaModel> | Date | string | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedDateTimeNullableFilter<$PrismaModel>
-    _max?: NestedDateTimeNullableFilter<$PrismaModel>
+    not?: NestedDateTimeWithAggregatesFilter<$PrismaModel> | Date | string
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedDateTimeFilter<$PrismaModel>
+    _max?: NestedDateTimeFilter<$PrismaModel>
   }
 
   export type CardScalarRelationFilter = {
@@ -19502,6 +19524,17 @@ export namespace Prisma {
     name?: SortOrder
     text?: SortOrder
     type?: SortOrder
+  }
+
+  export type IntFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel>
+    in?: number[] | ListIntFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntFilter<$PrismaModel> | number
   }
 
   export type AttackCountOrderByAggregateInput = {
@@ -19538,6 +19571,22 @@ export namespace Prisma {
 
   export type AttackSumOrderByAggregateInput = {
     convertedEnergyCost?: SortOrder
+  }
+
+  export type IntWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel>
+    in?: number[] | ListIntFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntWithAggregatesFilter<$PrismaModel> | number
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedFloatFilter<$PrismaModel>
+    _sum?: NestedIntFilter<$PrismaModel>
+    _min?: NestedIntFilter<$PrismaModel>
+    _max?: NestedIntFilter<$PrismaModel>
   }
 
   export type WeaknessCountOrderByAggregateInput = {
@@ -19625,6 +19674,17 @@ export namespace Prisma {
     cardId?: SortOrder
     small?: SortOrder
     large?: SortOrder
+  }
+
+  export type DateTimeNullableFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
   }
 
   export type FloatNullableFilter<$PrismaModel = never> = {
@@ -19740,6 +19800,20 @@ export namespace Prisma {
     reverseHoloAvg30?: SortOrder
   }
 
+  export type DateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableWithAggregatesFilter<$PrismaModel> | Date | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedDateTimeNullableFilter<$PrismaModel>
+    _max?: NestedDateTimeNullableFilter<$PrismaModel>
+  }
+
   export type FloatNullableWithAggregatesFilter<$PrismaModel = never> = {
     equals?: number | FloatFieldRefInput<$PrismaModel> | null
     in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
@@ -19849,9 +19923,9 @@ export namespace Prisma {
     reverseHolofoilDirectLow?: SortOrder
   }
 
-  export type TcgPlayerPricesScalarRelationFilter = {
-    is?: TcgPlayerPricesWhereInput
-    isNot?: TcgPlayerPricesWhereInput
+  export type TcgPlayerPricesNullableScalarRelationFilter = {
+    is?: TcgPlayerPricesWhereInput | null
+    isNot?: TcgPlayerPricesWhereInput | null
   }
 
   export type TcgPlayerCountOrderByAggregateInput = {
@@ -19971,6 +20045,11 @@ export namespace Prisma {
     expanded?: SortOrder
   }
 
+  export type BoolFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolFilter<$PrismaModel> | boolean
+  }
+
   export type ImportMetadataCountOrderByAggregateInput = {
     id?: SortOrder
     totalCount?: SortOrder
@@ -19980,7 +20059,6 @@ export namespace Prisma {
 
   export type ImportMetadataAvgOrderByAggregateInput = {
     totalCount?: SortOrder
-    isFullImport?: SortOrder
   }
 
   export type ImportMetadataMaxOrderByAggregateInput = {
@@ -19999,7 +20077,14 @@ export namespace Prisma {
 
   export type ImportMetadataSumOrderByAggregateInput = {
     totalCount?: SortOrder
-    isFullImport?: SortOrder
+  }
+
+  export type BoolWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedBoolFilter<$PrismaModel>
+    _max?: NestedBoolFilter<$PrismaModel>
   }
 
   export type CardCreatesubtypesInput = {
@@ -20040,11 +20125,28 @@ export namespace Prisma {
     connect?: AttackWhereUniqueInput | AttackWhereUniqueInput[]
   }
 
-  export type WeaknessCreateNestedManyWithoutCardInput = {
-    create?: XOR<WeaknessCreateWithoutCardInput, WeaknessUncheckedCreateWithoutCardInput> | WeaknessCreateWithoutCardInput[] | WeaknessUncheckedCreateWithoutCardInput[]
-    connectOrCreate?: WeaknessCreateOrConnectWithoutCardInput | WeaknessCreateOrConnectWithoutCardInput[]
-    createMany?: WeaknessCreateManyCardInputEnvelope
-    connect?: WeaknessWhereUniqueInput | WeaknessWhereUniqueInput[]
+  export type CardSetCreateNestedOneWithoutCardsInput = {
+    create?: XOR<CardSetCreateWithoutCardsInput, CardSetUncheckedCreateWithoutCardsInput>
+    connectOrCreate?: CardSetCreateOrConnectWithoutCardsInput
+    connect?: CardSetWhereUniqueInput
+  }
+
+  export type CardImagesCreateNestedOneWithoutCardInput = {
+    create?: XOR<CardImagesCreateWithoutCardInput, CardImagesUncheckedCreateWithoutCardInput>
+    connectOrCreate?: CardImagesCreateOrConnectWithoutCardInput
+    connect?: CardImagesWhereUniqueInput
+  }
+
+  export type CardLegalitiesCreateNestedOneWithoutCardInput = {
+    create?: XOR<CardLegalitiesCreateWithoutCardInput, CardLegalitiesUncheckedCreateWithoutCardInput>
+    connectOrCreate?: CardLegalitiesCreateOrConnectWithoutCardInput
+    connect?: CardLegalitiesWhereUniqueInput
+  }
+
+  export type CardMarketCreateNestedOneWithoutCardInput = {
+    create?: XOR<CardMarketCreateWithoutCardInput, CardMarketUncheckedCreateWithoutCardInput>
+    connectOrCreate?: CardMarketCreateOrConnectWithoutCardInput
+    connect?: CardMarketWhereUniqueInput
   }
 
   export type ResistanceCreateNestedManyWithoutCardInput = {
@@ -20054,34 +20156,17 @@ export namespace Prisma {
     connect?: ResistanceWhereUniqueInput | ResistanceWhereUniqueInput[]
   }
 
-  export type CardLegalitiesCreateNestedOneWithoutCardInput = {
-    create?: XOR<CardLegalitiesCreateWithoutCardInput, CardLegalitiesUncheckedCreateWithoutCardInput>
-    connectOrCreate?: CardLegalitiesCreateOrConnectWithoutCardInput
-    connect?: CardLegalitiesWhereUniqueInput
-  }
-
-  export type CardImagesCreateNestedOneWithoutCardInput = {
-    create?: XOR<CardImagesCreateWithoutCardInput, CardImagesUncheckedCreateWithoutCardInput>
-    connectOrCreate?: CardImagesCreateOrConnectWithoutCardInput
-    connect?: CardImagesWhereUniqueInput
-  }
-
-  export type CardMarketCreateNestedOneWithoutCardInput = {
-    create?: XOR<CardMarketCreateWithoutCardInput, CardMarketUncheckedCreateWithoutCardInput>
-    connectOrCreate?: CardMarketCreateOrConnectWithoutCardInput
-    connect?: CardMarketWhereUniqueInput
-  }
-
   export type TcgPlayerCreateNestedOneWithoutCardInput = {
     create?: XOR<TcgPlayerCreateWithoutCardInput, TcgPlayerUncheckedCreateWithoutCardInput>
     connectOrCreate?: TcgPlayerCreateOrConnectWithoutCardInput
     connect?: TcgPlayerWhereUniqueInput
   }
 
-  export type CardSetCreateNestedOneWithoutCardsInput = {
-    create?: XOR<CardSetCreateWithoutCardsInput, CardSetUncheckedCreateWithoutCardsInput>
-    connectOrCreate?: CardSetCreateOrConnectWithoutCardsInput
-    connect?: CardSetWhereUniqueInput
+  export type WeaknessCreateNestedManyWithoutCardInput = {
+    create?: XOR<WeaknessCreateWithoutCardInput, WeaknessUncheckedCreateWithoutCardInput> | WeaknessCreateWithoutCardInput[] | WeaknessUncheckedCreateWithoutCardInput[]
+    connectOrCreate?: WeaknessCreateOrConnectWithoutCardInput | WeaknessCreateOrConnectWithoutCardInput[]
+    createMany?: WeaknessCreateManyCardInputEnvelope
+    connect?: WeaknessWhereUniqueInput | WeaknessWhereUniqueInput[]
   }
 
   export type AbilityUncheckedCreateNestedManyWithoutCardInput = {
@@ -20098,11 +20183,22 @@ export namespace Prisma {
     connect?: AttackWhereUniqueInput | AttackWhereUniqueInput[]
   }
 
-  export type WeaknessUncheckedCreateNestedManyWithoutCardInput = {
-    create?: XOR<WeaknessCreateWithoutCardInput, WeaknessUncheckedCreateWithoutCardInput> | WeaknessCreateWithoutCardInput[] | WeaknessUncheckedCreateWithoutCardInput[]
-    connectOrCreate?: WeaknessCreateOrConnectWithoutCardInput | WeaknessCreateOrConnectWithoutCardInput[]
-    createMany?: WeaknessCreateManyCardInputEnvelope
-    connect?: WeaknessWhereUniqueInput | WeaknessWhereUniqueInput[]
+  export type CardImagesUncheckedCreateNestedOneWithoutCardInput = {
+    create?: XOR<CardImagesCreateWithoutCardInput, CardImagesUncheckedCreateWithoutCardInput>
+    connectOrCreate?: CardImagesCreateOrConnectWithoutCardInput
+    connect?: CardImagesWhereUniqueInput
+  }
+
+  export type CardLegalitiesUncheckedCreateNestedOneWithoutCardInput = {
+    create?: XOR<CardLegalitiesCreateWithoutCardInput, CardLegalitiesUncheckedCreateWithoutCardInput>
+    connectOrCreate?: CardLegalitiesCreateOrConnectWithoutCardInput
+    connect?: CardLegalitiesWhereUniqueInput
+  }
+
+  export type CardMarketUncheckedCreateNestedOneWithoutCardInput = {
+    create?: XOR<CardMarketCreateWithoutCardInput, CardMarketUncheckedCreateWithoutCardInput>
+    connectOrCreate?: CardMarketCreateOrConnectWithoutCardInput
+    connect?: CardMarketWhereUniqueInput
   }
 
   export type ResistanceUncheckedCreateNestedManyWithoutCardInput = {
@@ -20112,28 +20208,17 @@ export namespace Prisma {
     connect?: ResistanceWhereUniqueInput | ResistanceWhereUniqueInput[]
   }
 
-  export type CardLegalitiesUncheckedCreateNestedOneWithoutCardInput = {
-    create?: XOR<CardLegalitiesCreateWithoutCardInput, CardLegalitiesUncheckedCreateWithoutCardInput>
-    connectOrCreate?: CardLegalitiesCreateOrConnectWithoutCardInput
-    connect?: CardLegalitiesWhereUniqueInput
-  }
-
-  export type CardImagesUncheckedCreateNestedOneWithoutCardInput = {
-    create?: XOR<CardImagesCreateWithoutCardInput, CardImagesUncheckedCreateWithoutCardInput>
-    connectOrCreate?: CardImagesCreateOrConnectWithoutCardInput
-    connect?: CardImagesWhereUniqueInput
-  }
-
-  export type CardMarketUncheckedCreateNestedOneWithoutCardInput = {
-    create?: XOR<CardMarketCreateWithoutCardInput, CardMarketUncheckedCreateWithoutCardInput>
-    connectOrCreate?: CardMarketCreateOrConnectWithoutCardInput
-    connect?: CardMarketWhereUniqueInput
-  }
-
   export type TcgPlayerUncheckedCreateNestedOneWithoutCardInput = {
     create?: XOR<TcgPlayerCreateWithoutCardInput, TcgPlayerUncheckedCreateWithoutCardInput>
     connectOrCreate?: TcgPlayerCreateOrConnectWithoutCardInput
     connect?: TcgPlayerWhereUniqueInput
+  }
+
+  export type WeaknessUncheckedCreateNestedManyWithoutCardInput = {
+    create?: XOR<WeaknessCreateWithoutCardInput, WeaknessUncheckedCreateWithoutCardInput> | WeaknessCreateWithoutCardInput[] | WeaknessUncheckedCreateWithoutCardInput[]
+    connectOrCreate?: WeaknessCreateOrConnectWithoutCardInput | WeaknessCreateOrConnectWithoutCardInput[]
+    createMany?: WeaknessCreateManyCardInputEnvelope
+    connect?: WeaknessWhereUniqueInput | WeaknessWhereUniqueInput[]
   }
 
   export type StringFieldUpdateOperationsInput = {
@@ -20182,8 +20267,8 @@ export namespace Prisma {
     divide?: number
   }
 
-  export type NullableDateTimeFieldUpdateOperationsInput = {
-    set?: Date | string | null
+  export type DateTimeFieldUpdateOperationsInput = {
+    set?: Date | string
   }
 
   export type AbilityUpdateManyWithoutCardNestedInput = {
@@ -20214,18 +20299,44 @@ export namespace Prisma {
     deleteMany?: AttackScalarWhereInput | AttackScalarWhereInput[]
   }
 
-  export type WeaknessUpdateManyWithoutCardNestedInput = {
-    create?: XOR<WeaknessCreateWithoutCardInput, WeaknessUncheckedCreateWithoutCardInput> | WeaknessCreateWithoutCardInput[] | WeaknessUncheckedCreateWithoutCardInput[]
-    connectOrCreate?: WeaknessCreateOrConnectWithoutCardInput | WeaknessCreateOrConnectWithoutCardInput[]
-    upsert?: WeaknessUpsertWithWhereUniqueWithoutCardInput | WeaknessUpsertWithWhereUniqueWithoutCardInput[]
-    createMany?: WeaknessCreateManyCardInputEnvelope
-    set?: WeaknessWhereUniqueInput | WeaknessWhereUniqueInput[]
-    disconnect?: WeaknessWhereUniqueInput | WeaknessWhereUniqueInput[]
-    delete?: WeaknessWhereUniqueInput | WeaknessWhereUniqueInput[]
-    connect?: WeaknessWhereUniqueInput | WeaknessWhereUniqueInput[]
-    update?: WeaknessUpdateWithWhereUniqueWithoutCardInput | WeaknessUpdateWithWhereUniqueWithoutCardInput[]
-    updateMany?: WeaknessUpdateManyWithWhereWithoutCardInput | WeaknessUpdateManyWithWhereWithoutCardInput[]
-    deleteMany?: WeaknessScalarWhereInput | WeaknessScalarWhereInput[]
+  export type CardSetUpdateOneWithoutCardsNestedInput = {
+    create?: XOR<CardSetCreateWithoutCardsInput, CardSetUncheckedCreateWithoutCardsInput>
+    connectOrCreate?: CardSetCreateOrConnectWithoutCardsInput
+    upsert?: CardSetUpsertWithoutCardsInput
+    disconnect?: CardSetWhereInput | boolean
+    delete?: CardSetWhereInput | boolean
+    connect?: CardSetWhereUniqueInput
+    update?: XOR<XOR<CardSetUpdateToOneWithWhereWithoutCardsInput, CardSetUpdateWithoutCardsInput>, CardSetUncheckedUpdateWithoutCardsInput>
+  }
+
+  export type CardImagesUpdateOneWithoutCardNestedInput = {
+    create?: XOR<CardImagesCreateWithoutCardInput, CardImagesUncheckedCreateWithoutCardInput>
+    connectOrCreate?: CardImagesCreateOrConnectWithoutCardInput
+    upsert?: CardImagesUpsertWithoutCardInput
+    disconnect?: CardImagesWhereInput | boolean
+    delete?: CardImagesWhereInput | boolean
+    connect?: CardImagesWhereUniqueInput
+    update?: XOR<XOR<CardImagesUpdateToOneWithWhereWithoutCardInput, CardImagesUpdateWithoutCardInput>, CardImagesUncheckedUpdateWithoutCardInput>
+  }
+
+  export type CardLegalitiesUpdateOneWithoutCardNestedInput = {
+    create?: XOR<CardLegalitiesCreateWithoutCardInput, CardLegalitiesUncheckedCreateWithoutCardInput>
+    connectOrCreate?: CardLegalitiesCreateOrConnectWithoutCardInput
+    upsert?: CardLegalitiesUpsertWithoutCardInput
+    disconnect?: CardLegalitiesWhereInput | boolean
+    delete?: CardLegalitiesWhereInput | boolean
+    connect?: CardLegalitiesWhereUniqueInput
+    update?: XOR<XOR<CardLegalitiesUpdateToOneWithWhereWithoutCardInput, CardLegalitiesUpdateWithoutCardInput>, CardLegalitiesUncheckedUpdateWithoutCardInput>
+  }
+
+  export type CardMarketUpdateOneWithoutCardNestedInput = {
+    create?: XOR<CardMarketCreateWithoutCardInput, CardMarketUncheckedCreateWithoutCardInput>
+    connectOrCreate?: CardMarketCreateOrConnectWithoutCardInput
+    upsert?: CardMarketUpsertWithoutCardInput
+    disconnect?: CardMarketWhereInput | boolean
+    delete?: CardMarketWhereInput | boolean
+    connect?: CardMarketWhereUniqueInput
+    update?: XOR<XOR<CardMarketUpdateToOneWithWhereWithoutCardInput, CardMarketUpdateWithoutCardInput>, CardMarketUncheckedUpdateWithoutCardInput>
   }
 
   export type ResistanceUpdateManyWithoutCardNestedInput = {
@@ -20242,36 +20353,6 @@ export namespace Prisma {
     deleteMany?: ResistanceScalarWhereInput | ResistanceScalarWhereInput[]
   }
 
-  export type CardLegalitiesUpdateOneWithoutCardNestedInput = {
-    create?: XOR<CardLegalitiesCreateWithoutCardInput, CardLegalitiesUncheckedCreateWithoutCardInput>
-    connectOrCreate?: CardLegalitiesCreateOrConnectWithoutCardInput
-    upsert?: CardLegalitiesUpsertWithoutCardInput
-    disconnect?: CardLegalitiesWhereInput | boolean
-    delete?: CardLegalitiesWhereInput | boolean
-    connect?: CardLegalitiesWhereUniqueInput
-    update?: XOR<XOR<CardLegalitiesUpdateToOneWithWhereWithoutCardInput, CardLegalitiesUpdateWithoutCardInput>, CardLegalitiesUncheckedUpdateWithoutCardInput>
-  }
-
-  export type CardImagesUpdateOneWithoutCardNestedInput = {
-    create?: XOR<CardImagesCreateWithoutCardInput, CardImagesUncheckedCreateWithoutCardInput>
-    connectOrCreate?: CardImagesCreateOrConnectWithoutCardInput
-    upsert?: CardImagesUpsertWithoutCardInput
-    disconnect?: CardImagesWhereInput | boolean
-    delete?: CardImagesWhereInput | boolean
-    connect?: CardImagesWhereUniqueInput
-    update?: XOR<XOR<CardImagesUpdateToOneWithWhereWithoutCardInput, CardImagesUpdateWithoutCardInput>, CardImagesUncheckedUpdateWithoutCardInput>
-  }
-
-  export type CardMarketUpdateOneWithoutCardNestedInput = {
-    create?: XOR<CardMarketCreateWithoutCardInput, CardMarketUncheckedCreateWithoutCardInput>
-    connectOrCreate?: CardMarketCreateOrConnectWithoutCardInput
-    upsert?: CardMarketUpsertWithoutCardInput
-    disconnect?: CardMarketWhereInput | boolean
-    delete?: CardMarketWhereInput | boolean
-    connect?: CardMarketWhereUniqueInput
-    update?: XOR<XOR<CardMarketUpdateToOneWithWhereWithoutCardInput, CardMarketUpdateWithoutCardInput>, CardMarketUncheckedUpdateWithoutCardInput>
-  }
-
   export type TcgPlayerUpdateOneWithoutCardNestedInput = {
     create?: XOR<TcgPlayerCreateWithoutCardInput, TcgPlayerUncheckedCreateWithoutCardInput>
     connectOrCreate?: TcgPlayerCreateOrConnectWithoutCardInput
@@ -20282,14 +20363,18 @@ export namespace Prisma {
     update?: XOR<XOR<TcgPlayerUpdateToOneWithWhereWithoutCardInput, TcgPlayerUpdateWithoutCardInput>, TcgPlayerUncheckedUpdateWithoutCardInput>
   }
 
-  export type CardSetUpdateOneWithoutCardsNestedInput = {
-    create?: XOR<CardSetCreateWithoutCardsInput, CardSetUncheckedCreateWithoutCardsInput>
-    connectOrCreate?: CardSetCreateOrConnectWithoutCardsInput
-    upsert?: CardSetUpsertWithoutCardsInput
-    disconnect?: CardSetWhereInput | boolean
-    delete?: CardSetWhereInput | boolean
-    connect?: CardSetWhereUniqueInput
-    update?: XOR<XOR<CardSetUpdateToOneWithWhereWithoutCardsInput, CardSetUpdateWithoutCardsInput>, CardSetUncheckedUpdateWithoutCardsInput>
+  export type WeaknessUpdateManyWithoutCardNestedInput = {
+    create?: XOR<WeaknessCreateWithoutCardInput, WeaknessUncheckedCreateWithoutCardInput> | WeaknessCreateWithoutCardInput[] | WeaknessUncheckedCreateWithoutCardInput[]
+    connectOrCreate?: WeaknessCreateOrConnectWithoutCardInput | WeaknessCreateOrConnectWithoutCardInput[]
+    upsert?: WeaknessUpsertWithWhereUniqueWithoutCardInput | WeaknessUpsertWithWhereUniqueWithoutCardInput[]
+    createMany?: WeaknessCreateManyCardInputEnvelope
+    set?: WeaknessWhereUniqueInput | WeaknessWhereUniqueInput[]
+    disconnect?: WeaknessWhereUniqueInput | WeaknessWhereUniqueInput[]
+    delete?: WeaknessWhereUniqueInput | WeaknessWhereUniqueInput[]
+    connect?: WeaknessWhereUniqueInput | WeaknessWhereUniqueInput[]
+    update?: WeaknessUpdateWithWhereUniqueWithoutCardInput | WeaknessUpdateWithWhereUniqueWithoutCardInput[]
+    updateMany?: WeaknessUpdateManyWithWhereWithoutCardInput | WeaknessUpdateManyWithWhereWithoutCardInput[]
+    deleteMany?: WeaknessScalarWhereInput | WeaknessScalarWhereInput[]
   }
 
   export type AbilityUncheckedUpdateManyWithoutCardNestedInput = {
@@ -20320,18 +20405,34 @@ export namespace Prisma {
     deleteMany?: AttackScalarWhereInput | AttackScalarWhereInput[]
   }
 
-  export type WeaknessUncheckedUpdateManyWithoutCardNestedInput = {
-    create?: XOR<WeaknessCreateWithoutCardInput, WeaknessUncheckedCreateWithoutCardInput> | WeaknessCreateWithoutCardInput[] | WeaknessUncheckedCreateWithoutCardInput[]
-    connectOrCreate?: WeaknessCreateOrConnectWithoutCardInput | WeaknessCreateOrConnectWithoutCardInput[]
-    upsert?: WeaknessUpsertWithWhereUniqueWithoutCardInput | WeaknessUpsertWithWhereUniqueWithoutCardInput[]
-    createMany?: WeaknessCreateManyCardInputEnvelope
-    set?: WeaknessWhereUniqueInput | WeaknessWhereUniqueInput[]
-    disconnect?: WeaknessWhereUniqueInput | WeaknessWhereUniqueInput[]
-    delete?: WeaknessWhereUniqueInput | WeaknessWhereUniqueInput[]
-    connect?: WeaknessWhereUniqueInput | WeaknessWhereUniqueInput[]
-    update?: WeaknessUpdateWithWhereUniqueWithoutCardInput | WeaknessUpdateWithWhereUniqueWithoutCardInput[]
-    updateMany?: WeaknessUpdateManyWithWhereWithoutCardInput | WeaknessUpdateManyWithWhereWithoutCardInput[]
-    deleteMany?: WeaknessScalarWhereInput | WeaknessScalarWhereInput[]
+  export type CardImagesUncheckedUpdateOneWithoutCardNestedInput = {
+    create?: XOR<CardImagesCreateWithoutCardInput, CardImagesUncheckedCreateWithoutCardInput>
+    connectOrCreate?: CardImagesCreateOrConnectWithoutCardInput
+    upsert?: CardImagesUpsertWithoutCardInput
+    disconnect?: CardImagesWhereInput | boolean
+    delete?: CardImagesWhereInput | boolean
+    connect?: CardImagesWhereUniqueInput
+    update?: XOR<XOR<CardImagesUpdateToOneWithWhereWithoutCardInput, CardImagesUpdateWithoutCardInput>, CardImagesUncheckedUpdateWithoutCardInput>
+  }
+
+  export type CardLegalitiesUncheckedUpdateOneWithoutCardNestedInput = {
+    create?: XOR<CardLegalitiesCreateWithoutCardInput, CardLegalitiesUncheckedCreateWithoutCardInput>
+    connectOrCreate?: CardLegalitiesCreateOrConnectWithoutCardInput
+    upsert?: CardLegalitiesUpsertWithoutCardInput
+    disconnect?: CardLegalitiesWhereInput | boolean
+    delete?: CardLegalitiesWhereInput | boolean
+    connect?: CardLegalitiesWhereUniqueInput
+    update?: XOR<XOR<CardLegalitiesUpdateToOneWithWhereWithoutCardInput, CardLegalitiesUpdateWithoutCardInput>, CardLegalitiesUncheckedUpdateWithoutCardInput>
+  }
+
+  export type CardMarketUncheckedUpdateOneWithoutCardNestedInput = {
+    create?: XOR<CardMarketCreateWithoutCardInput, CardMarketUncheckedCreateWithoutCardInput>
+    connectOrCreate?: CardMarketCreateOrConnectWithoutCardInput
+    upsert?: CardMarketUpsertWithoutCardInput
+    disconnect?: CardMarketWhereInput | boolean
+    delete?: CardMarketWhereInput | boolean
+    connect?: CardMarketWhereUniqueInput
+    update?: XOR<XOR<CardMarketUpdateToOneWithWhereWithoutCardInput, CardMarketUpdateWithoutCardInput>, CardMarketUncheckedUpdateWithoutCardInput>
   }
 
   export type ResistanceUncheckedUpdateManyWithoutCardNestedInput = {
@@ -20348,36 +20449,6 @@ export namespace Prisma {
     deleteMany?: ResistanceScalarWhereInput | ResistanceScalarWhereInput[]
   }
 
-  export type CardLegalitiesUncheckedUpdateOneWithoutCardNestedInput = {
-    create?: XOR<CardLegalitiesCreateWithoutCardInput, CardLegalitiesUncheckedCreateWithoutCardInput>
-    connectOrCreate?: CardLegalitiesCreateOrConnectWithoutCardInput
-    upsert?: CardLegalitiesUpsertWithoutCardInput
-    disconnect?: CardLegalitiesWhereInput | boolean
-    delete?: CardLegalitiesWhereInput | boolean
-    connect?: CardLegalitiesWhereUniqueInput
-    update?: XOR<XOR<CardLegalitiesUpdateToOneWithWhereWithoutCardInput, CardLegalitiesUpdateWithoutCardInput>, CardLegalitiesUncheckedUpdateWithoutCardInput>
-  }
-
-  export type CardImagesUncheckedUpdateOneWithoutCardNestedInput = {
-    create?: XOR<CardImagesCreateWithoutCardInput, CardImagesUncheckedCreateWithoutCardInput>
-    connectOrCreate?: CardImagesCreateOrConnectWithoutCardInput
-    upsert?: CardImagesUpsertWithoutCardInput
-    disconnect?: CardImagesWhereInput | boolean
-    delete?: CardImagesWhereInput | boolean
-    connect?: CardImagesWhereUniqueInput
-    update?: XOR<XOR<CardImagesUpdateToOneWithWhereWithoutCardInput, CardImagesUpdateWithoutCardInput>, CardImagesUncheckedUpdateWithoutCardInput>
-  }
-
-  export type CardMarketUncheckedUpdateOneWithoutCardNestedInput = {
-    create?: XOR<CardMarketCreateWithoutCardInput, CardMarketUncheckedCreateWithoutCardInput>
-    connectOrCreate?: CardMarketCreateOrConnectWithoutCardInput
-    upsert?: CardMarketUpsertWithoutCardInput
-    disconnect?: CardMarketWhereInput | boolean
-    delete?: CardMarketWhereInput | boolean
-    connect?: CardMarketWhereUniqueInput
-    update?: XOR<XOR<CardMarketUpdateToOneWithWhereWithoutCardInput, CardMarketUpdateWithoutCardInput>, CardMarketUncheckedUpdateWithoutCardInput>
-  }
-
   export type TcgPlayerUncheckedUpdateOneWithoutCardNestedInput = {
     create?: XOR<TcgPlayerCreateWithoutCardInput, TcgPlayerUncheckedCreateWithoutCardInput>
     connectOrCreate?: TcgPlayerCreateOrConnectWithoutCardInput
@@ -20386,6 +20457,20 @@ export namespace Prisma {
     delete?: TcgPlayerWhereInput | boolean
     connect?: TcgPlayerWhereUniqueInput
     update?: XOR<XOR<TcgPlayerUpdateToOneWithWhereWithoutCardInput, TcgPlayerUpdateWithoutCardInput>, TcgPlayerUncheckedUpdateWithoutCardInput>
+  }
+
+  export type WeaknessUncheckedUpdateManyWithoutCardNestedInput = {
+    create?: XOR<WeaknessCreateWithoutCardInput, WeaknessUncheckedCreateWithoutCardInput> | WeaknessCreateWithoutCardInput[] | WeaknessUncheckedCreateWithoutCardInput[]
+    connectOrCreate?: WeaknessCreateOrConnectWithoutCardInput | WeaknessCreateOrConnectWithoutCardInput[]
+    upsert?: WeaknessUpsertWithWhereUniqueWithoutCardInput | WeaknessUpsertWithWhereUniqueWithoutCardInput[]
+    createMany?: WeaknessCreateManyCardInputEnvelope
+    set?: WeaknessWhereUniqueInput | WeaknessWhereUniqueInput[]
+    disconnect?: WeaknessWhereUniqueInput | WeaknessWhereUniqueInput[]
+    delete?: WeaknessWhereUniqueInput | WeaknessWhereUniqueInput[]
+    connect?: WeaknessWhereUniqueInput | WeaknessWhereUniqueInput[]
+    update?: WeaknessUpdateWithWhereUniqueWithoutCardInput | WeaknessUpdateWithWhereUniqueWithoutCardInput[]
+    updateMany?: WeaknessUpdateManyWithWhereWithoutCardInput | WeaknessUpdateManyWithWhereWithoutCardInput[]
+    deleteMany?: WeaknessScalarWhereInput | WeaknessScalarWhereInput[]
   }
 
   export type CardCreateNestedOneWithoutAbilitiesInput = {
@@ -20415,6 +20500,14 @@ export namespace Prisma {
   export type AttackUpdatecostInput = {
     set?: string[]
     push?: string | string[]
+  }
+
+  export type IntFieldUpdateOperationsInput = {
+    set?: number
+    increment?: number
+    decrement?: number
+    multiply?: number
+    divide?: number
   }
 
   export type CardUpdateOneRequiredWithoutAttacksNestedInput = {
@@ -20487,6 +20580,10 @@ export namespace Prisma {
     connect?: CardWhereUniqueInput
   }
 
+  export type NullableDateTimeFieldUpdateOperationsInput = {
+    set?: Date | string | null
+  }
+
   export type NullableFloatFieldUpdateOperationsInput = {
     set?: number | null
     increment?: number
@@ -20555,10 +20652,12 @@ export namespace Prisma {
     update?: XOR<XOR<CardUpdateToOneWithWhereWithoutTcgplayerInput, CardUpdateWithoutTcgplayerInput>, CardUncheckedUpdateWithoutTcgplayerInput>
   }
 
-  export type TcgPlayerPricesUpdateOneRequiredWithoutTcgplayerNestedInput = {
+  export type TcgPlayerPricesUpdateOneWithoutTcgplayerNestedInput = {
     create?: XOR<TcgPlayerPricesCreateWithoutTcgplayerInput, TcgPlayerPricesUncheckedCreateWithoutTcgplayerInput>
     connectOrCreate?: TcgPlayerPricesCreateOrConnectWithoutTcgplayerInput
     upsert?: TcgPlayerPricesUpsertWithoutTcgplayerInput
+    disconnect?: TcgPlayerPricesWhereInput | boolean
+    delete?: TcgPlayerPricesWhereInput | boolean
     connect?: TcgPlayerPricesWhereUniqueInput
     update?: XOR<XOR<TcgPlayerPricesUpdateToOneWithWhereWithoutTcgplayerInput, TcgPlayerPricesUpdateWithoutTcgplayerInput>, TcgPlayerPricesUncheckedUpdateWithoutTcgplayerInput>
   }
@@ -20651,6 +20750,10 @@ export namespace Prisma {
     update?: XOR<XOR<CardSetUpdateToOneWithWhereWithoutLegalitiesInput, CardSetUpdateWithoutLegalitiesInput>, CardSetUncheckedUpdateWithoutLegalitiesInput>
   }
 
+  export type BoolFieldUpdateOperationsInput = {
+    set?: boolean
+  }
+
   export type NestedStringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -20690,15 +20793,15 @@ export namespace Prisma {
     not?: NestedIntNullableFilter<$PrismaModel> | number | null
   }
 
-  export type NestedDateTimeNullableFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
-    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+  export type NestedDateTimeFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
     lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
+    not?: NestedDateTimeFilter<$PrismaModel> | Date | string
   }
 
   export type NestedStringWithAggregatesFilter<$PrismaModel = never> = {
@@ -20773,6 +20876,58 @@ export namespace Prisma {
     not?: NestedFloatNullableFilter<$PrismaModel> | number | null
   }
 
+  export type NestedDateTimeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeWithAggregatesFilter<$PrismaModel> | Date | string
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedDateTimeFilter<$PrismaModel>
+    _max?: NestedDateTimeFilter<$PrismaModel>
+  }
+
+  export type NestedIntWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel>
+    in?: number[] | ListIntFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntWithAggregatesFilter<$PrismaModel> | number
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedFloatFilter<$PrismaModel>
+    _sum?: NestedIntFilter<$PrismaModel>
+    _min?: NestedIntFilter<$PrismaModel>
+    _max?: NestedIntFilter<$PrismaModel>
+  }
+
+  export type NestedFloatFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel>
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatFilter<$PrismaModel> | number
+  }
+
+  export type NestedDateTimeNullableFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
+  }
+
   export type NestedDateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
     in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
@@ -20803,18 +20958,31 @@ export namespace Prisma {
     _max?: NestedFloatNullableFilter<$PrismaModel>
   }
 
+  export type NestedBoolFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolFilter<$PrismaModel> | boolean
+  }
+
+  export type NestedBoolWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedBoolFilter<$PrismaModel>
+    _max?: NestedBoolFilter<$PrismaModel>
+  }
+
   export type AbilityCreateWithoutCardInput = {
     id: string
-    name?: string | null
-    text?: string | null
-    type?: string | null
+    name: string
+    text: string
+    type: string
   }
 
   export type AbilityUncheckedCreateWithoutCardInput = {
     id: string
-    name?: string | null
-    text?: string | null
-    type?: string | null
+    name: string
+    text: string
+    type: string
   }
 
   export type AbilityCreateOrConnectWithoutCardInput = {
@@ -20829,18 +20997,18 @@ export namespace Prisma {
 
   export type AttackCreateWithoutCardInput = {
     id: string
-    name?: string | null
+    name: string
     cost?: AttackCreatecostInput | string[]
-    convertedEnergyCost?: number | null
+    convertedEnergyCost: number
     damage?: string | null
     text?: string | null
   }
 
   export type AttackUncheckedCreateWithoutCardInput = {
     id: string
-    name?: string | null
+    name: string
     cost?: AttackCreatecostInput | string[]
-    convertedEnergyCost?: number | null
+    convertedEnergyCost: number
     damage?: string | null
     text?: string | null
   }
@@ -20855,48 +21023,54 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
-  export type WeaknessCreateWithoutCardInput = {
+  export type CardSetCreateWithoutCardsInput = {
     id: string
-    type?: string | null
-    value?: string | null
+    name: string
+    series: string
+    printedTotal?: number | null
+    total?: number | null
+    ptcgoCode?: string | null
+    releaseDate?: Date | string | null
+    updatedAt?: Date | string | null
+    symbol?: string | null
+    logo?: string | null
+    legalities?: SetLegalitiesCreateNestedOneWithoutSetInput
   }
 
-  export type WeaknessUncheckedCreateWithoutCardInput = {
+  export type CardSetUncheckedCreateWithoutCardsInput = {
     id: string
-    type?: string | null
-    value?: string | null
+    name: string
+    series: string
+    printedTotal?: number | null
+    total?: number | null
+    ptcgoCode?: string | null
+    releaseDate?: Date | string | null
+    updatedAt?: Date | string | null
+    symbol?: string | null
+    logo?: string | null
+    legalities?: SetLegalitiesUncheckedCreateNestedOneWithoutSetInput
   }
 
-  export type WeaknessCreateOrConnectWithoutCardInput = {
-    where: WeaknessWhereUniqueInput
-    create: XOR<WeaknessCreateWithoutCardInput, WeaknessUncheckedCreateWithoutCardInput>
+  export type CardSetCreateOrConnectWithoutCardsInput = {
+    where: CardSetWhereUniqueInput
+    create: XOR<CardSetCreateWithoutCardsInput, CardSetUncheckedCreateWithoutCardsInput>
   }
 
-  export type WeaknessCreateManyCardInputEnvelope = {
-    data: WeaknessCreateManyCardInput | WeaknessCreateManyCardInput[]
-    skipDuplicates?: boolean
-  }
-
-  export type ResistanceCreateWithoutCardInput = {
+  export type CardImagesCreateWithoutCardInput = {
     id: string
-    type?: string | null
-    value?: string | null
+    small?: string | null
+    large?: string | null
   }
 
-  export type ResistanceUncheckedCreateWithoutCardInput = {
+  export type CardImagesUncheckedCreateWithoutCardInput = {
     id: string
-    type?: string | null
-    value?: string | null
+    small?: string | null
+    large?: string | null
   }
 
-  export type ResistanceCreateOrConnectWithoutCardInput = {
-    where: ResistanceWhereUniqueInput
-    create: XOR<ResistanceCreateWithoutCardInput, ResistanceUncheckedCreateWithoutCardInput>
-  }
-
-  export type ResistanceCreateManyCardInputEnvelope = {
-    data: ResistanceCreateManyCardInput | ResistanceCreateManyCardInput[]
-    skipDuplicates?: boolean
+  export type CardImagesCreateOrConnectWithoutCardInput = {
+    where: CardImagesWhereUniqueInput
+    create: XOR<CardImagesCreateWithoutCardInput, CardImagesUncheckedCreateWithoutCardInput>
   }
 
   export type CardLegalitiesCreateWithoutCardInput = {
@@ -20916,23 +21090,6 @@ export namespace Prisma {
   export type CardLegalitiesCreateOrConnectWithoutCardInput = {
     where: CardLegalitiesWhereUniqueInput
     create: XOR<CardLegalitiesCreateWithoutCardInput, CardLegalitiesUncheckedCreateWithoutCardInput>
-  }
-
-  export type CardImagesCreateWithoutCardInput = {
-    id: string
-    small?: string | null
-    large?: string | null
-  }
-
-  export type CardImagesUncheckedCreateWithoutCardInput = {
-    id: string
-    small?: string | null
-    large?: string | null
-  }
-
-  export type CardImagesCreateOrConnectWithoutCardInput = {
-    where: CardImagesWhereUniqueInput
-    create: XOR<CardImagesCreateWithoutCardInput, CardImagesUncheckedCreateWithoutCardInput>
   }
 
   export type CardMarketCreateWithoutCardInput = {
@@ -20982,18 +21139,40 @@ export namespace Prisma {
     create: XOR<CardMarketCreateWithoutCardInput, CardMarketUncheckedCreateWithoutCardInput>
   }
 
+  export type ResistanceCreateWithoutCardInput = {
+    id: string
+    type: string
+    value: string
+  }
+
+  export type ResistanceUncheckedCreateWithoutCardInput = {
+    id: string
+    type: string
+    value: string
+  }
+
+  export type ResistanceCreateOrConnectWithoutCardInput = {
+    where: ResistanceWhereUniqueInput
+    create: XOR<ResistanceCreateWithoutCardInput, ResistanceUncheckedCreateWithoutCardInput>
+  }
+
+  export type ResistanceCreateManyCardInputEnvelope = {
+    data: ResistanceCreateManyCardInput | ResistanceCreateManyCardInput[]
+    skipDuplicates?: boolean
+  }
+
   export type TcgPlayerCreateWithoutCardInput = {
     id: string
     url?: string | null
     updatedAt?: Date | string | null
-    prices: TcgPlayerPricesCreateNestedOneWithoutTcgplayerInput
+    prices?: TcgPlayerPricesCreateNestedOneWithoutTcgplayerInput
   }
 
   export type TcgPlayerUncheckedCreateWithoutCardInput = {
     id: string
     url?: string | null
     updatedAt?: Date | string | null
-    pricesId: string
+    pricesId?: string | null
   }
 
   export type TcgPlayerCreateOrConnectWithoutCardInput = {
@@ -21001,37 +21180,26 @@ export namespace Prisma {
     create: XOR<TcgPlayerCreateWithoutCardInput, TcgPlayerUncheckedCreateWithoutCardInput>
   }
 
-  export type CardSetCreateWithoutCardsInput = {
+  export type WeaknessCreateWithoutCardInput = {
     id: string
-    name?: string | null
-    series?: string | null
-    printedTotal?: number | null
-    total?: number | null
-    ptcgoCode?: string | null
-    releaseDate?: Date | string | null
-    updatedAt?: Date | string | null
-    symbol?: string | null
-    logo?: string | null
-    legalities?: SetLegalitiesCreateNestedOneWithoutSetInput
+    type: string
+    value: string
   }
 
-  export type CardSetUncheckedCreateWithoutCardsInput = {
+  export type WeaknessUncheckedCreateWithoutCardInput = {
     id: string
-    name?: string | null
-    series?: string | null
-    printedTotal?: number | null
-    total?: number | null
-    ptcgoCode?: string | null
-    releaseDate?: Date | string | null
-    updatedAt?: Date | string | null
-    symbol?: string | null
-    logo?: string | null
-    legalities?: SetLegalitiesUncheckedCreateNestedOneWithoutSetInput
+    type: string
+    value: string
   }
 
-  export type CardSetCreateOrConnectWithoutCardsInput = {
-    where: CardSetWhereUniqueInput
-    create: XOR<CardSetCreateWithoutCardsInput, CardSetUncheckedCreateWithoutCardsInput>
+  export type WeaknessCreateOrConnectWithoutCardInput = {
+    where: WeaknessWhereUniqueInput
+    create: XOR<WeaknessCreateWithoutCardInput, WeaknessUncheckedCreateWithoutCardInput>
+  }
+
+  export type WeaknessCreateManyCardInputEnvelope = {
+    data: WeaknessCreateManyCardInput | WeaknessCreateManyCardInput[]
+    skipDuplicates?: boolean
   }
 
   export type AbilityUpsertWithWhereUniqueWithoutCardInput = {
@@ -21056,9 +21224,9 @@ export namespace Prisma {
     NOT?: AbilityScalarWhereInput | AbilityScalarWhereInput[]
     id?: StringFilter<"Ability"> | string
     cardId?: StringFilter<"Ability"> | string
-    name?: StringNullableFilter<"Ability"> | string | null
-    text?: StringNullableFilter<"Ability"> | string | null
-    type?: StringNullableFilter<"Ability"> | string | null
+    name?: StringFilter<"Ability"> | string
+    text?: StringFilter<"Ability"> | string
+    type?: StringFilter<"Ability"> | string
   }
 
   export type AttackUpsertWithWhereUniqueWithoutCardInput = {
@@ -21083,63 +21251,73 @@ export namespace Prisma {
     NOT?: AttackScalarWhereInput | AttackScalarWhereInput[]
     id?: StringFilter<"Attack"> | string
     cardId?: StringFilter<"Attack"> | string
-    name?: StringNullableFilter<"Attack"> | string | null
+    name?: StringFilter<"Attack"> | string
     cost?: StringNullableListFilter<"Attack">
-    convertedEnergyCost?: IntNullableFilter<"Attack"> | number | null
+    convertedEnergyCost?: IntFilter<"Attack"> | number
     damage?: StringNullableFilter<"Attack"> | string | null
     text?: StringNullableFilter<"Attack"> | string | null
   }
 
-  export type WeaknessUpsertWithWhereUniqueWithoutCardInput = {
-    where: WeaknessWhereUniqueInput
-    update: XOR<WeaknessUpdateWithoutCardInput, WeaknessUncheckedUpdateWithoutCardInput>
-    create: XOR<WeaknessCreateWithoutCardInput, WeaknessUncheckedCreateWithoutCardInput>
+  export type CardSetUpsertWithoutCardsInput = {
+    update: XOR<CardSetUpdateWithoutCardsInput, CardSetUncheckedUpdateWithoutCardsInput>
+    create: XOR<CardSetCreateWithoutCardsInput, CardSetUncheckedCreateWithoutCardsInput>
+    where?: CardSetWhereInput
   }
 
-  export type WeaknessUpdateWithWhereUniqueWithoutCardInput = {
-    where: WeaknessWhereUniqueInput
-    data: XOR<WeaknessUpdateWithoutCardInput, WeaknessUncheckedUpdateWithoutCardInput>
+  export type CardSetUpdateToOneWithWhereWithoutCardsInput = {
+    where?: CardSetWhereInput
+    data: XOR<CardSetUpdateWithoutCardsInput, CardSetUncheckedUpdateWithoutCardsInput>
   }
 
-  export type WeaknessUpdateManyWithWhereWithoutCardInput = {
-    where: WeaknessScalarWhereInput
-    data: XOR<WeaknessUpdateManyMutationInput, WeaknessUncheckedUpdateManyWithoutCardInput>
+  export type CardSetUpdateWithoutCardsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    series?: StringFieldUpdateOperationsInput | string
+    printedTotal?: NullableIntFieldUpdateOperationsInput | number | null
+    total?: NullableIntFieldUpdateOperationsInput | number | null
+    ptcgoCode?: NullableStringFieldUpdateOperationsInput | string | null
+    releaseDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    symbol?: NullableStringFieldUpdateOperationsInput | string | null
+    logo?: NullableStringFieldUpdateOperationsInput | string | null
+    legalities?: SetLegalitiesUpdateOneWithoutSetNestedInput
   }
 
-  export type WeaknessScalarWhereInput = {
-    AND?: WeaknessScalarWhereInput | WeaknessScalarWhereInput[]
-    OR?: WeaknessScalarWhereInput[]
-    NOT?: WeaknessScalarWhereInput | WeaknessScalarWhereInput[]
-    id?: StringFilter<"Weakness"> | string
-    cardId?: StringFilter<"Weakness"> | string
-    type?: StringNullableFilter<"Weakness"> | string | null
-    value?: StringNullableFilter<"Weakness"> | string | null
+  export type CardSetUncheckedUpdateWithoutCardsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    series?: StringFieldUpdateOperationsInput | string
+    printedTotal?: NullableIntFieldUpdateOperationsInput | number | null
+    total?: NullableIntFieldUpdateOperationsInput | number | null
+    ptcgoCode?: NullableStringFieldUpdateOperationsInput | string | null
+    releaseDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    symbol?: NullableStringFieldUpdateOperationsInput | string | null
+    logo?: NullableStringFieldUpdateOperationsInput | string | null
+    legalities?: SetLegalitiesUncheckedUpdateOneWithoutSetNestedInput
   }
 
-  export type ResistanceUpsertWithWhereUniqueWithoutCardInput = {
-    where: ResistanceWhereUniqueInput
-    update: XOR<ResistanceUpdateWithoutCardInput, ResistanceUncheckedUpdateWithoutCardInput>
-    create: XOR<ResistanceCreateWithoutCardInput, ResistanceUncheckedCreateWithoutCardInput>
+  export type CardImagesUpsertWithoutCardInput = {
+    update: XOR<CardImagesUpdateWithoutCardInput, CardImagesUncheckedUpdateWithoutCardInput>
+    create: XOR<CardImagesCreateWithoutCardInput, CardImagesUncheckedCreateWithoutCardInput>
+    where?: CardImagesWhereInput
   }
 
-  export type ResistanceUpdateWithWhereUniqueWithoutCardInput = {
-    where: ResistanceWhereUniqueInput
-    data: XOR<ResistanceUpdateWithoutCardInput, ResistanceUncheckedUpdateWithoutCardInput>
+  export type CardImagesUpdateToOneWithWhereWithoutCardInput = {
+    where?: CardImagesWhereInput
+    data: XOR<CardImagesUpdateWithoutCardInput, CardImagesUncheckedUpdateWithoutCardInput>
   }
 
-  export type ResistanceUpdateManyWithWhereWithoutCardInput = {
-    where: ResistanceScalarWhereInput
-    data: XOR<ResistanceUpdateManyMutationInput, ResistanceUncheckedUpdateManyWithoutCardInput>
+  export type CardImagesUpdateWithoutCardInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    small?: NullableStringFieldUpdateOperationsInput | string | null
+    large?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
-  export type ResistanceScalarWhereInput = {
-    AND?: ResistanceScalarWhereInput | ResistanceScalarWhereInput[]
-    OR?: ResistanceScalarWhereInput[]
-    NOT?: ResistanceScalarWhereInput | ResistanceScalarWhereInput[]
-    id?: StringFilter<"Resistance"> | string
-    cardId?: StringFilter<"Resistance"> | string
-    type?: StringNullableFilter<"Resistance"> | string | null
-    value?: StringNullableFilter<"Resistance"> | string | null
+  export type CardImagesUncheckedUpdateWithoutCardInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    small?: NullableStringFieldUpdateOperationsInput | string | null
+    large?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type CardLegalitiesUpsertWithoutCardInput = {
@@ -21165,29 +21343,6 @@ export namespace Prisma {
     unlimited?: NullableStringFieldUpdateOperationsInput | string | null
     standard?: NullableStringFieldUpdateOperationsInput | string | null
     expanded?: NullableStringFieldUpdateOperationsInput | string | null
-  }
-
-  export type CardImagesUpsertWithoutCardInput = {
-    update: XOR<CardImagesUpdateWithoutCardInput, CardImagesUncheckedUpdateWithoutCardInput>
-    create: XOR<CardImagesCreateWithoutCardInput, CardImagesUncheckedCreateWithoutCardInput>
-    where?: CardImagesWhereInput
-  }
-
-  export type CardImagesUpdateToOneWithWhereWithoutCardInput = {
-    where?: CardImagesWhereInput
-    data: XOR<CardImagesUpdateWithoutCardInput, CardImagesUncheckedUpdateWithoutCardInput>
-  }
-
-  export type CardImagesUpdateWithoutCardInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    small?: NullableStringFieldUpdateOperationsInput | string | null
-    large?: NullableStringFieldUpdateOperationsInput | string | null
-  }
-
-  export type CardImagesUncheckedUpdateWithoutCardInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    small?: NullableStringFieldUpdateOperationsInput | string | null
-    large?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type CardMarketUpsertWithoutCardInput = {
@@ -21243,6 +21398,32 @@ export namespace Prisma {
     reverseHoloAvg30?: NullableFloatFieldUpdateOperationsInput | number | null
   }
 
+  export type ResistanceUpsertWithWhereUniqueWithoutCardInput = {
+    where: ResistanceWhereUniqueInput
+    update: XOR<ResistanceUpdateWithoutCardInput, ResistanceUncheckedUpdateWithoutCardInput>
+    create: XOR<ResistanceCreateWithoutCardInput, ResistanceUncheckedCreateWithoutCardInput>
+  }
+
+  export type ResistanceUpdateWithWhereUniqueWithoutCardInput = {
+    where: ResistanceWhereUniqueInput
+    data: XOR<ResistanceUpdateWithoutCardInput, ResistanceUncheckedUpdateWithoutCardInput>
+  }
+
+  export type ResistanceUpdateManyWithWhereWithoutCardInput = {
+    where: ResistanceScalarWhereInput
+    data: XOR<ResistanceUpdateManyMutationInput, ResistanceUncheckedUpdateManyWithoutCardInput>
+  }
+
+  export type ResistanceScalarWhereInput = {
+    AND?: ResistanceScalarWhereInput | ResistanceScalarWhereInput[]
+    OR?: ResistanceScalarWhereInput[]
+    NOT?: ResistanceScalarWhereInput | ResistanceScalarWhereInput[]
+    id?: StringFilter<"Resistance"> | string
+    cardId?: StringFilter<"Resistance"> | string
+    type?: StringFilter<"Resistance"> | string
+    value?: StringFilter<"Resistance"> | string
+  }
+
   export type TcgPlayerUpsertWithoutCardInput = {
     update: XOR<TcgPlayerUpdateWithoutCardInput, TcgPlayerUncheckedUpdateWithoutCardInput>
     create: XOR<TcgPlayerCreateWithoutCardInput, TcgPlayerUncheckedCreateWithoutCardInput>
@@ -21258,53 +21439,40 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     url?: NullableStringFieldUpdateOperationsInput | string | null
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    prices?: TcgPlayerPricesUpdateOneRequiredWithoutTcgplayerNestedInput
+    prices?: TcgPlayerPricesUpdateOneWithoutTcgplayerNestedInput
   }
 
   export type TcgPlayerUncheckedUpdateWithoutCardInput = {
     id?: StringFieldUpdateOperationsInput | string
     url?: NullableStringFieldUpdateOperationsInput | string | null
     updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    pricesId?: StringFieldUpdateOperationsInput | string
+    pricesId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
-  export type CardSetUpsertWithoutCardsInput = {
-    update: XOR<CardSetUpdateWithoutCardsInput, CardSetUncheckedUpdateWithoutCardsInput>
-    create: XOR<CardSetCreateWithoutCardsInput, CardSetUncheckedCreateWithoutCardsInput>
-    where?: CardSetWhereInput
+  export type WeaknessUpsertWithWhereUniqueWithoutCardInput = {
+    where: WeaknessWhereUniqueInput
+    update: XOR<WeaknessUpdateWithoutCardInput, WeaknessUncheckedUpdateWithoutCardInput>
+    create: XOR<WeaknessCreateWithoutCardInput, WeaknessUncheckedCreateWithoutCardInput>
   }
 
-  export type CardSetUpdateToOneWithWhereWithoutCardsInput = {
-    where?: CardSetWhereInput
-    data: XOR<CardSetUpdateWithoutCardsInput, CardSetUncheckedUpdateWithoutCardsInput>
+  export type WeaknessUpdateWithWhereUniqueWithoutCardInput = {
+    where: WeaknessWhereUniqueInput
+    data: XOR<WeaknessUpdateWithoutCardInput, WeaknessUncheckedUpdateWithoutCardInput>
   }
 
-  export type CardSetUpdateWithoutCardsInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: NullableStringFieldUpdateOperationsInput | string | null
-    series?: NullableStringFieldUpdateOperationsInput | string | null
-    printedTotal?: NullableIntFieldUpdateOperationsInput | number | null
-    total?: NullableIntFieldUpdateOperationsInput | number | null
-    ptcgoCode?: NullableStringFieldUpdateOperationsInput | string | null
-    releaseDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    symbol?: NullableStringFieldUpdateOperationsInput | string | null
-    logo?: NullableStringFieldUpdateOperationsInput | string | null
-    legalities?: SetLegalitiesUpdateOneWithoutSetNestedInput
+  export type WeaknessUpdateManyWithWhereWithoutCardInput = {
+    where: WeaknessScalarWhereInput
+    data: XOR<WeaknessUpdateManyMutationInput, WeaknessUncheckedUpdateManyWithoutCardInput>
   }
 
-  export type CardSetUncheckedUpdateWithoutCardsInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: NullableStringFieldUpdateOperationsInput | string | null
-    series?: NullableStringFieldUpdateOperationsInput | string | null
-    printedTotal?: NullableIntFieldUpdateOperationsInput | number | null
-    total?: NullableIntFieldUpdateOperationsInput | number | null
-    ptcgoCode?: NullableStringFieldUpdateOperationsInput | string | null
-    releaseDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    symbol?: NullableStringFieldUpdateOperationsInput | string | null
-    logo?: NullableStringFieldUpdateOperationsInput | string | null
-    legalities?: SetLegalitiesUncheckedUpdateOneWithoutSetNestedInput
+  export type WeaknessScalarWhereInput = {
+    AND?: WeaknessScalarWhereInput | WeaknessScalarWhereInput[]
+    OR?: WeaknessScalarWhereInput[]
+    NOT?: WeaknessScalarWhereInput | WeaknessScalarWhereInput[]
+    id?: StringFilter<"Weakness"> | string
+    cardId?: StringFilter<"Weakness"> | string
+    type?: StringFilter<"Weakness"> | string
+    value?: StringFilter<"Weakness"> | string
   }
 
   export type CardCreateWithoutAbilitiesInput = {
@@ -21325,16 +21493,16 @@ export namespace Prisma {
     nationalPokedexNumbers?: CardCreatenationalPokedexNumbersInput | number[]
     retreatCost?: CardCreateretreatCostInput | string[]
     convertedRetreatCost?: number | null
-    createdAt?: Date | string | null
-    updatedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt: Date | string
     attacks?: AttackCreateNestedManyWithoutCardInput
-    weaknesses?: WeaknessCreateNestedManyWithoutCardInput
-    resistances?: ResistanceCreateNestedManyWithoutCardInput
-    legalities?: CardLegalitiesCreateNestedOneWithoutCardInput
-    images?: CardImagesCreateNestedOneWithoutCardInput
-    cardmarket?: CardMarketCreateNestedOneWithoutCardInput
-    tcgplayer?: TcgPlayerCreateNestedOneWithoutCardInput
     set?: CardSetCreateNestedOneWithoutCardsInput
+    images?: CardImagesCreateNestedOneWithoutCardInput
+    legalities?: CardLegalitiesCreateNestedOneWithoutCardInput
+    cardmarket?: CardMarketCreateNestedOneWithoutCardInput
+    resistances?: ResistanceCreateNestedManyWithoutCardInput
+    tcgplayer?: TcgPlayerCreateNestedOneWithoutCardInput
+    weaknesses?: WeaknessCreateNestedManyWithoutCardInput
   }
 
   export type CardUncheckedCreateWithoutAbilitiesInput = {
@@ -21356,15 +21524,15 @@ export namespace Prisma {
     setId?: string | null
     retreatCost?: CardCreateretreatCostInput | string[]
     convertedRetreatCost?: number | null
-    createdAt?: Date | string | null
-    updatedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt: Date | string
     attacks?: AttackUncheckedCreateNestedManyWithoutCardInput
-    weaknesses?: WeaknessUncheckedCreateNestedManyWithoutCardInput
-    resistances?: ResistanceUncheckedCreateNestedManyWithoutCardInput
-    legalities?: CardLegalitiesUncheckedCreateNestedOneWithoutCardInput
     images?: CardImagesUncheckedCreateNestedOneWithoutCardInput
+    legalities?: CardLegalitiesUncheckedCreateNestedOneWithoutCardInput
     cardmarket?: CardMarketUncheckedCreateNestedOneWithoutCardInput
+    resistances?: ResistanceUncheckedCreateNestedManyWithoutCardInput
     tcgplayer?: TcgPlayerUncheckedCreateNestedOneWithoutCardInput
+    weaknesses?: WeaknessUncheckedCreateNestedManyWithoutCardInput
   }
 
   export type CardCreateOrConnectWithoutAbilitiesInput = {
@@ -21401,16 +21569,16 @@ export namespace Prisma {
     nationalPokedexNumbers?: CardUpdatenationalPokedexNumbersInput | number[]
     retreatCost?: CardUpdateretreatCostInput | string[]
     convertedRetreatCost?: NullableIntFieldUpdateOperationsInput | number | null
-    createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     attacks?: AttackUpdateManyWithoutCardNestedInput
-    weaknesses?: WeaknessUpdateManyWithoutCardNestedInput
-    resistances?: ResistanceUpdateManyWithoutCardNestedInput
-    legalities?: CardLegalitiesUpdateOneWithoutCardNestedInput
-    images?: CardImagesUpdateOneWithoutCardNestedInput
-    cardmarket?: CardMarketUpdateOneWithoutCardNestedInput
-    tcgplayer?: TcgPlayerUpdateOneWithoutCardNestedInput
     set?: CardSetUpdateOneWithoutCardsNestedInput
+    images?: CardImagesUpdateOneWithoutCardNestedInput
+    legalities?: CardLegalitiesUpdateOneWithoutCardNestedInput
+    cardmarket?: CardMarketUpdateOneWithoutCardNestedInput
+    resistances?: ResistanceUpdateManyWithoutCardNestedInput
+    tcgplayer?: TcgPlayerUpdateOneWithoutCardNestedInput
+    weaknesses?: WeaknessUpdateManyWithoutCardNestedInput
   }
 
   export type CardUncheckedUpdateWithoutAbilitiesInput = {
@@ -21432,15 +21600,15 @@ export namespace Prisma {
     setId?: NullableStringFieldUpdateOperationsInput | string | null
     retreatCost?: CardUpdateretreatCostInput | string[]
     convertedRetreatCost?: NullableIntFieldUpdateOperationsInput | number | null
-    createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     attacks?: AttackUncheckedUpdateManyWithoutCardNestedInput
-    weaknesses?: WeaknessUncheckedUpdateManyWithoutCardNestedInput
-    resistances?: ResistanceUncheckedUpdateManyWithoutCardNestedInput
-    legalities?: CardLegalitiesUncheckedUpdateOneWithoutCardNestedInput
     images?: CardImagesUncheckedUpdateOneWithoutCardNestedInput
+    legalities?: CardLegalitiesUncheckedUpdateOneWithoutCardNestedInput
     cardmarket?: CardMarketUncheckedUpdateOneWithoutCardNestedInput
+    resistances?: ResistanceUncheckedUpdateManyWithoutCardNestedInput
     tcgplayer?: TcgPlayerUncheckedUpdateOneWithoutCardNestedInput
+    weaknesses?: WeaknessUncheckedUpdateManyWithoutCardNestedInput
   }
 
   export type CardCreateWithoutAttacksInput = {
@@ -21461,16 +21629,16 @@ export namespace Prisma {
     nationalPokedexNumbers?: CardCreatenationalPokedexNumbersInput | number[]
     retreatCost?: CardCreateretreatCostInput | string[]
     convertedRetreatCost?: number | null
-    createdAt?: Date | string | null
-    updatedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt: Date | string
     abilities?: AbilityCreateNestedManyWithoutCardInput
-    weaknesses?: WeaknessCreateNestedManyWithoutCardInput
-    resistances?: ResistanceCreateNestedManyWithoutCardInput
-    legalities?: CardLegalitiesCreateNestedOneWithoutCardInput
-    images?: CardImagesCreateNestedOneWithoutCardInput
-    cardmarket?: CardMarketCreateNestedOneWithoutCardInput
-    tcgplayer?: TcgPlayerCreateNestedOneWithoutCardInput
     set?: CardSetCreateNestedOneWithoutCardsInput
+    images?: CardImagesCreateNestedOneWithoutCardInput
+    legalities?: CardLegalitiesCreateNestedOneWithoutCardInput
+    cardmarket?: CardMarketCreateNestedOneWithoutCardInput
+    resistances?: ResistanceCreateNestedManyWithoutCardInput
+    tcgplayer?: TcgPlayerCreateNestedOneWithoutCardInput
+    weaknesses?: WeaknessCreateNestedManyWithoutCardInput
   }
 
   export type CardUncheckedCreateWithoutAttacksInput = {
@@ -21492,15 +21660,15 @@ export namespace Prisma {
     setId?: string | null
     retreatCost?: CardCreateretreatCostInput | string[]
     convertedRetreatCost?: number | null
-    createdAt?: Date | string | null
-    updatedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt: Date | string
     abilities?: AbilityUncheckedCreateNestedManyWithoutCardInput
-    weaknesses?: WeaknessUncheckedCreateNestedManyWithoutCardInput
-    resistances?: ResistanceUncheckedCreateNestedManyWithoutCardInput
-    legalities?: CardLegalitiesUncheckedCreateNestedOneWithoutCardInput
     images?: CardImagesUncheckedCreateNestedOneWithoutCardInput
+    legalities?: CardLegalitiesUncheckedCreateNestedOneWithoutCardInput
     cardmarket?: CardMarketUncheckedCreateNestedOneWithoutCardInput
+    resistances?: ResistanceUncheckedCreateNestedManyWithoutCardInput
     tcgplayer?: TcgPlayerUncheckedCreateNestedOneWithoutCardInput
+    weaknesses?: WeaknessUncheckedCreateNestedManyWithoutCardInput
   }
 
   export type CardCreateOrConnectWithoutAttacksInput = {
@@ -21537,16 +21705,16 @@ export namespace Prisma {
     nationalPokedexNumbers?: CardUpdatenationalPokedexNumbersInput | number[]
     retreatCost?: CardUpdateretreatCostInput | string[]
     convertedRetreatCost?: NullableIntFieldUpdateOperationsInput | number | null
-    createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     abilities?: AbilityUpdateManyWithoutCardNestedInput
-    weaknesses?: WeaknessUpdateManyWithoutCardNestedInput
-    resistances?: ResistanceUpdateManyWithoutCardNestedInput
-    legalities?: CardLegalitiesUpdateOneWithoutCardNestedInput
-    images?: CardImagesUpdateOneWithoutCardNestedInput
-    cardmarket?: CardMarketUpdateOneWithoutCardNestedInput
-    tcgplayer?: TcgPlayerUpdateOneWithoutCardNestedInput
     set?: CardSetUpdateOneWithoutCardsNestedInput
+    images?: CardImagesUpdateOneWithoutCardNestedInput
+    legalities?: CardLegalitiesUpdateOneWithoutCardNestedInput
+    cardmarket?: CardMarketUpdateOneWithoutCardNestedInput
+    resistances?: ResistanceUpdateManyWithoutCardNestedInput
+    tcgplayer?: TcgPlayerUpdateOneWithoutCardNestedInput
+    weaknesses?: WeaknessUpdateManyWithoutCardNestedInput
   }
 
   export type CardUncheckedUpdateWithoutAttacksInput = {
@@ -21568,15 +21736,15 @@ export namespace Prisma {
     setId?: NullableStringFieldUpdateOperationsInput | string | null
     retreatCost?: CardUpdateretreatCostInput | string[]
     convertedRetreatCost?: NullableIntFieldUpdateOperationsInput | number | null
-    createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     abilities?: AbilityUncheckedUpdateManyWithoutCardNestedInput
-    weaknesses?: WeaknessUncheckedUpdateManyWithoutCardNestedInput
-    resistances?: ResistanceUncheckedUpdateManyWithoutCardNestedInput
-    legalities?: CardLegalitiesUncheckedUpdateOneWithoutCardNestedInput
     images?: CardImagesUncheckedUpdateOneWithoutCardNestedInput
+    legalities?: CardLegalitiesUncheckedUpdateOneWithoutCardNestedInput
     cardmarket?: CardMarketUncheckedUpdateOneWithoutCardNestedInput
+    resistances?: ResistanceUncheckedUpdateManyWithoutCardNestedInput
     tcgplayer?: TcgPlayerUncheckedUpdateOneWithoutCardNestedInput
+    weaknesses?: WeaknessUncheckedUpdateManyWithoutCardNestedInput
   }
 
   export type CardCreateWithoutWeaknessesInput = {
@@ -21597,16 +21765,16 @@ export namespace Prisma {
     nationalPokedexNumbers?: CardCreatenationalPokedexNumbersInput | number[]
     retreatCost?: CardCreateretreatCostInput | string[]
     convertedRetreatCost?: number | null
-    createdAt?: Date | string | null
-    updatedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt: Date | string
     abilities?: AbilityCreateNestedManyWithoutCardInput
     attacks?: AttackCreateNestedManyWithoutCardInput
-    resistances?: ResistanceCreateNestedManyWithoutCardInput
-    legalities?: CardLegalitiesCreateNestedOneWithoutCardInput
-    images?: CardImagesCreateNestedOneWithoutCardInput
-    cardmarket?: CardMarketCreateNestedOneWithoutCardInput
-    tcgplayer?: TcgPlayerCreateNestedOneWithoutCardInput
     set?: CardSetCreateNestedOneWithoutCardsInput
+    images?: CardImagesCreateNestedOneWithoutCardInput
+    legalities?: CardLegalitiesCreateNestedOneWithoutCardInput
+    cardmarket?: CardMarketCreateNestedOneWithoutCardInput
+    resistances?: ResistanceCreateNestedManyWithoutCardInput
+    tcgplayer?: TcgPlayerCreateNestedOneWithoutCardInput
   }
 
   export type CardUncheckedCreateWithoutWeaknessesInput = {
@@ -21628,14 +21796,14 @@ export namespace Prisma {
     setId?: string | null
     retreatCost?: CardCreateretreatCostInput | string[]
     convertedRetreatCost?: number | null
-    createdAt?: Date | string | null
-    updatedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt: Date | string
     abilities?: AbilityUncheckedCreateNestedManyWithoutCardInput
     attacks?: AttackUncheckedCreateNestedManyWithoutCardInput
-    resistances?: ResistanceUncheckedCreateNestedManyWithoutCardInput
-    legalities?: CardLegalitiesUncheckedCreateNestedOneWithoutCardInput
     images?: CardImagesUncheckedCreateNestedOneWithoutCardInput
+    legalities?: CardLegalitiesUncheckedCreateNestedOneWithoutCardInput
     cardmarket?: CardMarketUncheckedCreateNestedOneWithoutCardInput
+    resistances?: ResistanceUncheckedCreateNestedManyWithoutCardInput
     tcgplayer?: TcgPlayerUncheckedCreateNestedOneWithoutCardInput
   }
 
@@ -21673,16 +21841,16 @@ export namespace Prisma {
     nationalPokedexNumbers?: CardUpdatenationalPokedexNumbersInput | number[]
     retreatCost?: CardUpdateretreatCostInput | string[]
     convertedRetreatCost?: NullableIntFieldUpdateOperationsInput | number | null
-    createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     abilities?: AbilityUpdateManyWithoutCardNestedInput
     attacks?: AttackUpdateManyWithoutCardNestedInput
-    resistances?: ResistanceUpdateManyWithoutCardNestedInput
-    legalities?: CardLegalitiesUpdateOneWithoutCardNestedInput
-    images?: CardImagesUpdateOneWithoutCardNestedInput
-    cardmarket?: CardMarketUpdateOneWithoutCardNestedInput
-    tcgplayer?: TcgPlayerUpdateOneWithoutCardNestedInput
     set?: CardSetUpdateOneWithoutCardsNestedInput
+    images?: CardImagesUpdateOneWithoutCardNestedInput
+    legalities?: CardLegalitiesUpdateOneWithoutCardNestedInput
+    cardmarket?: CardMarketUpdateOneWithoutCardNestedInput
+    resistances?: ResistanceUpdateManyWithoutCardNestedInput
+    tcgplayer?: TcgPlayerUpdateOneWithoutCardNestedInput
   }
 
   export type CardUncheckedUpdateWithoutWeaknessesInput = {
@@ -21704,14 +21872,14 @@ export namespace Prisma {
     setId?: NullableStringFieldUpdateOperationsInput | string | null
     retreatCost?: CardUpdateretreatCostInput | string[]
     convertedRetreatCost?: NullableIntFieldUpdateOperationsInput | number | null
-    createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     abilities?: AbilityUncheckedUpdateManyWithoutCardNestedInput
     attacks?: AttackUncheckedUpdateManyWithoutCardNestedInput
-    resistances?: ResistanceUncheckedUpdateManyWithoutCardNestedInput
-    legalities?: CardLegalitiesUncheckedUpdateOneWithoutCardNestedInput
     images?: CardImagesUncheckedUpdateOneWithoutCardNestedInput
+    legalities?: CardLegalitiesUncheckedUpdateOneWithoutCardNestedInput
     cardmarket?: CardMarketUncheckedUpdateOneWithoutCardNestedInput
+    resistances?: ResistanceUncheckedUpdateManyWithoutCardNestedInput
     tcgplayer?: TcgPlayerUncheckedUpdateOneWithoutCardNestedInput
   }
 
@@ -21733,16 +21901,16 @@ export namespace Prisma {
     nationalPokedexNumbers?: CardCreatenationalPokedexNumbersInput | number[]
     retreatCost?: CardCreateretreatCostInput | string[]
     convertedRetreatCost?: number | null
-    createdAt?: Date | string | null
-    updatedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt: Date | string
     abilities?: AbilityCreateNestedManyWithoutCardInput
     attacks?: AttackCreateNestedManyWithoutCardInput
-    weaknesses?: WeaknessCreateNestedManyWithoutCardInput
-    legalities?: CardLegalitiesCreateNestedOneWithoutCardInput
+    set?: CardSetCreateNestedOneWithoutCardsInput
     images?: CardImagesCreateNestedOneWithoutCardInput
+    legalities?: CardLegalitiesCreateNestedOneWithoutCardInput
     cardmarket?: CardMarketCreateNestedOneWithoutCardInput
     tcgplayer?: TcgPlayerCreateNestedOneWithoutCardInput
-    set?: CardSetCreateNestedOneWithoutCardsInput
+    weaknesses?: WeaknessCreateNestedManyWithoutCardInput
   }
 
   export type CardUncheckedCreateWithoutResistancesInput = {
@@ -21764,15 +21932,15 @@ export namespace Prisma {
     setId?: string | null
     retreatCost?: CardCreateretreatCostInput | string[]
     convertedRetreatCost?: number | null
-    createdAt?: Date | string | null
-    updatedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt: Date | string
     abilities?: AbilityUncheckedCreateNestedManyWithoutCardInput
     attacks?: AttackUncheckedCreateNestedManyWithoutCardInput
-    weaknesses?: WeaknessUncheckedCreateNestedManyWithoutCardInput
-    legalities?: CardLegalitiesUncheckedCreateNestedOneWithoutCardInput
     images?: CardImagesUncheckedCreateNestedOneWithoutCardInput
+    legalities?: CardLegalitiesUncheckedCreateNestedOneWithoutCardInput
     cardmarket?: CardMarketUncheckedCreateNestedOneWithoutCardInput
     tcgplayer?: TcgPlayerUncheckedCreateNestedOneWithoutCardInput
+    weaknesses?: WeaknessUncheckedCreateNestedManyWithoutCardInput
   }
 
   export type CardCreateOrConnectWithoutResistancesInput = {
@@ -21809,16 +21977,16 @@ export namespace Prisma {
     nationalPokedexNumbers?: CardUpdatenationalPokedexNumbersInput | number[]
     retreatCost?: CardUpdateretreatCostInput | string[]
     convertedRetreatCost?: NullableIntFieldUpdateOperationsInput | number | null
-    createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     abilities?: AbilityUpdateManyWithoutCardNestedInput
     attacks?: AttackUpdateManyWithoutCardNestedInput
-    weaknesses?: WeaknessUpdateManyWithoutCardNestedInput
-    legalities?: CardLegalitiesUpdateOneWithoutCardNestedInput
+    set?: CardSetUpdateOneWithoutCardsNestedInput
     images?: CardImagesUpdateOneWithoutCardNestedInput
+    legalities?: CardLegalitiesUpdateOneWithoutCardNestedInput
     cardmarket?: CardMarketUpdateOneWithoutCardNestedInput
     tcgplayer?: TcgPlayerUpdateOneWithoutCardNestedInput
-    set?: CardSetUpdateOneWithoutCardsNestedInput
+    weaknesses?: WeaknessUpdateManyWithoutCardNestedInput
   }
 
   export type CardUncheckedUpdateWithoutResistancesInput = {
@@ -21840,15 +22008,15 @@ export namespace Prisma {
     setId?: NullableStringFieldUpdateOperationsInput | string | null
     retreatCost?: CardUpdateretreatCostInput | string[]
     convertedRetreatCost?: NullableIntFieldUpdateOperationsInput | number | null
-    createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     abilities?: AbilityUncheckedUpdateManyWithoutCardNestedInput
     attacks?: AttackUncheckedUpdateManyWithoutCardNestedInput
-    weaknesses?: WeaknessUncheckedUpdateManyWithoutCardNestedInput
-    legalities?: CardLegalitiesUncheckedUpdateOneWithoutCardNestedInput
     images?: CardImagesUncheckedUpdateOneWithoutCardNestedInput
+    legalities?: CardLegalitiesUncheckedUpdateOneWithoutCardNestedInput
     cardmarket?: CardMarketUncheckedUpdateOneWithoutCardNestedInput
     tcgplayer?: TcgPlayerUncheckedUpdateOneWithoutCardNestedInput
+    weaknesses?: WeaknessUncheckedUpdateManyWithoutCardNestedInput
   }
 
   export type CardCreateWithoutLegalitiesInput = {
@@ -21869,16 +22037,16 @@ export namespace Prisma {
     nationalPokedexNumbers?: CardCreatenationalPokedexNumbersInput | number[]
     retreatCost?: CardCreateretreatCostInput | string[]
     convertedRetreatCost?: number | null
-    createdAt?: Date | string | null
-    updatedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt: Date | string
     abilities?: AbilityCreateNestedManyWithoutCardInput
     attacks?: AttackCreateNestedManyWithoutCardInput
-    weaknesses?: WeaknessCreateNestedManyWithoutCardInput
-    resistances?: ResistanceCreateNestedManyWithoutCardInput
+    set?: CardSetCreateNestedOneWithoutCardsInput
     images?: CardImagesCreateNestedOneWithoutCardInput
     cardmarket?: CardMarketCreateNestedOneWithoutCardInput
+    resistances?: ResistanceCreateNestedManyWithoutCardInput
     tcgplayer?: TcgPlayerCreateNestedOneWithoutCardInput
-    set?: CardSetCreateNestedOneWithoutCardsInput
+    weaknesses?: WeaknessCreateNestedManyWithoutCardInput
   }
 
   export type CardUncheckedCreateWithoutLegalitiesInput = {
@@ -21900,15 +22068,15 @@ export namespace Prisma {
     setId?: string | null
     retreatCost?: CardCreateretreatCostInput | string[]
     convertedRetreatCost?: number | null
-    createdAt?: Date | string | null
-    updatedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt: Date | string
     abilities?: AbilityUncheckedCreateNestedManyWithoutCardInput
     attacks?: AttackUncheckedCreateNestedManyWithoutCardInput
-    weaknesses?: WeaknessUncheckedCreateNestedManyWithoutCardInput
-    resistances?: ResistanceUncheckedCreateNestedManyWithoutCardInput
     images?: CardImagesUncheckedCreateNestedOneWithoutCardInput
     cardmarket?: CardMarketUncheckedCreateNestedOneWithoutCardInput
+    resistances?: ResistanceUncheckedCreateNestedManyWithoutCardInput
     tcgplayer?: TcgPlayerUncheckedCreateNestedOneWithoutCardInput
+    weaknesses?: WeaknessUncheckedCreateNestedManyWithoutCardInput
   }
 
   export type CardCreateOrConnectWithoutLegalitiesInput = {
@@ -21945,16 +22113,16 @@ export namespace Prisma {
     nationalPokedexNumbers?: CardUpdatenationalPokedexNumbersInput | number[]
     retreatCost?: CardUpdateretreatCostInput | string[]
     convertedRetreatCost?: NullableIntFieldUpdateOperationsInput | number | null
-    createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     abilities?: AbilityUpdateManyWithoutCardNestedInput
     attacks?: AttackUpdateManyWithoutCardNestedInput
-    weaknesses?: WeaknessUpdateManyWithoutCardNestedInput
-    resistances?: ResistanceUpdateManyWithoutCardNestedInput
+    set?: CardSetUpdateOneWithoutCardsNestedInput
     images?: CardImagesUpdateOneWithoutCardNestedInput
     cardmarket?: CardMarketUpdateOneWithoutCardNestedInput
+    resistances?: ResistanceUpdateManyWithoutCardNestedInput
     tcgplayer?: TcgPlayerUpdateOneWithoutCardNestedInput
-    set?: CardSetUpdateOneWithoutCardsNestedInput
+    weaknesses?: WeaknessUpdateManyWithoutCardNestedInput
   }
 
   export type CardUncheckedUpdateWithoutLegalitiesInput = {
@@ -21976,15 +22144,15 @@ export namespace Prisma {
     setId?: NullableStringFieldUpdateOperationsInput | string | null
     retreatCost?: CardUpdateretreatCostInput | string[]
     convertedRetreatCost?: NullableIntFieldUpdateOperationsInput | number | null
-    createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     abilities?: AbilityUncheckedUpdateManyWithoutCardNestedInput
     attacks?: AttackUncheckedUpdateManyWithoutCardNestedInput
-    weaknesses?: WeaknessUncheckedUpdateManyWithoutCardNestedInput
-    resistances?: ResistanceUncheckedUpdateManyWithoutCardNestedInput
     images?: CardImagesUncheckedUpdateOneWithoutCardNestedInput
     cardmarket?: CardMarketUncheckedUpdateOneWithoutCardNestedInput
+    resistances?: ResistanceUncheckedUpdateManyWithoutCardNestedInput
     tcgplayer?: TcgPlayerUncheckedUpdateOneWithoutCardNestedInput
+    weaknesses?: WeaknessUncheckedUpdateManyWithoutCardNestedInput
   }
 
   export type CardCreateWithoutImagesInput = {
@@ -22005,16 +22173,16 @@ export namespace Prisma {
     nationalPokedexNumbers?: CardCreatenationalPokedexNumbersInput | number[]
     retreatCost?: CardCreateretreatCostInput | string[]
     convertedRetreatCost?: number | null
-    createdAt?: Date | string | null
-    updatedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt: Date | string
     abilities?: AbilityCreateNestedManyWithoutCardInput
     attacks?: AttackCreateNestedManyWithoutCardInput
-    weaknesses?: WeaknessCreateNestedManyWithoutCardInput
-    resistances?: ResistanceCreateNestedManyWithoutCardInput
+    set?: CardSetCreateNestedOneWithoutCardsInput
     legalities?: CardLegalitiesCreateNestedOneWithoutCardInput
     cardmarket?: CardMarketCreateNestedOneWithoutCardInput
+    resistances?: ResistanceCreateNestedManyWithoutCardInput
     tcgplayer?: TcgPlayerCreateNestedOneWithoutCardInput
-    set?: CardSetCreateNestedOneWithoutCardsInput
+    weaknesses?: WeaknessCreateNestedManyWithoutCardInput
   }
 
   export type CardUncheckedCreateWithoutImagesInput = {
@@ -22036,15 +22204,15 @@ export namespace Prisma {
     setId?: string | null
     retreatCost?: CardCreateretreatCostInput | string[]
     convertedRetreatCost?: number | null
-    createdAt?: Date | string | null
-    updatedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt: Date | string
     abilities?: AbilityUncheckedCreateNestedManyWithoutCardInput
     attacks?: AttackUncheckedCreateNestedManyWithoutCardInput
-    weaknesses?: WeaknessUncheckedCreateNestedManyWithoutCardInput
-    resistances?: ResistanceUncheckedCreateNestedManyWithoutCardInput
     legalities?: CardLegalitiesUncheckedCreateNestedOneWithoutCardInput
     cardmarket?: CardMarketUncheckedCreateNestedOneWithoutCardInput
+    resistances?: ResistanceUncheckedCreateNestedManyWithoutCardInput
     tcgplayer?: TcgPlayerUncheckedCreateNestedOneWithoutCardInput
+    weaknesses?: WeaknessUncheckedCreateNestedManyWithoutCardInput
   }
 
   export type CardCreateOrConnectWithoutImagesInput = {
@@ -22081,16 +22249,16 @@ export namespace Prisma {
     nationalPokedexNumbers?: CardUpdatenationalPokedexNumbersInput | number[]
     retreatCost?: CardUpdateretreatCostInput | string[]
     convertedRetreatCost?: NullableIntFieldUpdateOperationsInput | number | null
-    createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     abilities?: AbilityUpdateManyWithoutCardNestedInput
     attacks?: AttackUpdateManyWithoutCardNestedInput
-    weaknesses?: WeaknessUpdateManyWithoutCardNestedInput
-    resistances?: ResistanceUpdateManyWithoutCardNestedInput
+    set?: CardSetUpdateOneWithoutCardsNestedInput
     legalities?: CardLegalitiesUpdateOneWithoutCardNestedInput
     cardmarket?: CardMarketUpdateOneWithoutCardNestedInput
+    resistances?: ResistanceUpdateManyWithoutCardNestedInput
     tcgplayer?: TcgPlayerUpdateOneWithoutCardNestedInput
-    set?: CardSetUpdateOneWithoutCardsNestedInput
+    weaknesses?: WeaknessUpdateManyWithoutCardNestedInput
   }
 
   export type CardUncheckedUpdateWithoutImagesInput = {
@@ -22112,15 +22280,15 @@ export namespace Prisma {
     setId?: NullableStringFieldUpdateOperationsInput | string | null
     retreatCost?: CardUpdateretreatCostInput | string[]
     convertedRetreatCost?: NullableIntFieldUpdateOperationsInput | number | null
-    createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     abilities?: AbilityUncheckedUpdateManyWithoutCardNestedInput
     attacks?: AttackUncheckedUpdateManyWithoutCardNestedInput
-    weaknesses?: WeaknessUncheckedUpdateManyWithoutCardNestedInput
-    resistances?: ResistanceUncheckedUpdateManyWithoutCardNestedInput
     legalities?: CardLegalitiesUncheckedUpdateOneWithoutCardNestedInput
     cardmarket?: CardMarketUncheckedUpdateOneWithoutCardNestedInput
+    resistances?: ResistanceUncheckedUpdateManyWithoutCardNestedInput
     tcgplayer?: TcgPlayerUncheckedUpdateOneWithoutCardNestedInput
+    weaknesses?: WeaknessUncheckedUpdateManyWithoutCardNestedInput
   }
 
   export type CardCreateWithoutCardmarketInput = {
@@ -22141,16 +22309,16 @@ export namespace Prisma {
     nationalPokedexNumbers?: CardCreatenationalPokedexNumbersInput | number[]
     retreatCost?: CardCreateretreatCostInput | string[]
     convertedRetreatCost?: number | null
-    createdAt?: Date | string | null
-    updatedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt: Date | string
     abilities?: AbilityCreateNestedManyWithoutCardInput
     attacks?: AttackCreateNestedManyWithoutCardInput
-    weaknesses?: WeaknessCreateNestedManyWithoutCardInput
-    resistances?: ResistanceCreateNestedManyWithoutCardInput
-    legalities?: CardLegalitiesCreateNestedOneWithoutCardInput
-    images?: CardImagesCreateNestedOneWithoutCardInput
-    tcgplayer?: TcgPlayerCreateNestedOneWithoutCardInput
     set?: CardSetCreateNestedOneWithoutCardsInput
+    images?: CardImagesCreateNestedOneWithoutCardInput
+    legalities?: CardLegalitiesCreateNestedOneWithoutCardInput
+    resistances?: ResistanceCreateNestedManyWithoutCardInput
+    tcgplayer?: TcgPlayerCreateNestedOneWithoutCardInput
+    weaknesses?: WeaknessCreateNestedManyWithoutCardInput
   }
 
   export type CardUncheckedCreateWithoutCardmarketInput = {
@@ -22172,15 +22340,15 @@ export namespace Prisma {
     setId?: string | null
     retreatCost?: CardCreateretreatCostInput | string[]
     convertedRetreatCost?: number | null
-    createdAt?: Date | string | null
-    updatedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt: Date | string
     abilities?: AbilityUncheckedCreateNestedManyWithoutCardInput
     attacks?: AttackUncheckedCreateNestedManyWithoutCardInput
-    weaknesses?: WeaknessUncheckedCreateNestedManyWithoutCardInput
-    resistances?: ResistanceUncheckedCreateNestedManyWithoutCardInput
-    legalities?: CardLegalitiesUncheckedCreateNestedOneWithoutCardInput
     images?: CardImagesUncheckedCreateNestedOneWithoutCardInput
+    legalities?: CardLegalitiesUncheckedCreateNestedOneWithoutCardInput
+    resistances?: ResistanceUncheckedCreateNestedManyWithoutCardInput
     tcgplayer?: TcgPlayerUncheckedCreateNestedOneWithoutCardInput
+    weaknesses?: WeaknessUncheckedCreateNestedManyWithoutCardInput
   }
 
   export type CardCreateOrConnectWithoutCardmarketInput = {
@@ -22217,16 +22385,16 @@ export namespace Prisma {
     nationalPokedexNumbers?: CardUpdatenationalPokedexNumbersInput | number[]
     retreatCost?: CardUpdateretreatCostInput | string[]
     convertedRetreatCost?: NullableIntFieldUpdateOperationsInput | number | null
-    createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     abilities?: AbilityUpdateManyWithoutCardNestedInput
     attacks?: AttackUpdateManyWithoutCardNestedInput
-    weaknesses?: WeaknessUpdateManyWithoutCardNestedInput
-    resistances?: ResistanceUpdateManyWithoutCardNestedInput
-    legalities?: CardLegalitiesUpdateOneWithoutCardNestedInput
-    images?: CardImagesUpdateOneWithoutCardNestedInput
-    tcgplayer?: TcgPlayerUpdateOneWithoutCardNestedInput
     set?: CardSetUpdateOneWithoutCardsNestedInput
+    images?: CardImagesUpdateOneWithoutCardNestedInput
+    legalities?: CardLegalitiesUpdateOneWithoutCardNestedInput
+    resistances?: ResistanceUpdateManyWithoutCardNestedInput
+    tcgplayer?: TcgPlayerUpdateOneWithoutCardNestedInput
+    weaknesses?: WeaknessUpdateManyWithoutCardNestedInput
   }
 
   export type CardUncheckedUpdateWithoutCardmarketInput = {
@@ -22248,15 +22416,15 @@ export namespace Prisma {
     setId?: NullableStringFieldUpdateOperationsInput | string | null
     retreatCost?: CardUpdateretreatCostInput | string[]
     convertedRetreatCost?: NullableIntFieldUpdateOperationsInput | number | null
-    createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     abilities?: AbilityUncheckedUpdateManyWithoutCardNestedInput
     attacks?: AttackUncheckedUpdateManyWithoutCardNestedInput
-    weaknesses?: WeaknessUncheckedUpdateManyWithoutCardNestedInput
-    resistances?: ResistanceUncheckedUpdateManyWithoutCardNestedInput
-    legalities?: CardLegalitiesUncheckedUpdateOneWithoutCardNestedInput
     images?: CardImagesUncheckedUpdateOneWithoutCardNestedInput
+    legalities?: CardLegalitiesUncheckedUpdateOneWithoutCardNestedInput
+    resistances?: ResistanceUncheckedUpdateManyWithoutCardNestedInput
     tcgplayer?: TcgPlayerUncheckedUpdateOneWithoutCardNestedInput
+    weaknesses?: WeaknessUncheckedUpdateManyWithoutCardNestedInput
   }
 
   export type TcgPlayerCreateWithoutPricesInput = {
@@ -22321,16 +22489,16 @@ export namespace Prisma {
     nationalPokedexNumbers?: CardCreatenationalPokedexNumbersInput | number[]
     retreatCost?: CardCreateretreatCostInput | string[]
     convertedRetreatCost?: number | null
-    createdAt?: Date | string | null
-    updatedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt: Date | string
     abilities?: AbilityCreateNestedManyWithoutCardInput
     attacks?: AttackCreateNestedManyWithoutCardInput
-    weaknesses?: WeaknessCreateNestedManyWithoutCardInput
-    resistances?: ResistanceCreateNestedManyWithoutCardInput
-    legalities?: CardLegalitiesCreateNestedOneWithoutCardInput
-    images?: CardImagesCreateNestedOneWithoutCardInput
-    cardmarket?: CardMarketCreateNestedOneWithoutCardInput
     set?: CardSetCreateNestedOneWithoutCardsInput
+    images?: CardImagesCreateNestedOneWithoutCardInput
+    legalities?: CardLegalitiesCreateNestedOneWithoutCardInput
+    cardmarket?: CardMarketCreateNestedOneWithoutCardInput
+    resistances?: ResistanceCreateNestedManyWithoutCardInput
+    weaknesses?: WeaknessCreateNestedManyWithoutCardInput
   }
 
   export type CardUncheckedCreateWithoutTcgplayerInput = {
@@ -22352,15 +22520,15 @@ export namespace Prisma {
     setId?: string | null
     retreatCost?: CardCreateretreatCostInput | string[]
     convertedRetreatCost?: number | null
-    createdAt?: Date | string | null
-    updatedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt: Date | string
     abilities?: AbilityUncheckedCreateNestedManyWithoutCardInput
     attacks?: AttackUncheckedCreateNestedManyWithoutCardInput
-    weaknesses?: WeaknessUncheckedCreateNestedManyWithoutCardInput
-    resistances?: ResistanceUncheckedCreateNestedManyWithoutCardInput
-    legalities?: CardLegalitiesUncheckedCreateNestedOneWithoutCardInput
     images?: CardImagesUncheckedCreateNestedOneWithoutCardInput
+    legalities?: CardLegalitiesUncheckedCreateNestedOneWithoutCardInput
     cardmarket?: CardMarketUncheckedCreateNestedOneWithoutCardInput
+    resistances?: ResistanceUncheckedCreateNestedManyWithoutCardInput
+    weaknesses?: WeaknessUncheckedCreateNestedManyWithoutCardInput
   }
 
   export type CardCreateOrConnectWithoutTcgplayerInput = {
@@ -22440,16 +22608,16 @@ export namespace Prisma {
     nationalPokedexNumbers?: CardUpdatenationalPokedexNumbersInput | number[]
     retreatCost?: CardUpdateretreatCostInput | string[]
     convertedRetreatCost?: NullableIntFieldUpdateOperationsInput | number | null
-    createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     abilities?: AbilityUpdateManyWithoutCardNestedInput
     attacks?: AttackUpdateManyWithoutCardNestedInput
-    weaknesses?: WeaknessUpdateManyWithoutCardNestedInput
-    resistances?: ResistanceUpdateManyWithoutCardNestedInput
-    legalities?: CardLegalitiesUpdateOneWithoutCardNestedInput
-    images?: CardImagesUpdateOneWithoutCardNestedInput
-    cardmarket?: CardMarketUpdateOneWithoutCardNestedInput
     set?: CardSetUpdateOneWithoutCardsNestedInput
+    images?: CardImagesUpdateOneWithoutCardNestedInput
+    legalities?: CardLegalitiesUpdateOneWithoutCardNestedInput
+    cardmarket?: CardMarketUpdateOneWithoutCardNestedInput
+    resistances?: ResistanceUpdateManyWithoutCardNestedInput
+    weaknesses?: WeaknessUpdateManyWithoutCardNestedInput
   }
 
   export type CardUncheckedUpdateWithoutTcgplayerInput = {
@@ -22471,15 +22639,15 @@ export namespace Prisma {
     setId?: NullableStringFieldUpdateOperationsInput | string | null
     retreatCost?: CardUpdateretreatCostInput | string[]
     convertedRetreatCost?: NullableIntFieldUpdateOperationsInput | number | null
-    createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     abilities?: AbilityUncheckedUpdateManyWithoutCardNestedInput
     attacks?: AttackUncheckedUpdateManyWithoutCardNestedInput
-    weaknesses?: WeaknessUncheckedUpdateManyWithoutCardNestedInput
-    resistances?: ResistanceUncheckedUpdateManyWithoutCardNestedInput
-    legalities?: CardLegalitiesUncheckedUpdateOneWithoutCardNestedInput
     images?: CardImagesUncheckedUpdateOneWithoutCardNestedInput
+    legalities?: CardLegalitiesUncheckedUpdateOneWithoutCardNestedInput
     cardmarket?: CardMarketUncheckedUpdateOneWithoutCardNestedInput
+    resistances?: ResistanceUncheckedUpdateManyWithoutCardNestedInput
+    weaknesses?: WeaknessUncheckedUpdateManyWithoutCardNestedInput
   }
 
   export type TcgPlayerPricesUpsertWithoutTcgplayerInput = {
@@ -22549,16 +22717,16 @@ export namespace Prisma {
     nationalPokedexNumbers?: CardCreatenationalPokedexNumbersInput | number[]
     retreatCost?: CardCreateretreatCostInput | string[]
     convertedRetreatCost?: number | null
-    createdAt?: Date | string | null
-    updatedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt: Date | string
     abilities?: AbilityCreateNestedManyWithoutCardInput
     attacks?: AttackCreateNestedManyWithoutCardInput
-    weaknesses?: WeaknessCreateNestedManyWithoutCardInput
-    resistances?: ResistanceCreateNestedManyWithoutCardInput
-    legalities?: CardLegalitiesCreateNestedOneWithoutCardInput
     images?: CardImagesCreateNestedOneWithoutCardInput
+    legalities?: CardLegalitiesCreateNestedOneWithoutCardInput
     cardmarket?: CardMarketCreateNestedOneWithoutCardInput
+    resistances?: ResistanceCreateNestedManyWithoutCardInput
     tcgplayer?: TcgPlayerCreateNestedOneWithoutCardInput
+    weaknesses?: WeaknessCreateNestedManyWithoutCardInput
   }
 
   export type CardUncheckedCreateWithoutSetInput = {
@@ -22579,16 +22747,16 @@ export namespace Prisma {
     nationalPokedexNumbers?: CardCreatenationalPokedexNumbersInput | number[]
     retreatCost?: CardCreateretreatCostInput | string[]
     convertedRetreatCost?: number | null
-    createdAt?: Date | string | null
-    updatedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt: Date | string
     abilities?: AbilityUncheckedCreateNestedManyWithoutCardInput
     attacks?: AttackUncheckedCreateNestedManyWithoutCardInput
-    weaknesses?: WeaknessUncheckedCreateNestedManyWithoutCardInput
-    resistances?: ResistanceUncheckedCreateNestedManyWithoutCardInput
-    legalities?: CardLegalitiesUncheckedCreateNestedOneWithoutCardInput
     images?: CardImagesUncheckedCreateNestedOneWithoutCardInput
+    legalities?: CardLegalitiesUncheckedCreateNestedOneWithoutCardInput
     cardmarket?: CardMarketUncheckedCreateNestedOneWithoutCardInput
+    resistances?: ResistanceUncheckedCreateNestedManyWithoutCardInput
     tcgplayer?: TcgPlayerUncheckedCreateNestedOneWithoutCardInput
+    weaknesses?: WeaknessUncheckedCreateNestedManyWithoutCardInput
   }
 
   export type CardCreateOrConnectWithoutSetInput = {
@@ -22658,8 +22826,8 @@ export namespace Prisma {
     setId?: StringNullableFilter<"Card"> | string | null
     retreatCost?: StringNullableListFilter<"Card">
     convertedRetreatCost?: IntNullableFilter<"Card"> | number | null
-    createdAt?: DateTimeNullableFilter<"Card"> | Date | string | null
-    updatedAt?: DateTimeNullableFilter<"Card"> | Date | string | null
+    createdAt?: DateTimeFilter<"Card"> | Date | string
+    updatedAt?: DateTimeFilter<"Card"> | Date | string
   }
 
   export type SetLegalitiesUpsertWithoutSetInput = {
@@ -22689,8 +22857,8 @@ export namespace Prisma {
 
   export type CardSetCreateWithoutLegalitiesInput = {
     id: string
-    name?: string | null
-    series?: string | null
+    name: string
+    series: string
     printedTotal?: number | null
     total?: number | null
     ptcgoCode?: string | null
@@ -22703,8 +22871,8 @@ export namespace Prisma {
 
   export type CardSetUncheckedCreateWithoutLegalitiesInput = {
     id: string
-    name?: string | null
-    series?: string | null
+    name: string
+    series: string
     printedTotal?: number | null
     total?: number | null
     ptcgoCode?: string | null
@@ -22733,8 +22901,8 @@ export namespace Prisma {
 
   export type CardSetUpdateWithoutLegalitiesInput = {
     id?: StringFieldUpdateOperationsInput | string
-    name?: NullableStringFieldUpdateOperationsInput | string | null
-    series?: NullableStringFieldUpdateOperationsInput | string | null
+    name?: StringFieldUpdateOperationsInput | string
+    series?: StringFieldUpdateOperationsInput | string
     printedTotal?: NullableIntFieldUpdateOperationsInput | number | null
     total?: NullableIntFieldUpdateOperationsInput | number | null
     ptcgoCode?: NullableStringFieldUpdateOperationsInput | string | null
@@ -22747,8 +22915,8 @@ export namespace Prisma {
 
   export type CardSetUncheckedUpdateWithoutLegalitiesInput = {
     id?: StringFieldUpdateOperationsInput | string
-    name?: NullableStringFieldUpdateOperationsInput | string | null
-    series?: NullableStringFieldUpdateOperationsInput | string | null
+    name?: StringFieldUpdateOperationsInput | string
+    series?: StringFieldUpdateOperationsInput | string
     printedTotal?: NullableIntFieldUpdateOperationsInput | number | null
     total?: NullableIntFieldUpdateOperationsInput | number | null
     ptcgoCode?: NullableStringFieldUpdateOperationsInput | string | null
@@ -22761,114 +22929,114 @@ export namespace Prisma {
 
   export type AbilityCreateManyCardInput = {
     id: string
-    name?: string | null
-    text?: string | null
-    type?: string | null
+    name: string
+    text: string
+    type: string
   }
 
   export type AttackCreateManyCardInput = {
     id: string
-    name?: string | null
+    name: string
     cost?: AttackCreatecostInput | string[]
-    convertedEnergyCost?: number | null
+    convertedEnergyCost: number
     damage?: string | null
     text?: string | null
   }
 
-  export type WeaknessCreateManyCardInput = {
-    id: string
-    type?: string | null
-    value?: string | null
-  }
-
   export type ResistanceCreateManyCardInput = {
     id: string
-    type?: string | null
-    value?: string | null
+    type: string
+    value: string
+  }
+
+  export type WeaknessCreateManyCardInput = {
+    id: string
+    type: string
+    value: string
   }
 
   export type AbilityUpdateWithoutCardInput = {
     id?: StringFieldUpdateOperationsInput | string
-    name?: NullableStringFieldUpdateOperationsInput | string | null
-    text?: NullableStringFieldUpdateOperationsInput | string | null
-    type?: NullableStringFieldUpdateOperationsInput | string | null
+    name?: StringFieldUpdateOperationsInput | string
+    text?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
   }
 
   export type AbilityUncheckedUpdateWithoutCardInput = {
     id?: StringFieldUpdateOperationsInput | string
-    name?: NullableStringFieldUpdateOperationsInput | string | null
-    text?: NullableStringFieldUpdateOperationsInput | string | null
-    type?: NullableStringFieldUpdateOperationsInput | string | null
+    name?: StringFieldUpdateOperationsInput | string
+    text?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
   }
 
   export type AbilityUncheckedUpdateManyWithoutCardInput = {
     id?: StringFieldUpdateOperationsInput | string
-    name?: NullableStringFieldUpdateOperationsInput | string | null
-    text?: NullableStringFieldUpdateOperationsInput | string | null
-    type?: NullableStringFieldUpdateOperationsInput | string | null
+    name?: StringFieldUpdateOperationsInput | string
+    text?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
   }
 
   export type AttackUpdateWithoutCardInput = {
     id?: StringFieldUpdateOperationsInput | string
-    name?: NullableStringFieldUpdateOperationsInput | string | null
+    name?: StringFieldUpdateOperationsInput | string
     cost?: AttackUpdatecostInput | string[]
-    convertedEnergyCost?: NullableIntFieldUpdateOperationsInput | number | null
+    convertedEnergyCost?: IntFieldUpdateOperationsInput | number
     damage?: NullableStringFieldUpdateOperationsInput | string | null
     text?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type AttackUncheckedUpdateWithoutCardInput = {
     id?: StringFieldUpdateOperationsInput | string
-    name?: NullableStringFieldUpdateOperationsInput | string | null
+    name?: StringFieldUpdateOperationsInput | string
     cost?: AttackUpdatecostInput | string[]
-    convertedEnergyCost?: NullableIntFieldUpdateOperationsInput | number | null
+    convertedEnergyCost?: IntFieldUpdateOperationsInput | number
     damage?: NullableStringFieldUpdateOperationsInput | string | null
     text?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type AttackUncheckedUpdateManyWithoutCardInput = {
     id?: StringFieldUpdateOperationsInput | string
-    name?: NullableStringFieldUpdateOperationsInput | string | null
+    name?: StringFieldUpdateOperationsInput | string
     cost?: AttackUpdatecostInput | string[]
-    convertedEnergyCost?: NullableIntFieldUpdateOperationsInput | number | null
+    convertedEnergyCost?: IntFieldUpdateOperationsInput | number
     damage?: NullableStringFieldUpdateOperationsInput | string | null
     text?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
-  export type WeaknessUpdateWithoutCardInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    type?: NullableStringFieldUpdateOperationsInput | string | null
-    value?: NullableStringFieldUpdateOperationsInput | string | null
-  }
-
-  export type WeaknessUncheckedUpdateWithoutCardInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    type?: NullableStringFieldUpdateOperationsInput | string | null
-    value?: NullableStringFieldUpdateOperationsInput | string | null
-  }
-
-  export type WeaknessUncheckedUpdateManyWithoutCardInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    type?: NullableStringFieldUpdateOperationsInput | string | null
-    value?: NullableStringFieldUpdateOperationsInput | string | null
-  }
-
   export type ResistanceUpdateWithoutCardInput = {
     id?: StringFieldUpdateOperationsInput | string
-    type?: NullableStringFieldUpdateOperationsInput | string | null
-    value?: NullableStringFieldUpdateOperationsInput | string | null
+    type?: StringFieldUpdateOperationsInput | string
+    value?: StringFieldUpdateOperationsInput | string
   }
 
   export type ResistanceUncheckedUpdateWithoutCardInput = {
     id?: StringFieldUpdateOperationsInput | string
-    type?: NullableStringFieldUpdateOperationsInput | string | null
-    value?: NullableStringFieldUpdateOperationsInput | string | null
+    type?: StringFieldUpdateOperationsInput | string
+    value?: StringFieldUpdateOperationsInput | string
   }
 
   export type ResistanceUncheckedUpdateManyWithoutCardInput = {
     id?: StringFieldUpdateOperationsInput | string
-    type?: NullableStringFieldUpdateOperationsInput | string | null
-    value?: NullableStringFieldUpdateOperationsInput | string | null
+    type?: StringFieldUpdateOperationsInput | string
+    value?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type WeaknessUpdateWithoutCardInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    value?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type WeaknessUncheckedUpdateWithoutCardInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    value?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type WeaknessUncheckedUpdateManyWithoutCardInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    value?: StringFieldUpdateOperationsInput | string
   }
 
   export type CardCreateManySetInput = {
@@ -22889,8 +23057,8 @@ export namespace Prisma {
     nationalPokedexNumbers?: CardCreatenationalPokedexNumbersInput | number[]
     retreatCost?: CardCreateretreatCostInput | string[]
     convertedRetreatCost?: number | null
-    createdAt?: Date | string | null
-    updatedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt: Date | string
   }
 
   export type CardUpdateWithoutSetInput = {
@@ -22911,16 +23079,16 @@ export namespace Prisma {
     nationalPokedexNumbers?: CardUpdatenationalPokedexNumbersInput | number[]
     retreatCost?: CardUpdateretreatCostInput | string[]
     convertedRetreatCost?: NullableIntFieldUpdateOperationsInput | number | null
-    createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     abilities?: AbilityUpdateManyWithoutCardNestedInput
     attacks?: AttackUpdateManyWithoutCardNestedInput
-    weaknesses?: WeaknessUpdateManyWithoutCardNestedInput
-    resistances?: ResistanceUpdateManyWithoutCardNestedInput
-    legalities?: CardLegalitiesUpdateOneWithoutCardNestedInput
     images?: CardImagesUpdateOneWithoutCardNestedInput
+    legalities?: CardLegalitiesUpdateOneWithoutCardNestedInput
     cardmarket?: CardMarketUpdateOneWithoutCardNestedInput
+    resistances?: ResistanceUpdateManyWithoutCardNestedInput
     tcgplayer?: TcgPlayerUpdateOneWithoutCardNestedInput
+    weaknesses?: WeaknessUpdateManyWithoutCardNestedInput
   }
 
   export type CardUncheckedUpdateWithoutSetInput = {
@@ -22941,16 +23109,16 @@ export namespace Prisma {
     nationalPokedexNumbers?: CardUpdatenationalPokedexNumbersInput | number[]
     retreatCost?: CardUpdateretreatCostInput | string[]
     convertedRetreatCost?: NullableIntFieldUpdateOperationsInput | number | null
-    createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     abilities?: AbilityUncheckedUpdateManyWithoutCardNestedInput
     attacks?: AttackUncheckedUpdateManyWithoutCardNestedInput
-    weaknesses?: WeaknessUncheckedUpdateManyWithoutCardNestedInput
-    resistances?: ResistanceUncheckedUpdateManyWithoutCardNestedInput
-    legalities?: CardLegalitiesUncheckedUpdateOneWithoutCardNestedInput
     images?: CardImagesUncheckedUpdateOneWithoutCardNestedInput
+    legalities?: CardLegalitiesUncheckedUpdateOneWithoutCardNestedInput
     cardmarket?: CardMarketUncheckedUpdateOneWithoutCardNestedInput
+    resistances?: ResistanceUncheckedUpdateManyWithoutCardNestedInput
     tcgplayer?: TcgPlayerUncheckedUpdateOneWithoutCardNestedInput
+    weaknesses?: WeaknessUncheckedUpdateManyWithoutCardNestedInput
   }
 
   export type CardUncheckedUpdateManyWithoutSetInput = {
@@ -22971,8 +23139,8 @@ export namespace Prisma {
     nationalPokedexNumbers?: CardUpdatenationalPokedexNumbersInput | number[]
     retreatCost?: CardUpdateretreatCostInput | string[]
     convertedRetreatCost?: NullableIntFieldUpdateOperationsInput | number | null
-    createdAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    updatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
 

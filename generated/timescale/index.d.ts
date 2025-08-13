@@ -2062,14 +2062,14 @@ export namespace Prisma {
 
   export type PriceHistoryCreateInput = {
     cardId: string
-    time: Date | string
+    time?: Date | string
     averageSellPrice?: number | null
     source?: string | null
   }
 
   export type PriceHistoryUncheckedCreateInput = {
     cardId: string
-    time: Date | string
+    time?: Date | string
     averageSellPrice?: number | null
     source?: string | null
   }
@@ -2090,7 +2090,7 @@ export namespace Prisma {
 
   export type PriceHistoryCreateManyInput = {
     cardId: string
-    time: Date | string
+    time?: Date | string
     averageSellPrice?: number | null
     source?: string | null
   }
