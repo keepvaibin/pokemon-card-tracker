@@ -1,20 +1,42 @@
 import NextAuth from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
-import { NextAuthOptions } from "next-auth";
+import type { NextAuthOptions } from "next-auth";
+import type { JWT } from "next-auth/jwt";
 import { prisma } from "@/lib/prisma";
 import axios from "axios";
-import type { JWT } from "next-auth/jwt";
 
+/** Extend the JWT we store client-side */
 interface ExtendedToken extends JWT {
   accessToken?: string;
   refreshToken?: string;
-  accessTokenExpires?: number;
+  accessTokenExpires?: number; // ms timestamp
+  idToken?: string;
+  idTokenExpires?: number;     // ms timestamp
   error?: string;
   user?: any;
-  idToken?: string;
 }
 
+/** Decode a JWT's exp (seconds) into ms timestamp */
+function decodeJwtExpiry(idToken?: string): number | undefined {
+  try {
+    if (!idToken) return undefined;
+    const payload = JSON.parse(
+      Buffer.from(idToken.split(".")[1], "base64").toString("utf8")
+    );
+    if (payload?.exp) return Number(payload.exp) * 1000;
+  } catch {
+    // ignore
+  }
+  return undefined;
+}
+
+/** Refresh Google tokens (access + possibly id_token) using the refresh_token */
 async function refreshAccessToken(token: ExtendedToken): Promise<ExtendedToken> {
+  if (!token.refreshToken) {
+    // No refresh token available → force re-auth
+    return { ...token, error: "NoRefreshToken" };
+  }
+
   try {
     const url = "https://oauth2.googleapis.com/token";
 
@@ -24,107 +46,143 @@ async function refreshAccessToken(token: ExtendedToken): Promise<ExtendedToken> 
         client_id: process.env.GOOGLE_CLIENT_ID!,
         client_secret: process.env.GOOGLE_CLIENT_SECRET!,
         grant_type: "refresh_token",
-        refresh_token: token.refreshToken!,
+        refresh_token: token.refreshToken,
       }).toString(),
-      {
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
-        },
-      }
+      { headers: { "Content-Type": "application/x-www-form-urlencoded" } }
     );
 
-    const refreshedTokens = response.data;
+    const refreshed = response.data as {
+      access_token: string;
+      expires_in: number;
+      scope?: string;
+      token_type?: string;
+      id_token?: string;       // present when original scope included "openid"
+      refresh_token?: string;  // may be omitted; keep the old one if absent
+    };
+
+    const nextIdToken = refreshed.id_token ?? token.idToken;
+    const nextIdTokenExp =
+      refreshed.id_token ? decodeJwtExpiry(refreshed.id_token) : token.idTokenExpires;
 
     return {
       ...token,
-      accessToken: refreshedTokens.access_token,
-      accessTokenExpires: Date.now() + refreshedTokens.expires_in * 1000,
-      // If no new refresh token is returned, fall back to old one
-      refreshToken: refreshedTokens.refresh_token ?? token.refreshToken,
+      accessToken: refreshed.access_token,
+      accessTokenExpires: Date.now() + refreshed.expires_in * 1000,
+      refreshToken: refreshed.refresh_token ?? token.refreshToken,
+      idToken: nextIdToken,
+      idTokenExpires: nextIdTokenExp,
       error: undefined,
     };
-  } catch (error) {
-    console.error("Error refreshing access token", error);
-    return {
-      ...token,
-      error: "RefreshAccessTokenError",
-    };
+  } catch (err) {
+    console.error("Error refreshing Google tokens:", err);
+    return { ...token, error: "RefreshAccessTokenError" };
   }
 }
 
 export const authOptions: NextAuthOptions = {
+  // Explicitly use JWT sessions
+  session: { strategy: "jwt" },
+
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID!,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
       authorization: {
         params: {
-          access_type: "offline",  // Important for refresh tokens
-          prompt: "consent",       // Forces consent to ensure refresh token is returned once
+          // Ensure we get a refresh_token and OIDC id_token
+          scope: "openid email profile",
+          access_type: "offline",
+          prompt: "consent",
+          // response_type left as default "code"
         },
       },
     }),
   ],
+
   secret: process.env.NEXTAUTH_SECRET,
+
   pages: {
     signIn: "/sign-in",
   },
-  callbacks: {
-    async signIn({ user }) {
-      const dbUser = await prisma.user.findUnique({
-        where: { email: user.email! },
-      });
 
+  callbacks: {
+    /** Ensure a user row exists */
+    async signIn({ user }) {
+      const email = user.email!;
+      const dbUser = await prisma.user.findUnique({ where: { email } });
       if (!dbUser) {
-        await prisma.user.create({
-          data: { email: user.email! },
-        });
+        await prisma.user.create({ data: { email } });
       }
       return true;
     },
-    async jwt({ token, account, user }) {
-      const extendedToken = token as ExtendedToken;
 
-      // Initial sign in: save tokens and expiry
+    /** Attach/refresh tokens on the JWT we store client-side */
+    async jwt({ token, account, user }) {
+      let t = token as ExtendedToken;
+
+      // Initial sign-in
       if (account && user) {
+        const idToken = account.id_token as string | undefined;
         return {
-          ...extendedToken,
-          accessToken: account.access_token,
-          accessTokenExpires: Date.now() + (Number(account.expires_in) || 3600) * 1000,
-          refreshToken: account.refresh_token,
+          ...t,
+          accessToken: account.access_token as string | undefined,
+          accessTokenExpires:
+            Date.now() + ((Number(account.expires_in) || 3600) * 1000),
+          refreshToken: account.refresh_token as string | undefined,
+          idToken,
+          idTokenExpires: decodeJwtExpiry(idToken),
           user,
-          idToken: account.id_token,
           error: undefined,
         };
       }
 
-      // Return previous token if access token is still valid
-      if (Date.now() < (extendedToken.accessTokenExpires ?? 0)) {
-        return extendedToken;
+      // If tokens are still valid, return previous token
+      const now = Date.now();
+      const ACCESS_EXP = t.accessTokenExpires ?? 0;
+      const ID_EXP = t.idTokenExpires ?? 0;
+
+      // small buffer to refresh a bit before expiry
+      const BUFFER_MS = 30_000;
+
+      const accessValid = now + BUFFER_MS < ACCESS_EXP;
+      const idValid = now + BUFFER_MS < ID_EXP || !ID_EXP; // if we don't have an id exp, don't block refresh on it
+
+      if (accessValid && idValid) {
+        return t;
       }
 
-      // Access token expired, try to refresh it
-      return await refreshAccessToken(extendedToken);
+      // Otherwise refresh
+      return await refreshAccessToken(t);
     },
+
+    /** Expose what the client needs */
     async session({ session, token }) {
+      const ext = token as ExtendedToken;
+
+      // Attach DB user id
       const dbUser = await prisma.user.findUnique({
         where: { email: session.user?.email! },
+        select: { id: true },
       });
       if (dbUser) {
         (session.user as any).id = dbUser.id;
       }
 
-      // Pass tokens and error info to the client session
-      (session as any).idToken = (token as ExtendedToken).idToken;
-      (session as any).accessToken = (token as ExtendedToken).accessToken;
-      (session as any).error = (token as ExtendedToken).error;
+      // Pass tokens & error to client
+      (session as any).idToken = ext.idToken;
+      (session as any).accessToken = ext.accessToken;
+      (session as any).error = ext.error;
 
       return session;
     },
-    async redirect({ url, baseUrl }) {
-      return baseUrl + "/dashboard";
+
+    async redirect({ baseUrl }) {
+      return `${baseUrl}/dashboard`;
     },
   },
+
+  // Optional: add some logging during development
+  // debug: process.env.NODE_ENV === "development",
 };
 
 const handler = NextAuth(authOptions);
