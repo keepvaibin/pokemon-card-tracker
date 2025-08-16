@@ -1,12 +1,7 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
+// prisma/schema.prisma (USER DB)
 generator client {
   provider = "prisma-client-js"
-  output   = "../generated/user"
+  output   = "../../generated/user"
 }
 
 datasource db {
@@ -18,7 +13,22 @@ model User {
   id              String   @id @default(uuid())
   email           String   @unique
   name            String?
-  cards           String[]
+  // keep legacy cards for backward compatibility with existing code:
+  cards           String[] @default([])
   createdAt       DateTime @default(now())
   themePreference String   @default("system")
+
+  lists List[]
+}
+
+model List {
+  id        String   @id @default(uuid())
+  userId    String
+  name      String
+  isDefault Boolean  @default(false)
+  cards     String[] @default([])
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@unique([userId, name])
 }

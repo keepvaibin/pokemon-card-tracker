@@ -4,14 +4,17 @@ import { prismaCards } from "@/lib/prismaCards";
 import { verifyGoogleIdToken } from "@/lib/auth";
 import { serializeCardFull } from "@/server/services/cards";
 
+// In Next.js (newer versions), dynamic route params are async.
+// Fix: declare params as a Promise and await it before use.
 export async function GET(
   req: Request,
-  { params }: { params: { id: string } }
+  ctx: { params: Promise<{ id: string }> }
 ) {
   const auth = await verifyGoogleIdToken(req.headers.get("authorization") || undefined);
   if (!auth) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
-  const id = params.id;
+  const { id } = await ctx.params; // ✅ await params
+
   const c = await prismaCards.card.findUnique({
     where: { id },
     include: {

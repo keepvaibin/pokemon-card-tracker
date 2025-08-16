@@ -12,7 +12,11 @@
     "prisma:generate:timescale": "prisma generate --schema=prisma/timescale/schema.prisma",
     "prisma:generate": "prisma generate --schema=prisma/timescale/schema.prisma && prisma generate --schema=prisma/cards/schema.prisma && prisma generate --schema=prisma/users/schema.prisma",
     "prisma:deploy": "prisma migrate deploy --schema=prisma/timescale/schema.prisma && prisma migrate deploy --schema=prisma/cards/schema.prisma && prisma migrate deploy --schema=prisma/users/schema.prisma",
+    "prisma:seed": "ts-node prisma/users/seed.ts",
     "postinstall": "npm run prisma:generate"
+  },
+  "prisma": {
+    "seed": "ts-node prisma/users/seed.ts"
   },
   "dependencies": {
     "@headlessui/react": "^2.2.7",
@@ -40,6 +44,7 @@
     "eslint-config-next": "15.4.5",
     "postcss": "^8.5.6",
     "tailwindcss": "^4.1.11",
-    "typescript": "^5"
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.2"
   }
 }

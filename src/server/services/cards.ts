@@ -12,9 +12,19 @@ import type {
   TcgPlayerPrices,
   CardSet,
   SetLegalities,
-} from "../../generated/cards";
+} from "../../../generated/cards";
 
 export function serializeCardBasic(c: any) {
+  // Build tcgplayer.prices in the FullPrice shape your modal understands
+  const tcgPriceMap: Record<string, { market?: number; mid?: number; low?: number; high?: number }> = {};
+  const tp = c.tcgplayer?.prices;
+  if (tp) {
+    if (tp.normalMarket != null) tcgPriceMap.normal = { market: tp.normalMarket };
+    if (tp.holofoilMarket != null) tcgPriceMap.holofoil = { market: tp.holofoilMarket };
+    if (tp.reverseHolofoilMarket != null) tcgPriceMap.reverseHolofoil = { market: tp.reverseHolofoilMarket };
+    // If your schema ever adds mid/low/high, you can map them here too.
+  }
+
   return {
     id: c.id,
     name: c.name,
@@ -29,20 +39,40 @@ export function serializeCardBasic(c: any) {
     nationalPokedexNumbers: c.nationalPokedexNumbers ?? [],
     retreatCost: c.retreatCost ?? [],
     createdAt: c.createdAt?.toISOString() ?? null,
+
     set: c.set ? { id: c.set.id, name: c.set.name, series: c.set.series } : null,
-    market: c.cardmarket ? {
-      averageSellPrice: c.cardmarket.averageSellPrice,
-      trendPrice: c.cardmarket.trendPrice,
-      lowPrice: c.cardmarket.lowPrice,
-    } : null,
-    tcgplayerPrices: c.tcgplayer?.prices ? {
-      normalMarket: c.tcgplayer.prices.normalMarket,
-      holofoilMarket: c.tcgplayer.prices.holofoilMarket,
-      reverseHolofoilMarket: c.tcgplayer.prices.reverseHolofoilMarket,
-    } : null,
+
+    // ⬇️ rename to `cardmarket` so it matches the modal expectations
+    cardmarket: c.cardmarket
+      ? {
+          averageSellPrice: c.cardmarket.averageSellPrice,
+          trendPrice: c.cardmarket.trendPrice,
+          lowPrice: c.cardmarket.lowPrice,
+        }
+      : null,
+
+    // ⬇️ rename/shape to `tcgplayer.prices`
+    tcgplayer: Object.keys(tcgPriceMap).length ? { prices: tcgPriceMap } : null,
+
+    // keep both sizes when available
     images: c.images ? { small: c.images.small, large: c.images.large } : null,
+
+    // ⬇️ pass through if you included them in the Prisma include
+    abilities: Array.isArray(c.abilities)
+      ? c.abilities.map((a: any) => ({ name: a.name, text: a.text ?? null, type: a.type ?? null }))
+      : undefined,
+
+    attacks: Array.isArray(c.attacks)
+      ? c.attacks.map((a: any) => ({
+          name: a.name,
+          text: a.text ?? null,
+          damage: a.damage ?? null,
+          cost: Array.isArray(a.cost) ? a.cost : [],
+        }))
+      : undefined,
   };
 }
+
 
 export function serializeCardFull(c: any) {
   return {

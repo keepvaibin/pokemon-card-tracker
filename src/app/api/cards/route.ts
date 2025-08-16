@@ -44,8 +44,7 @@ function getRange(url: URL, base: string): { min?: number; max?: number; hasAny:
   const raw = toArray(url.searchParams.getAll(base));
   const nums = raw.map((n) => Number(n)).filter((n) => Number.isFinite(n)) as number[];
   if (nums.length >= 2) {
-    const a = nums[0],
-      b = nums[1];
+    const a = nums[0], b = nums[1];
     return { min: Math.min(a, b), max: Math.max(a, b), hasAny: true };
   }
   if (nums.length === 1) {
@@ -145,8 +144,7 @@ export async function GET(req: Request) {
     return out;
   };
 
-// Retreat range (derived from length of retreatCost String[])
-// Use SQL cardinality(retreatCost) so it works even if convertedRetreatCost is null.
+  // Retreat range (derived from length of retreatCost String[])
   if (retreatRange.hasAny) {
     if (retreatRange.min != null && retreatRange.max == null) {
       const exact = retreatRange.min;
@@ -170,7 +168,7 @@ export async function GET(req: Request) {
     }
   }
 
-// CardMarket.averageSellPrice range (Float?)
+  // CardMarket.averageSellPrice range (Float?)
   if (avgSellPriceRange.min != null || avgSellPriceRange.max != null) {
     const f: any = {};
     if (avgSellPriceRange.min != null) f.gte = avgSellPriceRange.min;
@@ -178,10 +176,7 @@ export async function GET(req: Request) {
     AND.push({ cardmarket: { is: { averageSellPrice: f } } });
   }
 
-  // ---------- ID set intersections for hp (String->int), pokedex (Int[]), legalities, types/subtypes (CI) ----------
-    // HP range (string -> int)
-// If user provides a single value (?hp=60), treat it as an exact match.
-// If a range is provided (hpMin/hpMax or hp=a,b), use BETWEEN as before.
+  // ID set intersections (hp, pokedex, legalities, types/subtypes)
   if (hpRange.hasAny) {
     if (hpRange.min != null && hpRange.max == null) {
       const exact = hpRange.min;
@@ -207,7 +202,6 @@ export async function GET(req: Request) {
     }
   }
 
-  // Pokédex range (Int[] any between min..max)
   if (pokedexRange.min != null || pokedexRange.max != null) {
     const min = pokedexRange.min ?? Number.MIN_SAFE_INTEGER;
     const max = pokedexRange.max ?? Number.MAX_SAFE_INTEGER;
@@ -224,7 +218,6 @@ export async function GET(req: Request) {
     requiredIdSet = intersect(requiredIdSet, new Set(ids.map((r) => r.id)));
   }
 
-  // Legalities: AND across formats; OR inside a format; case-insensitive
   async function legalUnionByColumn(col: "standard" | "expanded" | "unlimited", values: string[]) {
     const union = new Set<string>();
     for (const val of values) {
@@ -259,7 +252,6 @@ export async function GET(req: Request) {
     requiredIdSet = intersect(requiredIdSet, legSet);
   }
 
-  // Case-insensitive types / subtypes (no Prisma.join, no rawUnsafe)
   if (types.length) {
     const typesLower = types.map((t) => t.toLowerCase());
     const ids = await prismaCards.$queryRaw<Array<{ id: string }>>`
@@ -290,7 +282,6 @@ export async function GET(req: Request) {
     requiredIdSet = intersect(requiredIdSet, new Set(ids.map((r) => r.id)));
   }
 
-  // Apply ID constraints into Prisma where
   if (requiredIdSet) {
     if (requiredIdSet.size === 0) {
       return NextResponse.json({ page, page_size: pageSize, total: 0, total_pages: 1, cards: [] });
@@ -313,13 +304,49 @@ export async function GET(req: Request) {
         tcgplayer: { include: { prices: true } },
         set: { select: { id: true, name: true, series: true } },
         legalities: true,
+        // ⬇️ NEW: bring rich fields so the list can prefetch them
+        abilities: true,
+        attacks: true,
       },
       orderBy: { id: "asc" },
     }),
   ]);
 
   const total_pages = Math.max(1, Math.ceil(total / pageSize));
-  const cards = items.map(serializeCardBasic);
+
+  // Keep your existing serializer, then *augment* with the rich fields.
+  const cards = items.map((it) => {
+    const base: any = serializeCardBasic(it);
+
+    // Ensure large image is present when available
+    if (it.images?.large) {
+      base.images = { ...(base.images || {}), large: it.images.large };
+    }
+
+    // Pass through abilities/attacks in a simple, modal-friendly shape
+    if (it.abilities?.length) {
+      base.abilities = it.abilities.map((a: any) => ({
+        name: a.name,
+        text: a.text ?? null,
+        type: a.type ?? null,
+      }));
+    }
+    if (it.attacks?.length) {
+      base.attacks = it.attacks.map((a: any) => ({
+        name: a.name,
+        text: a.text ?? null,
+        damage: a.damage ?? null,
+        cost: Array.isArray(a.cost) ? a.cost : [],
+      }));
+    }
+
+    // If serializeCardBasic doesn’t already include tcgplayer.prices, uncomment:
+    // if (it.tcgplayer?.prices) {
+    //   base.tcgplayer = { prices: it.tcgplayer.prices as any };
+    // }
+
+    return base;
+  });
 
   return NextResponse.json({ page, page_size: pageSize, total, total_pages, cards });
 }

@@ -895,63 +895,93 @@ export namespace Prisma {
   }
 
   export type PriceHistoryAvgAggregateOutputType = {
-    averageSellPrice: number | null
+    tcgplayer_normal_market: number | null
+    tcgplayer_holofoil_market: number | null
+    tcgplayer_reverse_holofoil_market: number | null
+    cardmarket_average_sell_price: number | null
   }
 
   export type PriceHistorySumAggregateOutputType = {
-    averageSellPrice: number | null
+    tcgplayer_normal_market: number | null
+    tcgplayer_holofoil_market: number | null
+    tcgplayer_reverse_holofoil_market: number | null
+    cardmarket_average_sell_price: number | null
   }
 
   export type PriceHistoryMinAggregateOutputType = {
     cardId: string | null
     time: Date | null
-    averageSellPrice: number | null
-    source: string | null
+    tcgplayer_normal_market: number | null
+    tcgplayer_holofoil_market: number | null
+    tcgplayer_reverse_holofoil_market: number | null
+    cardmarket_average_sell_price: number | null
+    no_tcgplayer_prices: boolean | null
   }
 
   export type PriceHistoryMaxAggregateOutputType = {
     cardId: string | null
     time: Date | null
-    averageSellPrice: number | null
-    source: string | null
+    tcgplayer_normal_market: number | null
+    tcgplayer_holofoil_market: number | null
+    tcgplayer_reverse_holofoil_market: number | null
+    cardmarket_average_sell_price: number | null
+    no_tcgplayer_prices: boolean | null
   }
 
   export type PriceHistoryCountAggregateOutputType = {
     cardId: number
     time: number
-    averageSellPrice: number
-    source: number
+    tcgplayer_normal_market: number
+    tcgplayer_holofoil_market: number
+    tcgplayer_reverse_holofoil_market: number
+    cardmarket_average_sell_price: number
+    no_tcgplayer_prices: number
     _all: number
   }
 
 
   export type PriceHistoryAvgAggregateInputType = {
-    averageSellPrice?: true
+    tcgplayer_normal_market?: true
+    tcgplayer_holofoil_market?: true
+    tcgplayer_reverse_holofoil_market?: true
+    cardmarket_average_sell_price?: true
   }
 
   export type PriceHistorySumAggregateInputType = {
-    averageSellPrice?: true
+    tcgplayer_normal_market?: true
+    tcgplayer_holofoil_market?: true
+    tcgplayer_reverse_holofoil_market?: true
+    cardmarket_average_sell_price?: true
   }
 
   export type PriceHistoryMinAggregateInputType = {
     cardId?: true
     time?: true
-    averageSellPrice?: true
-    source?: true
+    tcgplayer_normal_market?: true
+    tcgplayer_holofoil_market?: true
+    tcgplayer_reverse_holofoil_market?: true
+    cardmarket_average_sell_price?: true
+    no_tcgplayer_prices?: true
   }
 
   export type PriceHistoryMaxAggregateInputType = {
     cardId?: true
     time?: true
-    averageSellPrice?: true
-    source?: true
+    tcgplayer_normal_market?: true
+    tcgplayer_holofoil_market?: true
+    tcgplayer_reverse_holofoil_market?: true
+    cardmarket_average_sell_price?: true
+    no_tcgplayer_prices?: true
   }
 
   export type PriceHistoryCountAggregateInputType = {
     cardId?: true
     time?: true
-    averageSellPrice?: true
-    source?: true
+    tcgplayer_normal_market?: true
+    tcgplayer_holofoil_market?: true
+    tcgplayer_reverse_holofoil_market?: true
+    cardmarket_average_sell_price?: true
+    no_tcgplayer_prices?: true
     _all?: true
   }
 
@@ -1044,8 +1074,11 @@ export namespace Prisma {
   export type PriceHistoryGroupByOutputType = {
     cardId: string
     time: Date
-    averageSellPrice: number | null
-    source: string | null
+    tcgplayer_normal_market: number | null
+    tcgplayer_holofoil_market: number | null
+    tcgplayer_reverse_holofoil_market: number | null
+    cardmarket_average_sell_price: number | null
+    no_tcgplayer_prices: boolean
     _count: PriceHistoryCountAggregateOutputType | null
     _avg: PriceHistoryAvgAggregateOutputType | null
     _sum: PriceHistorySumAggregateOutputType | null
@@ -1070,32 +1103,44 @@ export namespace Prisma {
   export type PriceHistorySelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     cardId?: boolean
     time?: boolean
-    averageSellPrice?: boolean
-    source?: boolean
+    tcgplayer_normal_market?: boolean
+    tcgplayer_holofoil_market?: boolean
+    tcgplayer_reverse_holofoil_market?: boolean
+    cardmarket_average_sell_price?: boolean
+    no_tcgplayer_prices?: boolean
   }, ExtArgs["result"]["priceHistory"]>
 
   export type PriceHistorySelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     cardId?: boolean
     time?: boolean
-    averageSellPrice?: boolean
-    source?: boolean
+    tcgplayer_normal_market?: boolean
+    tcgplayer_holofoil_market?: boolean
+    tcgplayer_reverse_holofoil_market?: boolean
+    cardmarket_average_sell_price?: boolean
+    no_tcgplayer_prices?: boolean
   }, ExtArgs["result"]["priceHistory"]>
 
   export type PriceHistorySelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     cardId?: boolean
     time?: boolean
-    averageSellPrice?: boolean
-    source?: boolean
+    tcgplayer_normal_market?: boolean
+    tcgplayer_holofoil_market?: boolean
+    tcgplayer_reverse_holofoil_market?: boolean
+    cardmarket_average_sell_price?: boolean
+    no_tcgplayer_prices?: boolean
   }, ExtArgs["result"]["priceHistory"]>
 
   export type PriceHistorySelectScalar = {
     cardId?: boolean
     time?: boolean
-    averageSellPrice?: boolean
-    source?: boolean
+    tcgplayer_normal_market?: boolean
+    tcgplayer_holofoil_market?: boolean
+    tcgplayer_reverse_holofoil_market?: boolean
+    cardmarket_average_sell_price?: boolean
+    no_tcgplayer_prices?: boolean
   }
 
-  export type PriceHistoryOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"cardId" | "time" | "averageSellPrice" | "source", ExtArgs["result"]["priceHistory"]>
+  export type PriceHistoryOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"cardId" | "time" | "tcgplayer_normal_market" | "tcgplayer_holofoil_market" | "tcgplayer_reverse_holofoil_market" | "cardmarket_average_sell_price" | "no_tcgplayer_prices", ExtArgs["result"]["priceHistory"]>
 
   export type $PriceHistoryPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "PriceHistory"
@@ -1103,8 +1148,11 @@ export namespace Prisma {
     scalars: $Extensions.GetPayloadResult<{
       cardId: string
       time: Date
-      averageSellPrice: number | null
-      source: string | null
+      tcgplayer_normal_market: number | null
+      tcgplayer_holofoil_market: number | null
+      tcgplayer_reverse_holofoil_market: number | null
+      cardmarket_average_sell_price: number | null
+      no_tcgplayer_prices: boolean
     }, ExtArgs["result"]["priceHistory"]>
     composites: {}
   }
@@ -1530,8 +1578,11 @@ export namespace Prisma {
   interface PriceHistoryFieldRefs {
     readonly cardId: FieldRef<"PriceHistory", 'String'>
     readonly time: FieldRef<"PriceHistory", 'DateTime'>
-    readonly averageSellPrice: FieldRef<"PriceHistory", 'Float'>
-    readonly source: FieldRef<"PriceHistory", 'String'>
+    readonly tcgplayer_normal_market: FieldRef<"PriceHistory", 'Float'>
+    readonly tcgplayer_holofoil_market: FieldRef<"PriceHistory", 'Float'>
+    readonly tcgplayer_reverse_holofoil_market: FieldRef<"PriceHistory", 'Float'>
+    readonly cardmarket_average_sell_price: FieldRef<"PriceHistory", 'Float'>
+    readonly no_tcgplayer_prices: FieldRef<"PriceHistory", 'Boolean'>
   }
     
 
@@ -1915,8 +1966,11 @@ export namespace Prisma {
   export const PriceHistoryScalarFieldEnum: {
     cardId: 'cardId',
     time: 'time',
-    averageSellPrice: 'averageSellPrice',
-    source: 'source'
+    tcgplayer_normal_market: 'tcgplayer_normal_market',
+    tcgplayer_holofoil_market: 'tcgplayer_holofoil_market',
+    tcgplayer_reverse_holofoil_market: 'tcgplayer_reverse_holofoil_market',
+    cardmarket_average_sell_price: 'cardmarket_average_sell_price',
+    no_tcgplayer_prices: 'no_tcgplayer_prices'
   };
 
   export type PriceHistoryScalarFieldEnum = (typeof PriceHistoryScalarFieldEnum)[keyof typeof PriceHistoryScalarFieldEnum]
@@ -1994,6 +2048,13 @@ export namespace Prisma {
 
 
   /**
+   * Reference to a field of type 'Boolean'
+   */
+  export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
+    
+
+
+  /**
    * Reference to a field of type 'Int'
    */
   export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
@@ -2016,15 +2077,21 @@ export namespace Prisma {
     NOT?: PriceHistoryWhereInput | PriceHistoryWhereInput[]
     cardId?: StringFilter<"PriceHistory"> | string
     time?: DateTimeFilter<"PriceHistory"> | Date | string
-    averageSellPrice?: FloatNullableFilter<"PriceHistory"> | number | null
-    source?: StringNullableFilter<"PriceHistory"> | string | null
+    tcgplayer_normal_market?: FloatNullableFilter<"PriceHistory"> | number | null
+    tcgplayer_holofoil_market?: FloatNullableFilter<"PriceHistory"> | number | null
+    tcgplayer_reverse_holofoil_market?: FloatNullableFilter<"PriceHistory"> | number | null
+    cardmarket_average_sell_price?: FloatNullableFilter<"PriceHistory"> | number | null
+    no_tcgplayer_prices?: BoolFilter<"PriceHistory"> | boolean
   }
 
   export type PriceHistoryOrderByWithRelationInput = {
     cardId?: SortOrder
     time?: SortOrder
-    averageSellPrice?: SortOrderInput | SortOrder
-    source?: SortOrderInput | SortOrder
+    tcgplayer_normal_market?: SortOrderInput | SortOrder
+    tcgplayer_holofoil_market?: SortOrderInput | SortOrder
+    tcgplayer_reverse_holofoil_market?: SortOrderInput | SortOrder
+    cardmarket_average_sell_price?: SortOrderInput | SortOrder
+    no_tcgplayer_prices?: SortOrder
   }
 
   export type PriceHistoryWhereUniqueInput = Prisma.AtLeast<{
@@ -2034,15 +2101,21 @@ export namespace Prisma {
     NOT?: PriceHistoryWhereInput | PriceHistoryWhereInput[]
     cardId?: StringFilter<"PriceHistory"> | string
     time?: DateTimeFilter<"PriceHistory"> | Date | string
-    averageSellPrice?: FloatNullableFilter<"PriceHistory"> | number | null
-    source?: StringNullableFilter<"PriceHistory"> | string | null
+    tcgplayer_normal_market?: FloatNullableFilter<"PriceHistory"> | number | null
+    tcgplayer_holofoil_market?: FloatNullableFilter<"PriceHistory"> | number | null
+    tcgplayer_reverse_holofoil_market?: FloatNullableFilter<"PriceHistory"> | number | null
+    cardmarket_average_sell_price?: FloatNullableFilter<"PriceHistory"> | number | null
+    no_tcgplayer_prices?: BoolFilter<"PriceHistory"> | boolean
   }, "cardId_time">
 
   export type PriceHistoryOrderByWithAggregationInput = {
     cardId?: SortOrder
     time?: SortOrder
-    averageSellPrice?: SortOrderInput | SortOrder
-    source?: SortOrderInput | SortOrder
+    tcgplayer_normal_market?: SortOrderInput | SortOrder
+    tcgplayer_holofoil_market?: SortOrderInput | SortOrder
+    tcgplayer_reverse_holofoil_market?: SortOrderInput | SortOrder
+    cardmarket_average_sell_price?: SortOrderInput | SortOrder
+    no_tcgplayer_prices?: SortOrder
     _count?: PriceHistoryCountOrderByAggregateInput
     _avg?: PriceHistoryAvgOrderByAggregateInput
     _max?: PriceHistoryMaxOrderByAggregateInput
@@ -2056,57 +2129,81 @@ export namespace Prisma {
     NOT?: PriceHistoryScalarWhereWithAggregatesInput | PriceHistoryScalarWhereWithAggregatesInput[]
     cardId?: StringWithAggregatesFilter<"PriceHistory"> | string
     time?: DateTimeWithAggregatesFilter<"PriceHistory"> | Date | string
-    averageSellPrice?: FloatNullableWithAggregatesFilter<"PriceHistory"> | number | null
-    source?: StringNullableWithAggregatesFilter<"PriceHistory"> | string | null
+    tcgplayer_normal_market?: FloatNullableWithAggregatesFilter<"PriceHistory"> | number | null
+    tcgplayer_holofoil_market?: FloatNullableWithAggregatesFilter<"PriceHistory"> | number | null
+    tcgplayer_reverse_holofoil_market?: FloatNullableWithAggregatesFilter<"PriceHistory"> | number | null
+    cardmarket_average_sell_price?: FloatNullableWithAggregatesFilter<"PriceHistory"> | number | null
+    no_tcgplayer_prices?: BoolWithAggregatesFilter<"PriceHistory"> | boolean
   }
 
   export type PriceHistoryCreateInput = {
     cardId: string
-    time?: Date | string
-    averageSellPrice?: number | null
-    source?: string | null
+    time: Date | string
+    tcgplayer_normal_market?: number | null
+    tcgplayer_holofoil_market?: number | null
+    tcgplayer_reverse_holofoil_market?: number | null
+    cardmarket_average_sell_price?: number | null
+    no_tcgplayer_prices: boolean
   }
 
   export type PriceHistoryUncheckedCreateInput = {
     cardId: string
-    time?: Date | string
-    averageSellPrice?: number | null
-    source?: string | null
+    time: Date | string
+    tcgplayer_normal_market?: number | null
+    tcgplayer_holofoil_market?: number | null
+    tcgplayer_reverse_holofoil_market?: number | null
+    cardmarket_average_sell_price?: number | null
+    no_tcgplayer_prices: boolean
   }
 
   export type PriceHistoryUpdateInput = {
     cardId?: StringFieldUpdateOperationsInput | string
     time?: DateTimeFieldUpdateOperationsInput | Date | string
-    averageSellPrice?: NullableFloatFieldUpdateOperationsInput | number | null
-    source?: NullableStringFieldUpdateOperationsInput | string | null
+    tcgplayer_normal_market?: NullableFloatFieldUpdateOperationsInput | number | null
+    tcgplayer_holofoil_market?: NullableFloatFieldUpdateOperationsInput | number | null
+    tcgplayer_reverse_holofoil_market?: NullableFloatFieldUpdateOperationsInput | number | null
+    cardmarket_average_sell_price?: NullableFloatFieldUpdateOperationsInput | number | null
+    no_tcgplayer_prices?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type PriceHistoryUncheckedUpdateInput = {
     cardId?: StringFieldUpdateOperationsInput | string
     time?: DateTimeFieldUpdateOperationsInput | Date | string
-    averageSellPrice?: NullableFloatFieldUpdateOperationsInput | number | null
-    source?: NullableStringFieldUpdateOperationsInput | string | null
+    tcgplayer_normal_market?: NullableFloatFieldUpdateOperationsInput | number | null
+    tcgplayer_holofoil_market?: NullableFloatFieldUpdateOperationsInput | number | null
+    tcgplayer_reverse_holofoil_market?: NullableFloatFieldUpdateOperationsInput | number | null
+    cardmarket_average_sell_price?: NullableFloatFieldUpdateOperationsInput | number | null
+    no_tcgplayer_prices?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type PriceHistoryCreateManyInput = {
     cardId: string
-    time?: Date | string
-    averageSellPrice?: number | null
-    source?: string | null
+    time: Date | string
+    tcgplayer_normal_market?: number | null
+    tcgplayer_holofoil_market?: number | null
+    tcgplayer_reverse_holofoil_market?: number | null
+    cardmarket_average_sell_price?: number | null
+    no_tcgplayer_prices: boolean
   }
 
   export type PriceHistoryUpdateManyMutationInput = {
     cardId?: StringFieldUpdateOperationsInput | string
     time?: DateTimeFieldUpdateOperationsInput | Date | string
-    averageSellPrice?: NullableFloatFieldUpdateOperationsInput | number | null
-    source?: NullableStringFieldUpdateOperationsInput | string | null
+    tcgplayer_normal_market?: NullableFloatFieldUpdateOperationsInput | number | null
+    tcgplayer_holofoil_market?: NullableFloatFieldUpdateOperationsInput | number | null
+    tcgplayer_reverse_holofoil_market?: NullableFloatFieldUpdateOperationsInput | number | null
+    cardmarket_average_sell_price?: NullableFloatFieldUpdateOperationsInput | number | null
+    no_tcgplayer_prices?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type PriceHistoryUncheckedUpdateManyInput = {
     cardId?: StringFieldUpdateOperationsInput | string
     time?: DateTimeFieldUpdateOperationsInput | Date | string
-    averageSellPrice?: NullableFloatFieldUpdateOperationsInput | number | null
-    source?: NullableStringFieldUpdateOperationsInput | string | null
+    tcgplayer_normal_market?: NullableFloatFieldUpdateOperationsInput | number | null
+    tcgplayer_holofoil_market?: NullableFloatFieldUpdateOperationsInput | number | null
+    tcgplayer_reverse_holofoil_market?: NullableFloatFieldUpdateOperationsInput | number | null
+    cardmarket_average_sell_price?: NullableFloatFieldUpdateOperationsInput | number | null
+    no_tcgplayer_prices?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type StringFilter<$PrismaModel = never> = {
@@ -2146,19 +2243,9 @@ export namespace Prisma {
     not?: NestedFloatNullableFilter<$PrismaModel> | number | null
   }
 
-  export type StringNullableFilter<$PrismaModel = never> = {
-    equals?: string | StringFieldRefInput<$PrismaModel> | null
-    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
-    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
-    lt?: string | StringFieldRefInput<$PrismaModel>
-    lte?: string | StringFieldRefInput<$PrismaModel>
-    gt?: string | StringFieldRefInput<$PrismaModel>
-    gte?: string | StringFieldRefInput<$PrismaModel>
-    contains?: string | StringFieldRefInput<$PrismaModel>
-    startsWith?: string | StringFieldRefInput<$PrismaModel>
-    endsWith?: string | StringFieldRefInput<$PrismaModel>
-    mode?: QueryMode
-    not?: NestedStringNullableFilter<$PrismaModel> | string | null
+  export type BoolFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolFilter<$PrismaModel> | boolean
   }
 
   export type SortOrderInput = {
@@ -2174,30 +2261,45 @@ export namespace Prisma {
   export type PriceHistoryCountOrderByAggregateInput = {
     cardId?: SortOrder
     time?: SortOrder
-    averageSellPrice?: SortOrder
-    source?: SortOrder
+    tcgplayer_normal_market?: SortOrder
+    tcgplayer_holofoil_market?: SortOrder
+    tcgplayer_reverse_holofoil_market?: SortOrder
+    cardmarket_average_sell_price?: SortOrder
+    no_tcgplayer_prices?: SortOrder
   }
 
   export type PriceHistoryAvgOrderByAggregateInput = {
-    averageSellPrice?: SortOrder
+    tcgplayer_normal_market?: SortOrder
+    tcgplayer_holofoil_market?: SortOrder
+    tcgplayer_reverse_holofoil_market?: SortOrder
+    cardmarket_average_sell_price?: SortOrder
   }
 
   export type PriceHistoryMaxOrderByAggregateInput = {
     cardId?: SortOrder
     time?: SortOrder
-    averageSellPrice?: SortOrder
-    source?: SortOrder
+    tcgplayer_normal_market?: SortOrder
+    tcgplayer_holofoil_market?: SortOrder
+    tcgplayer_reverse_holofoil_market?: SortOrder
+    cardmarket_average_sell_price?: SortOrder
+    no_tcgplayer_prices?: SortOrder
   }
 
   export type PriceHistoryMinOrderByAggregateInput = {
     cardId?: SortOrder
     time?: SortOrder
-    averageSellPrice?: SortOrder
-    source?: SortOrder
+    tcgplayer_normal_market?: SortOrder
+    tcgplayer_holofoil_market?: SortOrder
+    tcgplayer_reverse_holofoil_market?: SortOrder
+    cardmarket_average_sell_price?: SortOrder
+    no_tcgplayer_prices?: SortOrder
   }
 
   export type PriceHistorySumOrderByAggregateInput = {
-    averageSellPrice?: SortOrder
+    tcgplayer_normal_market?: SortOrder
+    tcgplayer_holofoil_market?: SortOrder
+    tcgplayer_reverse_holofoil_market?: SortOrder
+    cardmarket_average_sell_price?: SortOrder
   }
 
   export type StringWithAggregatesFilter<$PrismaModel = never> = {
@@ -2248,22 +2350,12 @@ export namespace Prisma {
     _max?: NestedFloatNullableFilter<$PrismaModel>
   }
 
-  export type StringNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: string | StringFieldRefInput<$PrismaModel> | null
-    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
-    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
-    lt?: string | StringFieldRefInput<$PrismaModel>
-    lte?: string | StringFieldRefInput<$PrismaModel>
-    gt?: string | StringFieldRefInput<$PrismaModel>
-    gte?: string | StringFieldRefInput<$PrismaModel>
-    contains?: string | StringFieldRefInput<$PrismaModel>
-    startsWith?: string | StringFieldRefInput<$PrismaModel>
-    endsWith?: string | StringFieldRefInput<$PrismaModel>
-    mode?: QueryMode
-    not?: NestedStringNullableWithAggregatesFilter<$PrismaModel> | string | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedStringNullableFilter<$PrismaModel>
-    _max?: NestedStringNullableFilter<$PrismaModel>
+  export type BoolWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedBoolFilter<$PrismaModel>
+    _max?: NestedBoolFilter<$PrismaModel>
   }
 
   export type StringFieldUpdateOperationsInput = {
@@ -2282,8 +2374,8 @@ export namespace Prisma {
     divide?: number
   }
 
-  export type NullableStringFieldUpdateOperationsInput = {
-    set?: string | null
+  export type BoolFieldUpdateOperationsInput = {
+    set?: boolean
   }
 
   export type NestedStringFilter<$PrismaModel = never> = {
@@ -2322,18 +2414,9 @@ export namespace Prisma {
     not?: NestedFloatNullableFilter<$PrismaModel> | number | null
   }
 
-  export type NestedStringNullableFilter<$PrismaModel = never> = {
-    equals?: string | StringFieldRefInput<$PrismaModel> | null
-    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
-    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
-    lt?: string | StringFieldRefInput<$PrismaModel>
-    lte?: string | StringFieldRefInput<$PrismaModel>
-    gt?: string | StringFieldRefInput<$PrismaModel>
-    gte?: string | StringFieldRefInput<$PrismaModel>
-    contains?: string | StringFieldRefInput<$PrismaModel>
-    startsWith?: string | StringFieldRefInput<$PrismaModel>
-    endsWith?: string | StringFieldRefInput<$PrismaModel>
-    not?: NestedStringNullableFilter<$PrismaModel> | string | null
+  export type NestedBoolFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolFilter<$PrismaModel> | boolean
   }
 
   export type NestedStringWithAggregatesFilter<$PrismaModel = never> = {
@@ -2405,21 +2488,12 @@ export namespace Prisma {
     not?: NestedIntNullableFilter<$PrismaModel> | number | null
   }
 
-  export type NestedStringNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: string | StringFieldRefInput<$PrismaModel> | null
-    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
-    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
-    lt?: string | StringFieldRefInput<$PrismaModel>
-    lte?: string | StringFieldRefInput<$PrismaModel>
-    gt?: string | StringFieldRefInput<$PrismaModel>
-    gte?: string | StringFieldRefInput<$PrismaModel>
-    contains?: string | StringFieldRefInput<$PrismaModel>
-    startsWith?: string | StringFieldRefInput<$PrismaModel>
-    endsWith?: string | StringFieldRefInput<$PrismaModel>
-    not?: NestedStringNullableWithAggregatesFilter<$PrismaModel> | string | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedStringNullableFilter<$PrismaModel>
-    _max?: NestedStringNullableFilter<$PrismaModel>
+  export type NestedBoolWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedBoolFilter<$PrismaModel>
+    _max?: NestedBoolFilter<$PrismaModel>
   }
 
 

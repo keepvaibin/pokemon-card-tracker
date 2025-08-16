@@ -1,6 +1,6 @@
 generator client {
   provider = "prisma-client-js"
-  output   = "../generated/timescale"
+  output   = "../../generated/timescale"
 }
 
 datasource db {
@@ -9,54 +9,17 @@ datasource db {
 }
 
 model PriceHistory {
-  cardId           String
-  time             DateTime @default(now()) @db.Timestamptz(6)
-  averageSellPrice Float?
-  source           String?
+  cardId                            String
+  time                              DateTime
+  tcgplayer_normal_market           Float?
+  tcgplayer_holofoil_market         Float?
+  tcgplayer_reverse_holofoil_market Float?
+  cardmarket_average_sell_price     Float?
+  no_tcgplayer_prices               Boolean
 
   @@id([cardId, time])
   @@index([time(sort: Desc)])
-  @@index([cardId, time(sort: Desc)], map: "price_history_card_time_desc_idx")
-  @@index([time(sort: Desc)], map: "price_history_time_desc_idx")
+  @@index([cardId, time(sort: Desc)], map: "idx_pricehistory_cardid_time")
+  @@index([time(sort: Desc)], map: "idx_pricehistory_time")
   @@map("PriceHistory")
-}
-
-model price_history_3d {
-  cardId     String
-  bucket     DateTime @db.Timestamptz(6)
-  last_price Float?
-
-  @@id([cardId, bucket])
-  @@index([bucket], map: "ph3d_bucket_idx")
-  @@ignore
-}
-
-model price_history_6m {
-  cardId     String
-  bucket     DateTime @db.Timestamptz(6)
-  last_price Float?
-
-  @@id([cardId, bucket])
-  @@index([bucket], map: "ph6m_bucket_idx")
-  @@ignore
-}
-
-model price_history_daily {
-  cardId     String
-  bucket     DateTime @db.Timestamptz(6)
-  last_price Float?
-
-  @@id([cardId, bucket])
-  @@index([bucket], map: "phd_bucket_idx")
-  @@ignore
-}
-
-model price_history_monthly {
-  cardId     String
-  bucket     DateTime @db.Timestamptz(6)
-  last_price Float?
-
-  @@id([cardId, bucket])
-  @@index([bucket], map: "phm_bucket_idx")
-  @@ignore
 }

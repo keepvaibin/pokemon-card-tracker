@@ -1,10 +1,13 @@
-// CardSearchModal.tsx
 'use client';
 
 import { motion, AnimatePresence } from 'framer-motion';
 import React, { useMemo, useState, useEffect, useCallback, useRef } from 'react';
 import { useTheme } from 'next-themes';
 import { useSession, getSession, signIn } from 'next-auth/react';
+
+// ⬇️ NEW imports
+import CardDetailModal from '@/components/CardDetailModal';
+import usePersistentPageSize from '@/hooks/usePersistentPageSize';
 
 interface Card {
   id: string;
@@ -14,10 +17,20 @@ interface Card {
   supertype?: string | null;
   subtypes?: string[];
   set?: { id?: string; name?: string; series?: string };
-  images: { small: string };
+  images: { small: string; large?: string };
   rarity?: string | null;
   artist?: string | null;
 }
+
+type HistoryEntry = {
+  cardId: string;
+  time: string; // ISO
+  tcgplayer_normal_market: number | null;
+  tcgplayer_holofoil_market: number | null;
+  tcgplayer_reverse_holofoil_market: number | null;
+  cardmarket_average_sell_price: number | null;
+  no_tcgplayer_prices: boolean;
+};
 
 type FiltersResponse = Partial<{
   // option arrays
@@ -681,10 +694,24 @@ export default function CardSearchModal({
 
   // paging
   const [page, setPage] = useState(1);
-  const [pageSize, setPageSize] = useState<number>(20);
+  // ⬇️ REPLACED with persistent page size
+  const [pageSize, setPageSize] = usePersistentPageSize('cards:pageSize', 20, isOpen, [20, 50, 100]);
+
   const [cards, setCards] = useState<Card[]>([]);
+  const [histories, setHistories] = useState<Record<string, HistoryEntry[]>>({});
+  const histAbortRef = useRef<AbortController | null>(null); 
   const [totalPages, setTotalPages] = useState(1);
   const [loading, setLoading] = useState(false);
+  const [emptyReady, setEmptyReady] = useState(false);
+
+  useEffect(() => {
+    if (!loading && cards.length === 0) {
+      const t = setTimeout(() => setEmptyReady(true), 600);
+      return () => clearTimeout(t);
+    } else {
+      setEmptyReady(false);
+    }
+  }, [loading, cards]);
 
   // ---------- FILTERS: serve from cache (30d) or fetch ONCE; no refire on focus ----------
   useEffect(() => {
@@ -887,6 +914,42 @@ export default function CardSearchModal({
     return () => controller.abort();
   }, [isOpen, applied, page, pageSize]); // NOTICE: no session/token dependency
 
+  // ---------- HISTORIES: batch fetch for current page cards (one POST) ----------
+  useEffect(() => {
+    if (!isOpen) return;
+
+    // cancel any in-flight history request
+    if (histAbortRef.current) histAbortRef.current.abort();
+    const controller = new AbortController();
+    histAbortRef.current = controller;
+
+    const ids = cards.map(c => c.id);
+    if (ids.length === 0) { setHistories({}); return; }
+
+    (async () => {
+      try {
+        const res = await fetchWithAuthRef.current(
+          '/api/cards/price/batch',
+          {
+            method: 'POST',
+            headers: { 'content-type': 'application/json' },
+            body: JSON.stringify({ ids, order: 'asc' }),
+            credentials: 'same-origin',
+            signal: controller.signal,
+          }
+        );
+        if (!res.ok) throw new Error(`price batch ${res.status}`);
+        const data = await res.json();
+        const h = (data?.histories ?? {}) as Record<string, HistoryEntry[]>;
+        setHistories(h);
+      } catch (e: any) {
+        if (e?.name !== 'AbortError') setHistories({});
+      }
+    })();
+
+    return () => controller.abort();
+  }, [isOpen, cards]);
+
   // initial focus
   useEffect(() => {
     if (!isOpen) return;
@@ -961,6 +1024,10 @@ export default function CardSearchModal({
     border: isDarkBg ? '1px solid rgba(148,163,184,.2)' : '1px solid rgba(15,23,42,.08)',
     backdropFilter: 'saturate(140%)',
   }), [isDarkBg]);
+
+  // ⬇️ NEW: state for details modal
+  const [detailId, setDetailId] = useState<string | null>(null);
+  const selectedCard = useMemo(() => cards.find(c => c.id === detailId) ?? null, [cards, detailId]);
 
   return (
     <AnimatePresence>
@@ -1158,7 +1225,7 @@ export default function CardSearchModal({
                   )}
                   {!!filters.legalities?.expanded?.length && (
                     <div>
-                      <label className="block text-sm font-medium mb-1.5">Expanded (Legalities)</label>
+                      <label className="block text	sm font-medium mb-1.5">Expanded (Legalities)</label>
                       <MultiSelect
                         values={legalExp}
                         onChange={setLegalExp}
@@ -1237,16 +1304,18 @@ export default function CardSearchModal({
               {/* results */}
               <div className="flex-1 overflow-y-auto">
                 {loading ? (
-                  <p className="text-center opacity-80">Loading…</p>
-                ) : cards.length === 0 ? (
-                  <p className="text-center opacity-80">No cards found.</p>
+                  <div className="w-full h-full flex items-center justify-center"><p className="text-center opacity-80">Fetching cards…</p></div>
+                ) : cards.length === 0 && emptyReady ? (
+                  <div className="w-full h-full flex items-center justify-center"><p className="text-center opacity-80">No cards found.</p></div>
                 ) : (
                   <div className="grid grid-cols-[repeat(auto-fill,minmax(148px,1fr))] gap-4">
                     {cards.map((card) => (
                       <motion.div
                         key={card.id}
-                        className={`rounded-xl p-2 shadow-sm hover:shadow-md transition-shadow ${isDarkBg ? 'bg-slate-900/60' : 'bg-white'}`}
+                        className={`rounded-xl p-2 shadow-sm hover:shadow-md transition-shadow cursor-pointer ${isDarkBg ? 'bg-slate-900/60' : 'bg-white'}`}
                         whileHover={{ scale: 1.02 }}
+                        // ⬇️ NEW: open detail modal
+                        onClick={() => setDetailId(card.id)}
                       >
                         <img src={card.images.small} alt={card.name} className="w-full rounded-md" loading="lazy" />
                         <div className="mt-2 font-semibold text-sm">{card.name}</div>
@@ -1306,6 +1375,21 @@ export default function CardSearchModal({
               </div>
             </motion.div>
           </motion.div>
+
+          <AnimatePresence mode="wait">
+            {detailId && (
+              <CardDetailModal
+                key={detailId}
+                id={detailId}
+                dark={isDarkBg}
+                fetchWithAuth={fetchWithAuthRef.current}
+                onClose={() => setDetailId(null)}
+                prefetch={selectedCard || undefined}
+                /* NEW: pass prefetched history map entry for the clicked card */
+                prefetchHistory={detailId ? histories[detailId] : undefined}
+              />
+            )}
+          </AnimatePresence>
         </motion.div>
       )}
     </AnimatePresence>

@@ -123,8 +123,11 @@ exports.Prisma.TransactionIsolationLevel = makeStrictEnum({
 exports.Prisma.PriceHistoryScalarFieldEnum = {
   cardId: 'cardId',
   time: 'time',
-  averageSellPrice: 'averageSellPrice',
-  source: 'source'
+  tcgplayer_normal_market: 'tcgplayer_normal_market',
+  tcgplayer_holofoil_market: 'tcgplayer_holofoil_market',
+  tcgplayer_reverse_holofoil_market: 'tcgplayer_reverse_holofoil_market',
+  cardmarket_average_sell_price: 'cardmarket_average_sell_price',
+  no_tcgplayer_prices: 'no_tcgplayer_prices'
 };
 
 exports.Prisma.SortOrder = {

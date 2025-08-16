@@ -95,8 +95,11 @@ exports.Prisma.TransactionIsolationLevel = makeStrictEnum({
 exports.Prisma.PriceHistoryScalarFieldEnum = {
   cardId: 'cardId',
   time: 'time',
-  averageSellPrice: 'averageSellPrice',
-  source: 'source'
+  tcgplayer_normal_market: 'tcgplayer_normal_market',
+  tcgplayer_holofoil_market: 'tcgplayer_holofoil_market',
+  tcgplayer_reverse_holofoil_market: 'tcgplayer_reverse_holofoil_market',
+  cardmarket_average_sell_price: 'cardmarket_average_sell_price',
+  no_tcgplayer_prices: 'no_tcgplayer_prices'
 };
 
 exports.Prisma.SortOrder = {
@@ -143,14 +146,14 @@ const config = {
       }
     ],
     "previewFeatures": [],
-    "sourceFilePath": "C:\\Users\\vaibshuk\\Documents\\pokemon-card-tracker\\prisma\\schema.timescale.prisma",
+    "sourceFilePath": "C:\\Users\\vaibshuk\\Documents\\pokemon-card-tracker\\prisma\\timescale\\schema.prisma",
     "isCustomOutput": true
   },
   "relativeEnvPaths": {
     "rootEnvPath": null,
     "schemaEnvPath": "../../.env"
   },
-  "relativePath": "../../prisma",
+  "relativePath": "../../prisma/timescale",
   "clientVersion": "6.13.0",
   "engineVersion": "361e86d0ea4987e9f53a565309b3eed797a6bcbd",
   "datasourceNames": [
@@ -166,13 +169,13 @@ const config = {
       }
     }
   },
-  "inlineSchema": "generator client {\n  provider = \"prisma-client-js\"\n  output   = \"../generated/timescale\"\n}\n\ndatasource db {\n  provider = \"postgresql\"\n  url      = env(\"TIMESCALE_URL\")\n}\n\nmodel PriceHistory {\n  cardId           String\n  time             DateTime @default(now()) @db.Timestamptz(6)\n  averageSellPrice Float?\n  source           String?\n\n  @@id([cardId, time])\n  @@index([time(sort: Desc)])\n  @@index([cardId, time(sort: Desc)], map: \"price_history_card_time_desc_idx\")\n  @@index([time(sort: Desc)], map: \"price_history_time_desc_idx\")\n  @@map(\"PriceHistory\")\n}\n\nmodel price_history_3d {\n  cardId     String\n  bucket     DateTime @db.Timestamptz(6)\n  last_price Float?\n\n  @@id([cardId, bucket])\n  @@index([bucket], map: \"ph3d_bucket_idx\")\n  @@ignore\n}\n\nmodel price_history_6m {\n  cardId     String\n  bucket     DateTime @db.Timestamptz(6)\n  last_price Float?\n\n  @@id([cardId, bucket])\n  @@index([bucket], map: \"ph6m_bucket_idx\")\n  @@ignore\n}\n\nmodel price_history_daily {\n  cardId     String\n  bucket     DateTime @db.Timestamptz(6)\n  last_price Float?\n\n  @@id([cardId, bucket])\n  @@index([bucket], map: \"phd_bucket_idx\")\n  @@ignore\n}\n\nmodel price_history_monthly {\n  cardId     String\n  bucket     DateTime @db.Timestamptz(6)\n  last_price Float?\n\n  @@id([cardId, bucket])\n  @@index([bucket], map: \"phm_bucket_idx\")\n  @@ignore\n}\n",
-  "inlineSchemaHash": "fe748fd61b08d6496fa4675a33135bfcd8e271fe02987b214b96e1f64dbf0349",
+  "inlineSchema": "generator client {\n  provider = \"prisma-client-js\"\n  output   = \"../../generated/timescale\"\n}\n\ndatasource db {\n  provider = \"postgresql\"\n  url      = env(\"TIMESCALE_URL\")\n}\n\nmodel PriceHistory {\n  cardId                            String\n  time                              DateTime\n  tcgplayer_normal_market           Float?\n  tcgplayer_holofoil_market         Float?\n  tcgplayer_reverse_holofoil_market Float?\n  cardmarket_average_sell_price     Float?\n  no_tcgplayer_prices               Boolean\n\n  @@id([cardId, time])\n  @@index([time(sort: Desc)])\n  @@index([cardId, time(sort: Desc)], map: \"idx_pricehistory_cardid_time\")\n  @@index([time(sort: Desc)], map: \"idx_pricehistory_time\")\n  @@map(\"PriceHistory\")\n}\n",
+  "inlineSchemaHash": "85b4581172f1600d71cbf98ed40cee9e39696d62df8ade82fa5a50c2232a1e44",
   "copyEngine": true
 }
 config.dirname = '/'
 
-config.runtimeDataModel = JSON.parse("{\"models\":{\"PriceHistory\":{\"dbName\":\"PriceHistory\",\"schema\":null,\"fields\":[{\"name\":\"cardId\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"String\",\"nativeType\":null,\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"time\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":true,\"type\":\"DateTime\",\"nativeType\":[\"Timestamptz\",[\"6\"]],\"default\":{\"name\":\"now\",\"args\":[]},\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"averageSellPrice\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":false,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"Float\",\"nativeType\":null,\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"source\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":false,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"String\",\"nativeType\":null,\"isGenerated\":false,\"isUpdatedAt\":false}],\"primaryKey\":{\"name\":null,\"fields\":[\"cardId\",\"time\"]},\"uniqueFields\":[],\"uniqueIndexes\":[],\"isGenerated\":false}},\"enums\":{},\"types\":{}}")
+config.runtimeDataModel = JSON.parse("{\"models\":{\"PriceHistory\":{\"dbName\":\"PriceHistory\",\"schema\":null,\"fields\":[{\"name\":\"cardId\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"String\",\"nativeType\":null,\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"time\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"DateTime\",\"nativeType\":null,\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"tcgplayer_normal_market\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":false,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"Float\",\"nativeType\":null,\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"tcgplayer_holofoil_market\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":false,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"Float\",\"nativeType\":null,\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"tcgplayer_reverse_holofoil_market\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":false,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"Float\",\"nativeType\":null,\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"cardmarket_average_sell_price\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":false,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"Float\",\"nativeType\":null,\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"no_tcgplayer_prices\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"Boolean\",\"nativeType\":null,\"isGenerated\":false,\"isUpdatedAt\":false}],\"primaryKey\":{\"name\":null,\"fields\":[\"cardId\",\"time\"]},\"uniqueFields\":[],\"uniqueIndexes\":[],\"isGenerated\":false}},\"enums\":{},\"types\":{}}")
 defineDmmfProperty(exports.Prisma, config.runtimeDataModel)
 config.engineWasm = undefined
 config.compilerWasm = undefined

@@ -129,6 +129,14 @@ exports.Prisma.UserScalarFieldEnum = {
   themePreference: 'themePreference'
 };
 
+exports.Prisma.ListScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  name: 'name',
+  isDefault: 'isDefault',
+  cards: 'cards'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -146,7 +154,8 @@ exports.Prisma.NullsOrder = {
 
 
 exports.Prisma.ModelName = {
-  User: 'User'
+  User: 'User',
+  List: 'List'
 };
 
 /**
