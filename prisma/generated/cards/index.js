@@ -282,7 +282,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "C:\\Users\\vaibshuk\\Documents\\pokemon-card-tracker\\prisma\\generated\\cards",
+      "value": "C:\\Users\\vaibh\\Documents\\pokemon-card-tracker\\prisma\\generated\\cards",
       "fromEnvVar": null
     },
     "config": {
@@ -296,11 +296,11 @@ const config = {
       }
     ],
     "previewFeatures": [],
-    "sourceFilePath": "C:\\Users\\vaibshuk\\Documents\\pokemon-card-tracker\\prisma\\cards\\schema.prisma",
+    "sourceFilePath": "C:\\Users\\vaibh\\Documents\\pokemon-card-tracker\\prisma\\cards\\schema.prisma",
     "isCustomOutput": true
   },
   "relativeEnvPaths": {
-    "rootEnvPath": "../../../.env",
+    "rootEnvPath": null,
     "schemaEnvPath": "../../../.env"
   },
   "relativePath": "../../cards",
