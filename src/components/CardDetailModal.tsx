@@ -261,45 +261,70 @@ function LineChart({
   const totalLenRef = useRef<number>(0);
 
   // Subscribe line progress -> compute head X via getPointAtLength -> update clipW
+  // NOTE: always re-measure total length in case geometry changed (resize, new data, etc.)
   useEffect(() => {
     const unsub = pathLen.on('change', (t) => {
       const path = pathRef.current;
-      const total = totalLenRef.current;
-      if (!path || !total) return;
+      if (!path) return;
+
+      let total = 0;
+      try {
+        total = path.getTotalLength(); // fresh measurement on every tick
+      } catch {
+        total = 0;
+      }
+      if (!total) return;
+
       const pt = path.getPointAtLength(total * t);
-      // Width: clamp to the chart inner bounds
       const wX = Math.min(innerW, Math.max(0, pt.x - leftPad));
       clipW.set(wX);
     });
     return () => unsub();
   }, [clipW, innerW, leftPad, pathLen]);
 
-  // Measure the path and run the animation once per mount (we remount on series change)
+  // Measure path length and (re)sync the area reveal whenever geometry can change
+  // (new "d", inner width, or left padding). If the animation is already done,
+  // keep the reveal aligned without restarting the animation.
   useEffect(() => {
-    // delay to ensure DOM path exists with final "d"
-    requestAnimationFrame(() => {
-      if (pathRef.current) {
-        try {
-          totalLenRef.current = pathRef.current.getTotalLength();
-        } catch {
-          totalLenRef.current = 0;
-        }
+    let stopAnim: { stop: () => void } | null = null;
+    let doneTimer: number | null = null;
+
+    const measureAndSync = () => {
+      const path = pathRef.current;
+      try {
+        totalLenRef.current = path ? path.getTotalLength() : 0;
+      } catch {
+        totalLenRef.current = 0;
       }
-      animDoneRef.current = false;
+
+      if (animDoneRef.current) {
+        // Animation already completed: keep clip width aligned to the current head
+        const t = pathLen.get(); // 0..1 (line progress)
+        if (path && totalLenRef.current) {
+          const pt = path.getPointAtLength(totalLenRef.current * t);
+          const wX = Math.min(innerW, Math.max(0, pt.x - leftPad));
+          clipW.set(wX);
+        } else {
+          clipW.set(innerW);
+        }
+        return;
+      }
+
+      // Fresh (re)start of the animation
       pathLen.set(0);
       clipW.set(0);
-      const stop = animate(pathLen, 1, { duration: 2.0, ease: [0.4, 0, 0.2, 1] });
-      const doneTimer = window.setTimeout(() => { animDoneRef.current = true; clipW.set(innerW); }, 2050);
-      return () => { stop.stop(); clearTimeout(doneTimer); };
-    });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []); // mount/remount only
+      stopAnim = animate(pathLen, 1, { duration: 2.0, ease: [0.4, 0, 0.2, 1] });
+      doneTimer = window.setTimeout(() => { animDoneRef.current = true; clipW.set(innerW); }, 2050);
+    };
 
-  // After animation finishes, keep the area fully revealed on resize
-  useEffect(() => {
-    if (!animDoneRef.current) return;
-    clipW.set(innerW);
-  }, [innerW, clipW]);
+    const rafId = requestAnimationFrame(measureAndSync);
+    return () => {
+      cancelAnimationFrame(rafId);
+      if (stopAnim) stopAnim.stop();
+      if (doneTimer) clearTimeout(doneTimer);
+    };
+  // Re-measure when the path "d" string, inner width, or left padding change
+  }, [d, innerW, leftPad, clipW, pathLen]);
 
   return (
     <div ref={wrapRef} className="w-full">
