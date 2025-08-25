@@ -2,7 +2,6 @@
 import { PrismaClient } from "../../generated/cards";
 
 declare global {
-  // eslint-disable-next-line no-var
   var prismaCards: PrismaClient | undefined;
 }
 

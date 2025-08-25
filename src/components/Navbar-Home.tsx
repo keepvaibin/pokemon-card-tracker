@@ -4,6 +4,7 @@
 import { useState } from "react";
 import { signOut } from "next-auth/react";
 import { ChevronDownIcon } from "@heroicons/react/24/solid"; // Tailwind Heroicons
+import Image from "next/image";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 
@@ -21,11 +22,7 @@ export function Navbar() {
       <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 flex items-center justify-between h-16">
         {/* Left side: Logo */}
         <Link href="/dashboard" className="flex items-center space-x-2">
-          <img
-            src="/logo.svg"
-            alt="Logo"
-            className="h-8 w-8"
-          />
+          <Image src="/logo.svg" alt="Logo" width={32} height={32} />
           <span className="text-white text-xl font-bold select-none">Vaibhawood</span>
         </Link>
 
@@ -65,11 +62,7 @@ export function Navbar() {
               onClick={() => setDropdownOpen(!dropdownOpen)}
               className="flex items-center space-x-2 focus:outline-none focus:ring-2 focus:ring-white rounded"
             >
-              <img
-                src={session?.user?.image || "/default-avatar.png"}
-                alt="User Avatar"
-                className="h-8 w-8 rounded-full object-cover"
-              />
+              <Image src={session?.user?.image || "/default-avatar.png"} alt="User Avatar" width={32} height={32} className="rounded-full object-cover" />
               <span className="text-white font-semibold hidden sm:block">
                 {session?.user?.name?.split(" ")[0] || "User"}
               </span>

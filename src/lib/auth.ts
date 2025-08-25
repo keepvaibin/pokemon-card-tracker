@@ -25,7 +25,7 @@ export async function verifyGoogleIdToken(bearer?: string | null): Promise<AuthC
   if (session?.user?.email) {
     return {
       email: session.user.email,
-      sub: (session as any)?.sub ?? null,
+      sub: (session as { sub?: string })?.sub ?? null,
       source: "session",
     };
   }

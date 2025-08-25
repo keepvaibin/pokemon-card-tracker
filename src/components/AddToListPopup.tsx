@@ -62,9 +62,14 @@ export default function AddToListPopup({
       }
       setDone(true);
       setTimeout(onClose, 550);
-    } catch (e: any) {
-      setError(e?.message ?? 'Failed to add card');
+    } catch (e: unknown) {
+      if (e instanceof Error) {
+        setError(e.message);
+      } else {
+        setError('Failed to add card');
+      }
     }
+
   };
 
   return (

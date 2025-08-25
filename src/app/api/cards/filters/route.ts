@@ -3,8 +3,11 @@ import { NextResponse } from "next/server";
 import { prismaCards } from "@/lib/prismaCards";
 import { verifyGoogleIdToken } from "@/lib/auth";
 
+const isPresent = <T extends string | number>(v: T | null | undefined): v is T =>
+  v !== null && v !== undefined && (typeof v !== "string" || v.trim().length > 0);
+
 const uniqSorted = (arr: (string | number | null | undefined)[]) =>
-  Array.from(new Set(arr.filter(Boolean) as (string | number)[])).sort((a, b) =>
+  Array.from(new Set(arr.filter(isPresent))).sort((a, b) =>
     String(a).localeCompare(String(b), undefined, { numeric: true })
   );
 
@@ -106,7 +109,8 @@ export async function GET(req: Request) {
     `;
 
     const uniqSortedStr = (xs: (string | null)[]) =>
-      Array.from(new Set(xs.filter(Boolean) as string[])).sort((a, b) => a.localeCompare(b));
+      Array.from(new Set(xs.filter((s): s is string => typeof s === "string" && s.trim().length > 0)))
+        .sort((a, b) => a.localeCompare(b));
 
     const legalities = {
       standard: uniqSortedStr(legalityVals.map((r) => r.standard)),
@@ -169,7 +173,7 @@ export async function GET(req: Request) {
       hasAbility,
       hasAttack,
     });
-  } catch (err: any) {
+  } catch (err: unknown) {
     console.error("filters endpoint error:", err);
     return NextResponse.json({ error: "Failed to compute filters" }, { status: 500 });
   }

@@ -2,7 +2,6 @@
 import { PrismaClient } from "../../generated/timescale";
 
 declare global {
-  // eslint-disable-next-line no-var
   var prismaTimescale: PrismaClient | undefined;
 }
 

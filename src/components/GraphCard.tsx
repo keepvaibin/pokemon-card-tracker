@@ -5,20 +5,16 @@ import { useSyncedTheme } from '@/app/dashboard/useSyncedTheme'
 
 export function GraphCard() {
   const containerRef = useRef<HTMLDivElement>(null)
-  const [width, setWidth] = useState(0)
-
   const { mounted } = useSyncedTheme()
+  const [, forceRerender] = useState(0) // ✅ drop the unused variable
 
   useEffect(() => {
-    function updateSize() {
-      if (containerRef.current) {
-        setWidth(containerRef.current.offsetWidth)
-      }
-    }
-
-    updateSize()
-    window.addEventListener('resize', updateSize)
-    return () => window.removeEventListener('resize', updateSize)
+    if (!containerRef.current) return
+    const ro = new ResizeObserver(() => {
+      forceRerender(x => x + 1) // trigger rerender when size changes
+    })
+    ro.observe(containerRef.current)
+    return () => ro.disconnect()
   }, [])
 
   if (!mounted) return null
@@ -28,7 +24,7 @@ export function GraphCard() {
       ref={containerRef}
       style={{
         width: '100%',
-        height: `50%`,
+        height: '50%',
         backgroundColor: 'var(--bg-color)',
         borderRadius: '0.75rem',
         boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',

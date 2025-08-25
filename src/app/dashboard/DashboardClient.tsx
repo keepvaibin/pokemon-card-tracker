@@ -12,7 +12,7 @@ interface DashboardClientProps {
   total: number
   dailyChange: number
   sparkData: number[]
-  cards: string[] // now just strings from User.cards
+  cards: string[]
 }
 
 function AnimatedSection({ isOpen, children }: { isOpen: boolean; children: React.ReactNode }) {
@@ -111,9 +111,6 @@ export function CardList({ cards }: { cards: string[] }) {
 }
 
 export default function DashboardClient({
-  total,
-  dailyChange,
-  sparkData,
   cards,
 }: DashboardClientProps) {
   const { wrapperStyle, mounted } = useSyncedTheme()

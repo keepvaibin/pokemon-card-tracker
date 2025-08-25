@@ -1,9 +1,12 @@
+
 'use client';
 
 import { motion, AnimatePresence } from 'framer-motion';
+import type { PanInfo } from 'framer-motion';
 import React, { useMemo, useState, useEffect, useCallback, useRef } from 'react';
 import { useTheme } from 'next-themes';
 import { useSession, getSession, signIn } from 'next-auth/react';
+import Image from 'next/image';
 
 // ⬇️ NEW imports
 import CardDetailModal from '@/components/CardDetailModal';
@@ -77,8 +80,7 @@ function getFallbackIdToken(): string | undefined {
   }
   return undefined;
 }
-const arraysEqual = (a: string[], b: string[]) =>
-  a.length === b.length && a.every((v, i) => v === b[i]);
+// removed arraysEqual (unused)
 const rangesEqual = (a: [number, number] | null, b: [number, number] | null) =>
   (!a && !b) || (!!a && !!b && a[0] === b[0] && a[1] === b[1]);
 
@@ -189,6 +191,10 @@ function MultiSelect({
 }
 
 // ====== Dual/Single slider with row-under layout (checkbox | inputL | inputR) ======
+
+// CSS variables helper
+type CSSVars = React.CSSProperties & { [key: `--${string}`]: string | number };
+
 function RangeSlider({
   label,
   range,
@@ -241,6 +247,8 @@ function RangeSlider({
   const p = (n: number) => ((n - min) / (max - min)) * 100;
   const val = single ? lo : undefined;
 
+  const vars: CSSVars = { '--trackH': '8px', '--thumb': '22px' };
+
   return (
     <div>
       <div className="flex items-center justify-between mb-1">
@@ -251,26 +259,19 @@ function RangeSlider({
       </div>
 
       {/* Slider track */}
-      <div
-        className="relative h-8"
-        style={
-          {
-            ['--trackH' as any]: '8px',
-            ['--thumb' as any]: '22px',
-          } as React.CSSProperties
-        }
-      >
+      <div className="relative h-8" style={vars}>
         {/* full track */}
         <div
           className={`absolute top-1/2 -translate-y-1/2 w-full rounded-full ${dark ? 'bg-slate-700' : 'bg-slate-200'}`}
-          style={{ height: 'var(--trackH)' as any }}
+          style={{ height: 'var(--trackH)' }}
         />
         {/* active segment */}
         <div
           className="absolute top-1/2 -translate-y-1/2 rounded-full"
           style={{
-            height: 'var(--trackH)' as any,
-            left: single ? `${p(lo)}%` : `${p(Math.min(lo, hi))}%`,
+            height: 'var(--trackH)',
+            left: single ? `${p(lo)}%` : `${p(Math.min(lo, hi))}%`
+            ,
             width: single ? '0%' : `${Math.max(0, p(Math.max(lo, hi)) - p(Math.min(lo, hi)))}%`,
             background: dark ? '#6366f1' : '#4f46e5',
           }}
@@ -287,7 +288,7 @@ function RangeSlider({
           onMouseDown={() => setDrag("lo")}
           onTouchStart={() => setDrag("lo")}
           className="absolute w-full appearance-none bg-transparent top-1/2 -translate-y-1/2"
-          style={{ zIndex: drag === "lo" ? 40 : 30, height: 'var(--thumb)' as any }}
+          style={{ zIndex: drag === "lo" ? 40 : 30, height: 'var(--thumb)' }}
         />
 
         {/* RIGHT thumb (hidden when single) */}
@@ -302,7 +303,7 @@ function RangeSlider({
             onMouseDown={() => setDrag("hi")}
             onTouchStart={() => setDrag("hi")}
             className="absolute w-full appearance-none bg-transparent top-1/2 -translate-y-1/2"
-            style={{ zIndex: drag === "hi" ? 40 : 30, height: 'var(--thumb)' as any }}
+            style={{ zIndex: drag === "hi" ? 40 : 30, height: 'var(--thumb)' }}
           />
         )}
 
@@ -467,8 +468,8 @@ function TriState({
     setHoverIndex(newIndex);
   };
 
-  const handleDrag = (_: any, info: { point: { x: number } }) => setIndexFromPoint(info.point.x);
-  const handleDragEnd = (_: any, info: { point: { x: number } }) => {
+  const handleDrag = (_: unknown, info: PanInfo) => setIndexFromPoint(info.point.x);
+  const handleDragEnd = (_: unknown, info: PanInfo) => {
     setIndexFromPoint(info.point.x);
     const i = hoverIndex ?? (idx >= 0 ? idx : 1);
     onChange(states[i]);
@@ -579,6 +580,8 @@ const EMPTY_APPLIED: AppliedFilters = {
   retreatExact: false,
 };
 
+type SessionWithIdToken = { idToken?: string };
+
 export default function CardSearchModal({
   isOpen,
   onClose,
@@ -590,25 +593,25 @@ export default function CardSearchModal({
   const abortRef = useRef<AbortController | null>(null);
 
   // token (optional) — server now prefers NextAuth session cookie
-  const idToken = useMemo(() => (session as any)?.idToken || getFallbackIdToken(), [session]);
+  const idToken = useMemo(() => (session as SessionWithIdToken | null | undefined)?.idToken || getFallbackIdToken(), [session]);
 
   // ====== fetch wrapper that refreshes on 401 then retries once ======
   const fetchWithAuth = useCallback(
     async (input: RequestInfo | URL, init?: RequestInit) => {
       const makeHeaders = (tok?: string): HeadersInit => {
         const base = (init && init.headers) ? (init.headers as HeadersInit) : {};
-        const t = tok ?? (session as any)?.idToken ?? idToken ?? undefined;
+        const t = tok ?? (session as SessionWithIdToken | null | undefined)?.idToken ?? idToken ?? undefined;
         return t ? { ...base, authorization: `Bearer ${t}`, Authorization: `Bearer ${t}` } : base;
       };
 
       // 1) first attempt with current token (or just cookies if none)
-      let res = await fetch(input, { ...init, headers: makeHeaders() });
-      if (res.status !== 401) return res;
+      const first = await fetch(input, { ...init, headers: makeHeaders() });
+      if (first.status !== 401) return first;
 
       // 2) try to refresh session → get a new idToken, then retry once
       try {
         const refreshed = await getSession();
-        const newTok = (refreshed as any)?.idToken;
+        const newTok = (refreshed as SessionWithIdToken | null | undefined)?.idToken;
         if (newTok) {
           const retry = await fetch(input, { ...init, headers: makeHeaders(newTok) });
           if (retry.status !== 401) return retry;
@@ -621,7 +624,7 @@ export default function CardSearchModal({
       if (typeof window !== 'undefined') {
         await signIn(undefined, { callbackUrl: window.location.href });
       }
-      return res;
+      return first;
     },
     [session, idToken]
   );
@@ -770,66 +773,8 @@ export default function CardSearchModal({
     })();
   }, [isOpen]); // only when modal opens
 
-  // Show/hide sections based on filters
-  const show = useMemo(() => ({
-    types: !!filters.types?.length,
-    supertypes: !!filters.supertype?.length,
-    subtypes: !!filters.subtypes?.length,
-    rarities: !!filters.rarity?.length,
-    setIds: !!filters.setId?.length,
-    setSeriesList: !!filters.setSeries?.length,
-    artists: !!filters.artist?.length,
-    hp: !!hpRange,
-    retreat: !!retreatRange,
-    avgPrice: !!avgPriceRange,
-    legalStd: !!filters.legalities?.standard?.length,
-    legalExp: !!filters.legalities?.expanded?.length,
-    legalUnl: !!filters.legalities?.unlimited?.length,
-  }), [filters, hpRange, retreatRange, avgPriceRange]);
-
-  // derived flags
-  const anySelectedNow = useMemo(() => {
-    const anyArrays =
-      types.length || supertypes.length || subtypes.length || rarities.length ||
-      setIds.length || setSeriesList.length || artists.length ||
-      legalStd.length || legalExp.length || legalUnl.length;
-    const anyRanges =
-      (hpRange && hpSel && !rangesEqual(hpSel, hpRange)) ||
-      (retreatRange && retreatSel && !rangesEqual(retreatSel, retreatRange)) ||
-      (avgPriceRange && avgPriceSel && !rangesEqual(avgPriceSel, avgPriceRange));
-    const anyToggles = hasAbility !== null || hasAttack !== null;
-    const anyQuery = !!query.trim();
-    const anyExact = hpExactMode || retreatExactMode;
-    return !!(anyArrays || anyRanges || anyToggles || anyQuery || anyExact);
-  }, [types, supertypes, subtypes, rarities, setIds, setSeriesList, artists, legalStd, legalExp, legalUnl, hpRange, hpSel, retreatRange, retreatSel, avgPriceRange, avgPriceSel, hasAbility, hasAttack, query, hpExactMode, retreatExactMode]);
-
-  const anythingApplied = useMemo(() => {
-    const noArrays =
-      applied.types.length === 0 &&
-      applied.supertypes.length === 0 &&
-      applied.subtypes.length === 0 &&
-      applied.rarities.length === 0 &&
-      applied.setIds.length === 0 &&
-      applied.setSeriesList.length === 0 &&
-      applied.artists.length === 0 &&
-      applied.legalStd.length === 0 &&
-      applied.legalExp.length === 0 &&
-      applied.legalUnl.length === 0;
-
-    const noRanges =
-      rangesEqual(applied.hpSel, hpRange ?? null) &&
-      rangesEqual(applied.retreatSel, retreatRange ?? null) &&
-      rangesEqual(applied.avgPriceSel, avgPriceRange ?? null);
-
-    const noToggles = applied.hasAbility === null && applied.hasAttack === null;
-    const noQuery = !applied.query;
-    const noExact = !applied.hpExact && !applied.retreatExact;
-
-    return !(noArrays && noRanges && noToggles && noQuery && noExact);
-  }, [applied, hpRange, retreatRange, avgPriceRange]);
-
-  // Build query params from APPLIED (not live UI)
-  const buildParams = (f: AppliedFilters) => {
+  // Build query params from APPLIED (not live UI) - memoized to satisfy deps
+  const buildParams = useCallback((f: AppliedFilters) => {
     const p = new URLSearchParams();
     if (f.query) p.append('q', f.query);
 
@@ -883,7 +828,7 @@ export default function CardSearchModal({
     p.append('page', String(page));
     p.append('page_size', String(pageSize));
     return p;
-  };
+  }, [hpRange, retreatRange, avgPriceRange, page, pageSize]);
 
   // ---------- CARDS: fetch on applied/paging change ONLY; no refire on focus ----------
   useEffect(() => {
@@ -904,15 +849,15 @@ export default function CardSearchModal({
         const data = await res.json();
         setCards(Array.isArray(data?.cards) ? data.cards : []);
         setTotalPages(Math.max(1, Number(data?.total_pages ?? 1)));
-      } catch (e) {
-        if ((e as any)?.name !== 'AbortError') { setCards([]); setTotalPages(1); }
+      } catch (e: unknown) {
+        if (!(e instanceof DOMException && e.name === 'AbortError')) { setCards([]); setTotalPages(1); }
       } finally {
         setLoading(false);
       }
     })();
 
     return () => controller.abort();
-  }, [isOpen, applied, page, pageSize]); // NOTICE: no session/token dependency
+  }, [isOpen, applied, page, pageSize, buildParams]); // include buildParams
 
   // ---------- HISTORIES: batch fetch for current page cards (one POST) ----------
   useEffect(() => {
@@ -942,8 +887,8 @@ export default function CardSearchModal({
         const data = await res.json();
         const h = (data?.histories ?? {}) as Record<string, HistoryEntry[]>;
         setHistories(h);
-      } catch (e: any) {
-        if (e?.name !== 'AbortError') setHistories({});
+      } catch (e: unknown) {
+        if (!(e instanceof DOMException && e.name === 'AbortError')) setHistories({});
       }
     })();
 
@@ -998,7 +943,7 @@ export default function CardSearchModal({
     const items: Array<{ type: 'page' | 'dots'; value?: number; key: string }> = [];
     const windowSize = Math.max(3, maxVisible - 2);
     let start = Math.max(2, current - Math.floor((windowSize - 1) / 2));
-    let end = Math.min(total - 1, start + windowSize - 1);
+    const end = Math.min(total - 1, start + windowSize - 1);
     start = Math.max(2, Math.min(start, Math.max(2, total - 1 - (windowSize - 1))));
     items.push({ type: 'page', value: 1, key: 'page-1' });
     if (start > 2) items.push({ type: 'dots', key: 'dots-left' });
@@ -1064,24 +1009,38 @@ export default function CardSearchModal({
 
               {/* Apply bar (animated) */}
               <AnimatePresence initial={false}>
-                {anySelectedNow && (
-                  <motion.div
-                    key="apply-bar"
-                    initial={{ height: 0, opacity: 0, marginBottom: 0 }}
-                    animate={{ height: 'auto', opacity: 1, marginBottom: 12 }}
-                    exit={{ height: 0, opacity: 0, marginBottom: 0 }}
-                    transition={{ duration: 0.18 }}
-                    className="sticky top-0 z-50"
-                    style={{ background: (typeof window !== "undefined" && document.documentElement.classList.contains("dark")) ? "rgba(2,6,23,0.98)" : "rgba(255, 255, 255, 0)" }}
-                  >
-                    <button
-                      className="w-full py-2.5 rounded-lg text-white bg-indigo-600 hover:bg-indigo-700 transition-colors shadow"
-                      onClick={applySearch}
+                {(() => {
+                  const anyArrays =
+                    types.length || supertypes.length || subtypes.length || rarities.length ||
+                    setIds.length || setSeriesList.length || artists.length ||
+                    legalStd.length || legalExp.length || legalUnl.length;
+                  const anyRanges =
+                    (hpRange && hpSel && !rangesEqual(hpSel, hpRange)) ||
+                    (retreatRange && retreatSel && !rangesEqual(retreatSel, retreatRange)) ||
+                    (avgPriceRange && avgPriceSel && !rangesEqual(avgPriceSel, avgPriceRange));
+                  const anyToggles = hasAbility !== null || hasAttack !== null;
+                  const anyQuery = !!query.trim();
+                  const anyExact = hpExactMode || retreatExactMode;
+                  const anySelectedNow = !!(anyArrays || anyRanges || anyToggles || anyQuery || anyExact);
+                  return anySelectedNow ? (
+                    <motion.div
+                      key="apply-bar"
+                      initial={{ height: 0, opacity: 0, marginBottom: 0 }}
+                      animate={{ height: 'auto', opacity: 1, marginBottom: 12 }}
+                      exit={{ height: 0, opacity: 0, marginBottom: 0 }}
+                      transition={{ duration: 0.18 }}
+                      className="sticky top-0 z-50"
+                      style={{ background: (typeof window !== "undefined" && document.documentElement.classList.contains("dark")) ? "rgba(2,6,23,0.98)" : "rgba(255, 255, 255, 0)" }}
                     >
-                      Apply
-                    </button>
-                  </motion.div>
-                )}
+                      <button
+                        className="w-full py-2.5 rounded-lg text-white bg-indigo-600 hover:bg-indigo-700 transition-colors shadow"
+                        onClick={applySearch}
+                      >
+                        Apply
+                      </button>
+                    </motion.div>
+                  ) : null;
+                })()}
               </AnimatePresence>
 
               {/* Only render filters AFTER the filters API responded */}
@@ -1252,22 +1211,46 @@ export default function CardSearchModal({
 
                   {/* Bottom reset (only when something is APPLIED) */}
                   <AnimatePresence initial={false}>
-                    {anythingApplied && (
-                      <motion.div
-                        key="reset-row"
-                        initial={{ opacity: 0, y: 6 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: 6 }}
-                        className="pt-2 relative z-50"
-                      >
-                        <button
-                          className="w-full py-2.5 rounded-lg text-white bg-gray-500 hover:bg-gray-600 transition-colors"
-                          onClick={resetAll}
+                    {(() => {
+                      const noArrays =
+                        applied.types.length === 0 &&
+                        applied.supertypes.length === 0 &&
+                        applied.subtypes.length === 0 &&
+                        applied.rarities.length === 0 &&
+                        applied.setIds.length === 0 &&
+                        applied.setSeriesList.length === 0 &&
+                        applied.artists.length === 0 &&
+                        applied.legalStd.length === 0 &&
+                        applied.legalExp.length === 0 &&
+                        applied.legalUnl.length === 0;
+
+                      const noRanges =
+                        rangesEqual(applied.hpSel, hpRange ?? null) &&
+                        rangesEqual(applied.retreatSel, retreatRange ?? null) &&
+                        rangesEqual(applied.avgPriceSel, avgPriceRange ?? null);
+
+                      const noToggles = applied.hasAbility === null && applied.hasAttack === null;
+                      const noQuery = !applied.query;
+                      const noExact = !applied.hpExact && !applied.retreatExact;
+
+                      const anythingApplied = !(noArrays && noRanges && noToggles && noQuery && noExact);
+                      return anythingApplied ? (
+                        <motion.div
+                          key="reset-row"
+                          initial={{ opacity: 0, y: 6 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          exit={{ opacity: 0, y: 6 }}
+                          className="pt-2 relative z-50"
                         >
-                          Reset
-                        </button>
-                      </motion.div>
-                    )}
+                          <button
+                            className="w-full py-2.5 rounded-lg text-white bg-gray-500 hover:bg-gray-600 transition-colors"
+                            onClick={resetAll}
+                          >
+                            Reset
+                          </button>
+                        </motion.div>
+                      ) : null;
+                    })()}
                   </AnimatePresence>
                 </motion.div>
               )}
@@ -1317,7 +1300,13 @@ export default function CardSearchModal({
                         // ⬇️ NEW: open detail modal
                         onClick={() => setDetailId(card.id)}
                       >
-                        <img src={card.images.small} alt={card.name} className="w-full rounded-md" loading="lazy" />
+                        <Image
+                          src={card.images.small}
+                          alt={card.name}
+                          width={300}
+                          height={420}
+                          className="w-full h-auto rounded-md"
+                        />
                         <div className="mt-2 font-semibold text-sm">{card.name}</div>
                         <div className="text-xs opacity-70">
                           {card.hp ?? ''}{card.hp ? ' HP' : ''}{card.rarity ? ` • ${card.rarity}` : ''}

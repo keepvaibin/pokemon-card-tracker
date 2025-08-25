@@ -4,10 +4,20 @@
 import React, {
   useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState, useId,
 } from 'react';
-import { motion, AnimatePresence, useMotionValue, useTransform, animate } from 'framer-motion';
+import { motion, AnimatePresence, useMotionValue, animate } from 'framer-motion';
 import AddToListPopup from '@/components/AddToListPopup';
+import Image from "next/image";
 
 type FullPrice = { market?: number; mid?: number; low?: number; high?: number };
+
+type HistoryValueKey = keyof Pick<
+  HistoryEntry,
+  | "tcgplayer_normal_market"
+  | "tcgplayer_holofoil_market"
+  | "tcgplayer_reverse_holofoil_market"
+  | "cardmarket_average_sell_price"
+>;
+
 
 export type FullCard = {
   id: string;
@@ -144,6 +154,7 @@ function SeriesDropdown({
                   key={k}
                   type="button"
                   role="option"
+                  aria-selected={value === k}
                   onClick={() => { onChange(k); setOpen(false); }}
                   className={`w-full text-left px-3 py-2 rounded-lg text-sm ${theme.popHover}`}
                 >
@@ -442,8 +453,13 @@ export default function CardDetailModal({
         if (!res.ok) throw new Error(`Failed: ${res.status}`);
         const data = await res.json();
         if (!cancelled) setCard(data as FullCard);
-      } catch (e: any) {
-        if (!cancelled && e?.name !== 'AbortError') setError(e?.message ?? 'Failed to load card');
+      } catch (e: unknown) {
+        // ignore user-initiated aborts
+        if (e instanceof DOMException && e.name === 'AbortError') return;
+        if (!cancelled) {
+          const msg = e instanceof Error ? e.message : 'Failed to load card';
+          setError(msg);
+        }
       }
     })();
     return () => { cancelled = true; controller.abort(); };
@@ -475,7 +491,7 @@ export default function CardDetailModal({
     popHover: 'hover:bg-slate-100',
   };
 
-  const base = (card ?? (prefetch as any)) as FullCard | undefined;
+  const base: FullCard | undefined = card ?? (prefetch ? (prefetch as FullCard) : undefined);
 
   const history = useMemo(
     () => (prefetchHistory ?? []).slice().sort((a, b) => new Date(a.time).getTime() - new Date(b.time).getTime()),
@@ -484,7 +500,7 @@ export default function CardDetailModal({
 
   const availableSeries = useMemo(() => {
     const avail: Array<typeof SERIES_KEYS[number]> = [];
-    for (const k of SERIES_KEYS) if (history.some(h => (h as any)[k] != null)) avail.push(k);
+    for (const k of SERIES_KEYS) if (history.some(h => h[k as HistoryValueKey] != null)) avail.push(k);
     return avail;
   }, [history]);
 
@@ -501,7 +517,7 @@ export default function CardDetailModal({
   const points = useMemo(
     () =>
       history
-        .map(h => ({ x: new Date(h.time), y: (h as any)[seriesKey] as number | null }))
+        .map(h => ({ x: new Date(h.time), y: h[seriesKey as HistoryValueKey] }))
         .filter(p => p.y != null) as Array<{ x: Date; y: number }>,
     [history, seriesKey]
   );
@@ -615,12 +631,13 @@ export default function CardDetailModal({
           {!base ? (
             <div className="opacity-70 text-sm">—</div>
           ) : (
-            <img
+            <Image
               src={base.images.large || base.images.small}
               alt={base.name}
+              width={500}
+              height={700}
               className="h-full w-auto rounded-xl object-contain shadow"
-              onLoad={(e) => {
-                const el = e.currentTarget;
+              onLoadingComplete={(el) => {
                 imgNatural.current = { w: el.naturalWidth, h: el.naturalHeight };
                 recomputeHeight();
               }}

@@ -1,5 +1,7 @@
+// src/app/page.tsx
 "use client";
 
+import { getSession } from "next-auth/react";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 
@@ -14,7 +16,6 @@ export default function HomePage() {
       window.history.scrollRestoration = "manual";
     }
     window.scrollTo(0, 0);
-
     return () => {
       if ("scrollRestoration" in window.history) {
         window.history.scrollRestoration = "auto";
@@ -28,7 +29,6 @@ export default function HomePage() {
       const y = window.scrollY;
       setScrolled(y > 300);
 
-      const aboutPos = document.getElementById("about")?.offsetTop ?? 0;
       const featuresPos = document.getElementById("features")?.offsetTop ?? 0;
       const contactPos = document.getElementById("contact")?.offsetTop ?? 0;
       const scrollPos = y + window.innerHeight / 3;
@@ -37,16 +37,13 @@ export default function HomePage() {
       else if (scrollPos >= featuresPos) setActiveTab("features");
       else setActiveTab("about");
     }
-
     window.addEventListener("scroll", onScroll);
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
   // Navbar visibility
   useEffect(() => {
-    const onScroll = () => {
-      setScrolled(window.scrollY > 50);
-    };
+    const onScroll = () => setScrolled(window.scrollY > 50);
     window.addEventListener("scroll", onScroll);
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
@@ -54,6 +51,13 @@ export default function HomePage() {
   const scrollToSection = (id: string) => {
     const el = document.getElementById(id);
     if (el) el.scrollIntoView({ behavior: "smooth" });
+  };
+
+  const handleSignInClick = async () => {
+    // One-shot check (no subscription)
+    const session = await getSession();
+    if (session) router.push("/dashboard");
+    else router.push("/sign-in");
   };
 
   return (
@@ -88,7 +92,7 @@ export default function HomePage() {
         </div>
 
         <button
-          onClick={() => router.push("/api/auth/signin")}
+          onClick={handleSignInClick}
           className="bg-white text-indigo-900 px-4 py-1 rounded font-semibold hover:bg-indigo-50 transition"
         >
           Sign In
@@ -135,22 +139,16 @@ export default function HomePage() {
       </section>
 
       {/* About */}
-      <section
-        id="about"
-        className="min-h-screen max-w-4xl mx-auto px-6 py-20 scroll-mt-16"
-      >
+      <section id="about" className="min-h-screen max-w-4xl mx-auto px-6 py-20 scroll-mt-16">
         <h2 className="text-4xl font-bold mb-6">About</h2>
         <p className="text-lg leading-relaxed">
-          Pokémon Card Tracker helps you keep track of your collection with
-          real-time pricing and easy-to-use tools.
+          Pokémon Card Tracker helps you keep track of your collection with real-time pricing and
+          easy-to-use tools.
         </p>
       </section>
 
       {/* Features */}
-      <section
-        id="features"
-        className="min-h-screen max-w-4xl mx-auto px-6 py-20 scroll-mt-16"
-      >
+      <section id="features" className="min-h-screen max-w-4xl mx-auto px-6 py-20 scroll-mt-16">
         <h2 className="text-4xl font-bold mb-6">Features</h2>
         <ul className="list-disc list-inside text-lg leading-relaxed space-y-3">
           <li>Search and add Pokémon cards to your collection.</li>
@@ -161,17 +159,11 @@ export default function HomePage() {
       </section>
 
       {/* Contact */}
-      <section
-        id="contact"
-        className="min-h-screen max-w-4xl mx-auto px-6 py-20 scroll-mt-16"
-      >
+      <section id="contact" className="min-h-screen max-w-4xl mx-auto px-6 py-20 scroll-mt-16">
         <h2 className="text-4xl font-bold mb-6">Contact</h2>
         <p className="text-lg leading-relaxed">
           Have questions? Reach out at{" "}
-          <a
-            href="mailto:support@pokemontacker.example"
-            className="underline hover:text-indigo-600"
-          >
+          <a href="mailto:support@pokemontacker.example" className="underline hover:text-indigo-600">
             support@pokemontacker.example
           </a>
           .

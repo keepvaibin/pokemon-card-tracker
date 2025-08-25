@@ -1,9 +1,9 @@
-// next-auth.d.ts
-import NextAuth from "next-auth"
+import type { DefaultSession } from "next-auth";
 
 declare module "next-auth" {
   interface Session {
-    idToken?: string
-    // add other custom session fields here if needed
+    idToken?: string;
+    // keep user typed the same as the default session
+    user?: DefaultSession["user"];
   }
 }

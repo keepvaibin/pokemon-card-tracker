@@ -13,7 +13,7 @@ interface ExtendedToken extends JWT {
   idToken?: string;
   idTokenExpires?: number;     // ms timestamp
   error?: string;
-  user?: any;
+  user?: { email?: string | null; name?: string | null; image?: string | null };
 }
 
 /** Decode a JWT's exp (seconds) into ms timestamp */
@@ -108,7 +108,15 @@ export const authOptions: NextAuthOptions = {
   callbacks: {
     /** Ensure a user row exists */
     async signIn({ user }) {
-      const email = user.email!;
+      const email = typeof user.email === "string" && user.email.trim().length > 0
+        ? user.email
+        : undefined;
+
+      if (!email) {
+        // No usable email → deny sign-in (or redirect to error page if you prefer)
+        return false;
+      }
+
       const dbUser = await prisma.user.findUnique({ where: { email } });
       if (!dbUser) {
         await prisma.user.create({ data: { email } });
@@ -118,17 +126,24 @@ export const authOptions: NextAuthOptions = {
 
     /** Attach/refresh tokens on the JWT we store client-side */
     async jwt({ token, account, user }) {
-      let t = token as ExtendedToken;
+      const t = token as ExtendedToken;
 
       // Initial sign-in
       if (account && user) {
-        const idToken = account.id_token as string | undefined;
+        const idToken = typeof account.id_token === "string" ? account.id_token : undefined;
+        const accessToken = typeof account.access_token === "string" ? account.access_token : undefined;
+        const refreshToken = typeof account.refresh_token === "string" ? account.refresh_token : undefined;
+
+        const expiresInSec =
+          typeof account.expires_in === "number"
+            ? account.expires_in
+            : Number(account.expires_in ?? 3600);
+
         return {
           ...t,
-          accessToken: account.access_token as string | undefined,
-          accessTokenExpires:
-            Date.now() + ((Number(account.expires_in) || 3600) * 1000),
-          refreshToken: account.refresh_token as string | undefined,
+          accessToken,
+          accessTokenExpires: Date.now() + expiresInSec * 1000,
+          refreshToken,
           idToken,
           idTokenExpires: decodeJwtExpiry(idToken),
           user,
@@ -159,21 +174,33 @@ export const authOptions: NextAuthOptions = {
     async session({ session, token }) {
       const ext = token as ExtendedToken;
 
-      // Attach DB user id
-      const dbUser = await prisma.user.findUnique({
-        where: { email: session.user?.email! },
-        select: { id: true },
-      });
-      if (dbUser) {
-        (session.user as any).id = dbUser.id;
+      // Get DB id if we have an email
+      const email = session.user?.email && session.user.email.trim().length > 0
+        ? session.user.email
+        : undefined;
+
+      let userId: string | undefined = undefined;
+      if (email) {
+        const dbUser = await prisma.user.findUnique({
+          where: { email },
+          select: { id: true },
+        });
+        if (dbUser) {
+          userId = dbUser.id;
+        }
       }
 
-      // Pass tokens & error to client
-      (session as any).idToken = ext.idToken;
-      (session as any).accessToken = ext.accessToken;
-      (session as any).error = ext.error;
-
-      return session;
+      // Return a session object with extra fields (excess properties are fine)
+      return {
+        ...session,
+        user: {
+          ...session.user,
+          id: userId,
+        },
+        idToken: ext.idToken,
+        accessToken: ext.accessToken,
+        error: ext.error,
+      };
     },
 
     async redirect({ baseUrl }) {

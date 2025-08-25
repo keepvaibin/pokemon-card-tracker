@@ -61,6 +61,10 @@ function getLegalList(url: URL, dotKey: string, underscoreKey: string): string[]
   return Array.from(set);
 }
 
+// Narrow types we’ll emit for rich fields
+type AbilityDTO = { name: string; text: string | null; type: string | null };
+type AttackDTO = { name: string; text: string | null; damage: string | null; cost: string[] };
+
 export async function GET(req: Request) {
   const auth = await verifyGoogleIdToken(req.headers.get("authorization") || undefined);
   if (!auth) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -116,7 +120,7 @@ export async function GET(req: Request) {
   const attackToggle: ToggleState = parseExistenceToggle(url.searchParams.getAll("hasAttack"));
 
   // Build Prisma where (for the parts Prisma can handle directly)
-  const AND: any[] = [];
+  const AND: Record<string, unknown>[] = [];
 
   if (id) AND.push({ id });
   if (name) AND.push({ name });
@@ -170,7 +174,7 @@ export async function GET(req: Request) {
 
   // CardMarket.averageSellPrice range (Float?)
   if (avgSellPriceRange.min != null || avgSellPriceRange.max != null) {
-    const f: any = {};
+    const f: { gte?: number; lte?: number } = {};
     if (avgSellPriceRange.min != null) f.gte = avgSellPriceRange.min;
     if (avgSellPriceRange.max != null) f.lte = avgSellPriceRange.max;
     AND.push({ cardmarket: { is: { averageSellPrice: f } } });
@@ -304,7 +308,7 @@ export async function GET(req: Request) {
         tcgplayer: { include: { prices: true } },
         set: { select: { id: true, name: true, series: true } },
         legalities: true,
-        // ⬇️ NEW: bring rich fields so the list can prefetch them
+        // ⬇️ bring rich fields so the list can prefetch them
         abilities: true,
         attacks: true,
       },
@@ -316,34 +320,46 @@ export async function GET(req: Request) {
 
   // Keep your existing serializer, then *augment* with the rich fields.
   const cards = items.map((it) => {
-    const base: any = serializeCardBasic(it);
+    const base = serializeCardBasic(it);
 
-    // Ensure large image is present when available
-    if (it.images?.large) {
-      base.images = { ...(base.images || {}), large: it.images.large };
-    }
+    // Ensure both small & large keys exist to satisfy { small; large } type
+    const existingSmall =
+      (base as { images?: { small?: string | null } }).images?.small ??
+      (it.images?.small ?? null);
+    const existingLarge =
+      (base as { images?: { large?: string | null } }).images?.large ??
+      (it.images?.large ?? null);
 
-    // Pass through abilities/attacks in a simple, modal-friendly shape
-    if (it.abilities?.length) {
-      base.abilities = it.abilities.map((a: any) => ({
-        name: a.name,
+    (base as { images?: { small: string | null; large: string | null } }).images = {
+      small: existingSmall,
+      large: existingLarge,
+    };
+
+    // Pass through abilities/attacks in a simple, modal-friendly shape (strictly typed)
+    if (Array.isArray(it.abilities) && it.abilities.length > 0) {
+      const abilitiesOut: AbilityDTO[] = it.abilities.map((a: {
+        name?: string; text?: string | null; type?: string | null;
+      }) => ({
+        name: a.name ?? "",
         text: a.text ?? null,
         type: a.type ?? null,
       }));
+      (base as { abilities?: AbilityDTO[] }).abilities = abilitiesOut;
     }
-    if (it.attacks?.length) {
-      base.attacks = it.attacks.map((a: any) => ({
-        name: a.name,
+
+    if (Array.isArray(it.attacks) && it.attacks.length > 0) {
+      const attacksOut: AttackDTO[] = it.attacks.map((a: {
+        name?: string; text?: string | null; damage?: string | null; cost?: string[] | null;
+      }) => ({
+        name: a.name ?? "",
         text: a.text ?? null,
         damage: a.damage ?? null,
         cost: Array.isArray(a.cost) ? a.cost : [],
       }));
+      (base as { attacks?: AttackDTO[] }).attacks = attacksOut;
     }
 
-    // If serializeCardBasic doesn’t already include tcgplayer.prices, uncomment:
-    // if (it.tcgplayer?.prices) {
-    //   base.tcgplayer = { prices: it.tcgplayer.prices as any };
-    // }
+    // If serializeCardBasic doesn’t already include tcgplayer.prices, you can mirror a typed pass-through later.
 
     return base;
   });

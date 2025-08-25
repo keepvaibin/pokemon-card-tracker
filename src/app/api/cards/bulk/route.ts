@@ -9,7 +9,7 @@ export async function POST(req: Request) {
   if (!auth) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
   const body = await req.json().catch(() => null);
-  const ids: string[] = Array.isArray(body?.ids) ? body.ids.filter((s: any) => typeof s === "string" && s.trim()) : [];
+  const ids: string[] = Array.isArray((body as { ids?: unknown[] } | null)?.ids) ? (((body as { ids?: unknown[] }).ids ?? []).filter((s): s is string => typeof s === "string" && s.trim().length > 0)) : [];
   if (!ids.length) return NextResponse.json({ error: "No valid IDs provided" }, { status: 400 });
 
   const cards = await prismaCards.card.findMany({

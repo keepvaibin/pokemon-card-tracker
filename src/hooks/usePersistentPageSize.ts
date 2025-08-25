@@ -24,7 +24,7 @@ export default function usePersistentPageSize(
         if (Number.isFinite(n) && (allowed.length ? allowed.includes(n) : true)) setValue(n);
       }
     } catch {}
-  }, [key, when, allowed.join(',')]);
+  }, [key, when, allowed]);
 
   useEffect(() => {
     try { localStorage.setItem(key, String(value)); } catch {}

@@ -15,18 +15,29 @@ export async function GET(
   if (!auth) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
   const { searchParams } = new URL(req.url);
-  const from   = searchParams.get("from");
-  const to     = searchParams.get("to");
-  // You can accept 'order' for consistency, but "latest" always picks the most recent in the range.
-  // We'll still parse it so the endpoint tolerates the same parameters.
-  const _order = (searchParams.get("order") || "asc").toLowerCase() === "desc" ? "desc" : "asc";
-  // limit is irrelevant for "latest", but accept it so callers can reuse code.
-  // (We don't use it.)
+  const from = searchParams.get("from");
+  const to = searchParams.get("to");
+
+  // Accept order/limit for API compatibility but don’t use them
+  void (searchParams.get("order") || "asc");
   void Number(searchParams.get("limit") ?? NaN);
 
-  const where: any = { cardId: id };
-  if (from) where.time = { ...(where.time || {}), gte: new Date(from) };
-  if (to)   where.time = { ...(where.time || {}), lt:  new Date(to) };
+  // Build time filter if provided
+  const timeFilter: { gte?: Date; lt?: Date } | undefined =
+    from || to
+      ? {
+          ...(from ? { gte: new Date(from) } : {}),
+          ...(to ? { lt: new Date(to) } : {}),
+        }
+      : undefined;
+
+  const where: {
+    cardId: string;
+    time?: { gte?: Date; lt?: Date };
+  } = {
+    cardId: id,
+    ...(timeFilter ? { time: timeFilter } : {}),
+  };
 
   // Always fetch the most recent datapoint in the filtered window.
   const row = await prismaTimescale.priceHistory.findFirst({

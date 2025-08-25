@@ -12,7 +12,7 @@ export function useSyncedTheme() {
   const { resolvedTheme, setTheme } = useTheme()
   const [enabled, setEnabled] = useState(false)
   const [mounted, setMounted] = useState(false)
-  const [fading, setFading] = useState(false) // optional
+  const [fading] = useState(false) // optional
 
   useEffect(() => {
     // On mount, read from localStorage and set theme immediately

@@ -11,12 +11,12 @@ export async function fetchWithAuth(input: RequestInfo | URL, init?: RequestInit
   };
 
   const tok1 = getTok();
-  let res = await fetch(input, { ...init, headers: makeHeaders(tok1) });
+  const res = await fetch(input, { ...init, headers: makeHeaders(tok1) });
   if (res.status !== 401) return res;
 
   try {
     const refreshed = await getSession();
-    const newTok = (refreshed as any)?.idToken;
+    const newTok = (refreshed as { idToken?: string } | null)?.idToken;
     if (newTok) {
       const retry = await fetch(input, { ...init, headers: makeHeaders(newTok) });
       if (retry.status !== 401) return retry;

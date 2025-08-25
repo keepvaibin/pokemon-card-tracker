@@ -1,3 +1,4 @@
+// app/api/cards/[id]/price/history/route.ts
 import { NextResponse } from "next/server";
 import { prismaTimescale } from "@/lib/prismaTimescale";
 import { verifyGoogleIdToken } from "@/lib/auth";
@@ -11,14 +12,23 @@ export async function GET(req: Request, ctx: { params: Promise<Params> }) {
   if (!auth) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
   const { searchParams } = new URL(req.url);
-  const from   = searchParams.get("from");
-  const to     = searchParams.get("to");
-  const order  = (searchParams.get("order") || "asc").toLowerCase() === "desc" ? "desc" : "asc";
+  const from = searchParams.get("from");
+  const to = searchParams.get("to");
+  const order = (searchParams.get("order") || "asc").toLowerCase() === "desc" ? "desc" : "asc";
   const limitQ = Number(searchParams.get("limit") ?? NaN);
 
-  const where: any = { cardId: id };
-  if (from) where.time = { ...(where.time || {}), gte: new Date(from) };
-  if (to)   where.time = { ...(where.time || {}), lt:  new Date(to) };
+  const timeFilter: { gte?: Date; lt?: Date } | undefined =
+    from || to
+      ? {
+          ...(from ? { gte: new Date(from) } : {}),
+          ...(to ? { lt: new Date(to) } : {}),
+        }
+      : undefined;
+
+  const where = {
+    cardId: id,
+    ...(timeFilter ? { time: timeFilter } : {}),
+  };
 
   const rows = await prismaTimescale.priceHistory.findMany({
     where,
