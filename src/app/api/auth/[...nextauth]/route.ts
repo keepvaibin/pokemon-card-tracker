@@ -14,6 +14,7 @@ interface ExtendedToken extends JWT {
   idTokenExpires?: number;     // ms timestamp
   error?: string;
   user?: { email?: string | null; name?: string | null; image?: string | null };
+  userId?: string;
 }
 
 /** Decode a JWT's exp (seconds) into ms timestamp */
@@ -117,10 +118,13 @@ export const authOptions: NextAuthOptions = {
         return false;
       }
 
-      const dbUser = await prisma.user.findUnique({ where: { email } });
-      if (!dbUser) {
-        await prisma.user.create({ data: { email } });
-      }
+      const dbUser = await prisma.user.upsert({
+        where: { email },
+        create: { email },
+        update: {},
+        select: { id: true },
+      });
+      user.id = dbUser.id;
       return true;
     },
 
@@ -147,6 +151,7 @@ export const authOptions: NextAuthOptions = {
           idToken,
           idTokenExpires: decodeJwtExpiry(idToken),
           user,
+          userId: typeof user.id === "string" ? user.id : undefined,
           error: undefined,
         };
       }
@@ -174,28 +179,11 @@ export const authOptions: NextAuthOptions = {
     async session({ session, token }) {
       const ext = token as ExtendedToken;
 
-      // Get DB id if we have an email
-      const email = session.user?.email && session.user.email.trim().length > 0
-        ? session.user.email
-        : undefined;
-
-      let userId: string | undefined = undefined;
-      if (email) {
-        const dbUser = await prisma.user.findUnique({
-          where: { email },
-          select: { id: true },
-        });
-        if (dbUser) {
-          userId = dbUser.id;
-        }
-      }
-
-      // Return a session object with extra fields (excess properties are fine)
       return {
         ...session,
         user: {
           ...session.user,
-          id: userId,
+          id: ext.userId,
         },
         idToken: ext.idToken,
         accessToken: ext.accessToken,
