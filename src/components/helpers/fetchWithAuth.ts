@@ -1,17 +1,34 @@
-// src/lib/fetchWithAuth.ts
+// 'use client' module: typed, lint-clean fetch wrapper with 401 refresh.
 'use client';
 import { getSession, signIn } from 'next-auth/react';
 
-export async function fetchWithAuth(input: RequestInfo | URL, init?: RequestInit, opts?: { getToken?: () => string | undefined }) {
-  const getTok = opts?.getToken ?? (() => undefined);
+type GetTok = () => string | undefined;
 
+function cleanseHeaders(init?: RequestInit): Headers {
+  const base: HeadersInit = init?.headers ?? {};
+  // Normalize to Headers so deletes are case-insensitive
+  const h = new Headers(base);
+  h.delete('authorization');
+  h.delete('Authorization');
+  return h;
+}
+
+export default async function fetchWithAuth(
+  input: RequestInfo | URL,
+  init: RequestInit = {},
+  getIdToken?: GetTok
+): Promise<Response> {
   const makeHeaders = (tok?: string): HeadersInit => {
-    const base = (init && init.headers) ? (init.headers as HeadersInit) : {};
-    return tok ? { ...base, authorization: `Bearer ${tok}`, Authorization: `Bearer ${tok}` } : base;
+    const h = cleanseHeaders(init);
+    const t =
+      tok ??
+      getIdToken?.() ??
+      (init as unknown as { idToken?: string })?.idToken;
+    if (t) h.set('Authorization', `Bearer ${t}`);
+    return h;
   };
 
-  const tok1 = getTok();
-  const res = await fetch(input, { ...init, headers: makeHeaders(tok1) });
+  const res = await fetch(input, { ...init, headers: makeHeaders() });
   if (res.status !== 401) return res;
 
   try {
@@ -21,7 +38,9 @@ export async function fetchWithAuth(input: RequestInfo | URL, init?: RequestInit
       const retry = await fetch(input, { ...init, headers: makeHeaders(newTok) });
       if (retry.status !== 401) return retry;
     }
-  } catch {}
+  } catch {
+    // ignore
+  }
 
   if (typeof window !== 'undefined') {
     await signIn(undefined, { callbackUrl: window.location.href });

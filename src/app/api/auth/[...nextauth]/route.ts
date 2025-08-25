@@ -1,3 +1,4 @@
+// src\app\api\auth\[...nextauth]\route.ts
 import NextAuth from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import type { NextAuthOptions } from "next-auth";
@@ -117,10 +118,13 @@ export const authOptions: NextAuthOptions = {
         return false;
       }
 
-      const dbUser = await prisma.user.findUnique({ where: { email } });
-      if (!dbUser) {
-        await prisma.user.create({ data: { email } });
-      }
+      const dbUser = await prisma.user.upsert({
+        where: { email },
+        create: { email },
+        update: {},
+        select: { id: true },
+      });
+      user.id = dbUser.id;
       return true;
     },
 

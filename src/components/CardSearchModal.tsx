@@ -1,4 +1,4 @@
-
+// src\components\CardSearchModal.tsx
 'use client';
 
 import { motion, AnimatePresence } from 'framer-motion';
@@ -8,7 +8,6 @@ import { useTheme } from 'next-themes';
 import { useSession, getSession, signIn } from 'next-auth/react';
 import Image from 'next/image';
 
-// ⬇️ NEW imports
 import CardDetailModal from '@/components/CardDetailModal';
 import usePersistentPageSize from '@/hooks/usePersistentPageSize';
 
@@ -590,7 +589,7 @@ export default function CardSearchModal({
   const { data: session } = useSession();
   const isDark = resolvedTheme === 'dark';
   const inputRef = useRef<HTMLInputElement>(null);
-  const abortRef = useRef<AbortController | null>(null);
+  // const abortRef = useRef<AbortController | null>(null);
 
   // token (optional) — server now prefers NextAuth session cookie
   const idToken = useMemo(() => (session as SessionWithIdToken | null | undefined)?.idToken || getFallbackIdToken(), [session]);
@@ -598,17 +597,23 @@ export default function CardSearchModal({
   // ====== fetch wrapper that refreshes on 401 then retries once ======
   const fetchWithAuth = useCallback(
     async (input: RequestInfo | URL, init?: RequestInit) => {
-      const makeHeaders = (tok?: string): HeadersInit => {
-        const base = (init && init.headers) ? (init.headers as HeadersInit) : {};
-        const t = tok ?? (session as SessionWithIdToken | null | undefined)?.idToken ?? idToken ?? undefined;
-        return t ? { ...base, authorization: `Bearer ${t}`, Authorization: `Bearer ${t}` } : base;
+      const cleanse = (h?: HeadersInit): Headers => {
+        const out = new Headers(h ?? {});
+        out.delete('authorization');
+        out.delete('Authorization');
+        return out;
       };
 
-      // 1) first attempt with current token (or just cookies if none)
+      const makeHeaders = (tok?: string): HeadersInit => {
+        const base = cleanse(init?.headers);
+        const t = tok ?? (session as SessionWithIdToken | null | undefined)?.idToken ?? idToken ?? undefined;
+        if (t) base.set('Authorization', `Bearer ${t}`);
+        return base;
+      };
+
       const first = await fetch(input, { ...init, headers: makeHeaders() });
       if (first.status !== 401) return first;
 
-      // 2) try to refresh session → get a new idToken, then retry once
       try {
         const refreshed = await getSession();
         const newTok = (refreshed as SessionWithIdToken | null | undefined)?.idToken;
@@ -616,11 +621,8 @@ export default function CardSearchModal({
           const retry = await fetch(input, { ...init, headers: makeHeaders(newTok) });
           if (retry.status !== 401) return retry;
         }
-      } catch {
-        // ignore; we’ll fall through
-      }
+      } catch {}
 
-      // 3) still unauthorized → kick to sign-in
       if (typeof window !== 'undefined') {
         await signIn(undefined, { callbackUrl: window.location.href });
       }
@@ -702,7 +704,7 @@ export default function CardSearchModal({
 
   const [cards, setCards] = useState<Card[]>([]);
   const [histories, setHistories] = useState<Record<string, HistoryEntry[]>>({});
-  const histAbortRef = useRef<AbortController | null>(null); 
+  // const histAbortRef = useRef<AbortController | null>(null); 
   const [totalPages, setTotalPages] = useState(1);
   const [loading, setLoading] = useState(false);
   const [emptyReady, setEmptyReady] = useState(false);
@@ -774,7 +776,14 @@ export default function CardSearchModal({
   }, [isOpen]); // only when modal opens
 
   // Build query params from APPLIED (not live UI) - memoized to satisfy deps
-  const buildParams = useCallback((f: AppliedFilters) => {
+  function buildParamsStable(
+    f: AppliedFilters,
+    page: number,
+    pageSize: number,
+    hpRange: [number, number] | null,
+    retreatRange: [number, number] | null,
+    avgPriceRange: [number, number] | null
+  ) {
     const p = new URLSearchParams();
     if (f.query) p.append('q', f.query);
 
@@ -786,16 +795,10 @@ export default function CardSearchModal({
     f.setSeriesList.forEach(v => p.append('setSeries', v));
     f.artists.forEach(v => p.append('artist', v));
 
-    // legalities (values like 'legal','banned')
     f.legalStd.forEach(v => p.append('legal.standard', v));
     f.legalExp.forEach(v => p.append('legal.expanded', v));
     f.legalUnl.forEach(v => p.append('legal.unlimited', v));
 
-    // toggles
-    if (f.hasAbility) p.append('hasAbility', f.hasAbility);
-    if (f.hasAttack) p.append('hasAttack', f.hasAttack);
-
-    // ranges & exacts
     const sendRange = (
       sel: [number, number] | null,
       full: [number, number] | null,
@@ -808,92 +811,127 @@ export default function CardSearchModal({
       if (smax < fmax) p.append(maxKey, String(smax));
     };
 
-    // HP: exact uses hp=, otherwise hpMin/hpMax deltas
-    if (f.hpExact && f.hpSel) {
-      p.append('hp', String(f.hpSel[0]));
-    } else {
-      sendRange(f.hpSel, hpRange, 'hpMin', 'hpMax');
-    }
+    if (f.hpExact && f.hpSel) p.append('hp', String(f.hpSel[0]));
+    else sendRange(f.hpSel, hpRange, 'hpMin', 'hpMax');
 
-    // Retreat: exact uses retreat=, otherwise retreatMin/retreatMax deltas
-    if (f.retreatExact && f.retreatSel) {
-      p.append('retreat', String(f.retreatSel[0]));
-    } else {
-      sendRange(f.retreatSel, retreatRange, 'retreatMin', 'retreatMax');
-    }
+    if (f.retreatExact && f.retreatSel) p.append('retreat', String(f.retreatSel[0]));
+    else sendRange(f.retreatSel, retreatRange, 'retreatMin', 'retreatMax');
 
-    // Avg price always range
     sendRange(f.avgPriceSel, avgPriceRange, 'averageSellPriceMin', 'averageSellPriceMax');
 
     p.append('page', String(page));
     p.append('page_size', String(pageSize));
     return p;
-  }, [hpRange, retreatRange, avgPriceRange, page, pageSize]);
-
+  }
+  
   // ---------- CARDS: fetch on applied/paging change ONLY; no refire on focus ----------
+
+  const cardsCtrlRef = useRef<AbortController | null>(null);
+  const cardsKeyRef = useRef<string | null>(null);
+
   useEffect(() => {
     if (!isOpen) return;
 
-    if (abortRef.current) abortRef.current.abort();
-    const controller = new AbortController();
-    abortRef.current = controller;
-
-    const params = buildParams(applied);
+    // Build stable key
+    const params = buildParamsStable(applied, page, pageSize, hpRange, retreatRange, avgPriceRange);
     const url = `${API_URL}?${params.toString()}`;
+    const runKey = url;
+
+    // If same key and a controller exists, do nothing
+    if (cardsKeyRef.current === runKey && cardsCtrlRef.current) return;
+
+    // Abort any previous in-flight fetch BEFORE starting a new one
+    cardsCtrlRef.current?.abort();
+
+    // Create controller for THIS run and remember the key
+    const controller = new AbortController();
+    cardsCtrlRef.current = controller;
+    cardsKeyRef.current = runKey;
 
     setLoading(true);
+
     (async () => {
       try {
-        const res = await fetchWithAuthRef.current(url, { signal: controller.signal, credentials: 'same-origin' });
+        const res = await fetchWithAuthRef.current(runKey, {
+          signal: controller.signal,
+          credentials: 'same-origin',
+        });
         if (!res.ok) throw new Error(`cards ${res.status}`);
         const data = await res.json();
+
+        // If a newer run started, ignore stale results
+        if (cardsCtrlRef.current !== controller) return;
         setCards(Array.isArray(data?.cards) ? data.cards : []);
         setTotalPages(Math.max(1, Number(data?.total_pages ?? 1)));
-      } catch (e: unknown) {
-        if (!(e instanceof DOMException && e.name === 'AbortError')) { setCards([]); setTotalPages(1); }
+      } catch {
+        if (controller.signal.aborted) return; // Ignore intentional aborts
+        // Genuine error → clear results
+        setCards([]);
+        setTotalPages(1);
       } finally {
-        setLoading(false);
+        if (cardsCtrlRef.current === controller) setLoading(false);
       }
     })();
 
-    return () => controller.abort();
-  }, [isOpen, applied, page, pageSize, buildParams]); // include buildParams
+    // Only abort on unmount; new runs will abort the previous above
+    return () => { /* no-op */ };
+  }, [isOpen, applied, page, pageSize, hpRange, retreatRange, avgPriceRange]);
 
-  // ---------- HISTORIES: batch fetch for current page cards (one POST) ----------
+  // ---------- HISTORIES: batch fetch ----------
+  const histCtrlRef = useRef<AbortController | null>(null);
+  const histKeyRef = useRef<string | null>(null);
+
   useEffect(() => {
     if (!isOpen) return;
 
-    // cancel any in-flight history request
-    if (histAbortRef.current) histAbortRef.current.abort();
-    const controller = new AbortController();
-    histAbortRef.current = controller;
-
     const ids = cards.map(c => c.id);
-    if (ids.length === 0) { setHistories({}); return; }
+    if (ids.length === 0) {
+      setHistories({});
+      histKeyRef.current = null;
+      histCtrlRef.current?.abort();
+      histCtrlRef.current = null;
+      return;
+    }
+
+    const runKey = JSON.stringify(ids);
+    if (histKeyRef.current === runKey && histCtrlRef.current) return;
+
+    // Abort previous before starting the new one
+    histCtrlRef.current?.abort();
+    const controller = new AbortController();
+    histCtrlRef.current = controller;
+    histKeyRef.current = runKey;
 
     (async () => {
       try {
-        const res = await fetchWithAuthRef.current(
-          '/api/cards/price/batch',
-          {
-            method: 'POST',
-            headers: { 'content-type': 'application/json' },
-            body: JSON.stringify({ ids, order: 'asc' }),
-            credentials: 'same-origin',
-            signal: controller.signal,
-          }
-        );
+        const res = await fetchWithAuthRef.current('/api/cards/price/batch', {
+          method: 'POST',
+          headers: { 'content-type': 'application/json' },
+          body: JSON.stringify({ ids, order: 'asc' }),
+          credentials: 'same-origin',
+          signal: controller.signal,
+        });
         if (!res.ok) throw new Error(`price batch ${res.status}`);
         const data = await res.json();
-        const h = (data?.histories ?? {}) as Record<string, HistoryEntry[]>;
-        setHistories(h);
-      } catch (e: unknown) {
-        if (!(e instanceof DOMException && e.name === 'AbortError')) setHistories({});
+        if (histCtrlRef.current !== controller) return; // stale
+        setHistories((data?.histories ?? {}) as Record<string, HistoryEntry[]>);
+      } catch {
+        if (controller.signal.aborted) return;
+        setHistories({});
       }
     })();
 
-    return () => controller.abort();
+    return () => { /* no-op; unmount abort handled below */ };
   }, [isOpen, cards]);
+
+  // abort both on unmount
+  useEffect(() => {
+    return () => {
+      cardsCtrlRef.current?.abort();
+      histCtrlRef.current?.abort();
+    };
+  }, []);
+
 
   // initial focus
   useEffect(() => {
@@ -1354,7 +1392,10 @@ export default function CardSearchModal({
                             ? 'bg-indigo-600 text-white'
                             : 'bg-gray-200 dark:bg-slate-800 text-gray-700 dark:text-gray-200 hover:bg-gray-300 dark:hover:bg-slate-700'
                         }`}
-                        onClick={() => { setPageSize(size); setPage(1); }}
+                        onClick={() => {
+                          setPageSize(size);
+                          setPage(prev => (prev === 1 ? prev : 1));
+                        }}
                       >
                         {size}
                       </button>

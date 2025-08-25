@@ -1,4 +1,4 @@
-// components/CardDetailModal.tsx
+// src/components/CardDetailModal.tsx
 'use client';
 
 import React, {
